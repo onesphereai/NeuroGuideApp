@@ -1,0 +1,107 @@
+/*
+  Localizable.strings
+  NeuroGuide
+
+  Created by AI-DLC on 2025-10-20.
+  Bolt 1.1 - App Shell & Navigation
+
+  English localization strings
+*/
+
+// MARK: - Welcome Screen
+
+"welcome.title" = "Welcome to NeuroGuide";
+"welcome.subtitle" = "Supporting parents on their journey";
+"welcome.description" = "Compassionate, neurodiversity-affirming guidance for those challenging moments";
+"welcome.get_started" = "Get Started";
+"welcome.learn_more" = "Learn More";
+"welcome.about_title" = "About NeuroGuide";
+"welcome.about_content" = "NeuroGuide is a neurodiversity-affirming app designed to support parents of neurodivergent children with real-time coaching, emotional awareness, and evidence-based guidance.";
+
+// MARK: - Home Screen
+
+"home.greeting.morning" = "Good Morning";
+"home.greeting.afternoon" = "Good Afternoon";
+"home.greeting.evening" = "Good Evening";
+"home.greeting.default" = "Hello";
+"home.subtitle" = "How can we support you today?";
+"home.welcome_back" = "Welcome Back!";
+"home.profile_setup" = "Set up your child's profile to get started";
+
+// MARK: - Feature Cards
+
+"feature.live_coach.title" = "Live Coach";
+"feature.live_coach.description" = "Real-time support for challenging moments";
+"feature.live_coach.coming_soon_message" = "Live Coach will help you navigate challenging moments with real-time, compassionate guidance. Coming soon!";
+
+"feature.emotion_check.title" = "Emotion Check";
+"feature.emotion_check.description" = "Personalized emotion awareness";
+"feature.emotion_check.coming_soon_message" = "Check in with your emotions and your child's with personalized emotion cards. Coming soon!";
+
+"feature.ask_question.title" = "Ask NeuroGuide";
+"feature.ask_question.description" = "Evidence-based guidance";
+"feature.ask_question.coming_soon_message" = "Get evidence-based answers to your parenting questions. Coming soon!";
+
+"feature.profile.title" = "Child Profile";
+"feature.profile.description" = "Personalize for your child";
+"feature.profile.coming_soon_message" = "Personalize NeuroGuide for your child's unique needs. Coming soon!";
+
+"feature.coming_soon" = "Coming Soon";
+
+// MARK: - Emergency Access
+
+"emergency.title" = "Need Help Now?";
+"emergency.description" = "Quick access to calming strategies";
+"emergency.modal_title" = "Emergency Resources";
+"emergency.modal_content" = "Quick access to calming strategies and support resources. Coming soon!";
+
+// MARK: - Settings
+
+"settings.title" = "Settings";
+"settings.done" = "Done";
+
+"settings.section.app" = "App Settings";
+"settings.notifications" = "Notifications";
+"settings.accessibility" = "Accessibility";
+"settings.privacy" = "Privacy & Data";
+
+"settings.section.about" = "About";
+"settings.about" = "About NeuroGuide";
+"settings.help" = "Help & Support";
+"settings.terms" = "Terms & Privacy Policy";
+
+"settings.version" = "Version";
+"settings.version_number" = "0.1.0 (Bolt 1.1)";
+
+// MARK: - Navigation
+
+"nav.back" = "Back";
+"nav.close" = "Close";
+"nav.cancel" = "Cancel";
+"nav.done" = "Done";
+"nav.ok" = "OK";
+"nav.confirm" = "Confirm";
+
+// MARK: - Modals
+
+"modal.info" = "Information";
+"modal.alert" = "Alert";
+"modal.confirmation" = "Confirmation";
+
+// MARK: - Accessibility
+
+"accessibility.button" = "Button";
+"accessibility.settings" = "Settings";
+"accessibility.close" = "Close";
+"accessibility.tap_hint" = "Double tap to activate";
+"accessibility.navigate_hint" = "Double tap to navigate";
+
+// MARK: - Errors (for future use)
+
+"error.generic" = "Something went wrong. Please try again.";
+"error.network" = "Network connection error. Please check your connection.";
+"error.permission_denied" = "Permission denied. Please grant permission in Settings.";
+
+// MARK: - Neurodiversity-Affirming Language
+
+"neurodiversity.affirming_note" = "NeuroGuide uses neurodiversity-affirming language that respects the dignity and value of all individuals, regardless of neurotype.";

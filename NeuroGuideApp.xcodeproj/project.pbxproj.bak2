@@ -1,0 +1,640 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		732CE0DE2EA63B4900C0EDD8 /* NavigationFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732CE0DA2EA63B4900C0EDD8 /* NavigationFlowUITests.swift */; };
+		732CE0DF2EA63B4900C0EDD8 /* AccessibilityUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732CE0D92EA63B4900C0EDD8 /* AccessibilityUITests.swift */; };
+		732CE0E22EA63B4900C0EDD8 /* WelcomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732CE0D62EA63B4900C0EDD8 /* WelcomeViewModelTests.swift */; };
+		732CE0E32EA63B4900C0EDD8 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732CE0D52EA63B4900C0EDD8 /* HomeViewModelTests.swift */; };
+		732CE0E42EA63B4900C0EDD8 /* NavigationFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732CE0DA2EA63B4900C0EDD8 /* NavigationFlowUITests.swift */; };
+		732CE0E52EA63B4900C0EDD8 /* AccessibilityUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732CE0D92EA63B4900C0EDD8 /* AccessibilityUITests.swift */; };
+		732CE0E62EA63B4900C0EDD8 /* AccessibilityHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732CE0D32EA63B4900C0EDD8 /* AccessibilityHelperTests.swift */; };
+		732CE0E72EA63B4900C0EDD8 /* LaunchStateManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732CE0D12EA63B4900C0EDD8 /* LaunchStateManagerTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		732CE07B2EA6380C00C0EDD8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 732CE0652EA6380A00C0EDD8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 732CE06C2EA6380A00C0EDD8;
+			remoteInfo = NeuroGuideApp;
+		};
+		732CE0852EA6380C00C0EDD8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 732CE0652EA6380A00C0EDD8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 732CE06C2EA6380A00C0EDD8;
+			remoteInfo = NeuroGuideApp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		732CE06D2EA6380A00C0EDD8 /* NeuroGuideApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NeuroGuideApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		732CE07A2EA6380C00C0EDD8 /* NeuroGuideAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NeuroGuideAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		732CE0842EA6380C00C0EDD8 /* NeuroGuideAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NeuroGuideAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		732CE0D12EA63B4900C0EDD8 /* LaunchStateManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchStateManagerTests.swift; sourceTree = "<group>"; };
+		732CE0D32EA63B4900C0EDD8 /* AccessibilityHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityHelperTests.swift; sourceTree = "<group>"; };
+		732CE0D52EA63B4900C0EDD8 /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
+		732CE0D62EA63B4900C0EDD8 /* WelcomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModelTests.swift; sourceTree = "<group>"; };
+		732CE0D92EA63B4900C0EDD8 /* AccessibilityUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityUITests.swift; sourceTree = "<group>"; };
+		732CE0DA2EA63B4900C0EDD8 /* NavigationFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationFlowUITests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		732CE06F2EA6380A00C0EDD8 /* NeuroGuideApp */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = NeuroGuideApp;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		732CE06A2EA6380A00C0EDD8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		732CE0772EA6380C00C0EDD8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		732CE0812EA6380C00C0EDD8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		732CE0642EA6380A00C0EDD8 = {
+			isa = PBXGroup;
+			children = (
+				732CE0D02EA63A1400C0EDD8 /* NeuroGuideAppTests */,
+				732CE06F2EA6380A00C0EDD8 /* NeuroGuideApp */,
+				732CE06E2EA6380A00C0EDD8 /* Products */,
+				732CE0D82EA63B4900C0EDD8 /* NeuroGuideTests */,
+				732CE0DB2EA63B4900C0EDD8 /* NeuroGuideUITests */,
+			);
+			sourceTree = "<group>";
+		};
+		732CE06E2EA6380A00C0EDD8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				732CE06D2EA6380A00C0EDD8 /* NeuroGuideApp.app */,
+				732CE07A2EA6380C00C0EDD8 /* NeuroGuideAppTests.xctest */,
+				732CE0842EA6380C00C0EDD8 /* NeuroGuideAppUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		732CE0D02EA63A1400C0EDD8 /* NeuroGuideAppTests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = NeuroGuideAppTests;
+			sourceTree = "<group>";
+		};
+		732CE0D22EA63B4900C0EDD8 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				732CE0D12EA63B4900C0EDD8 /* LaunchStateManagerTests.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		732CE0D42EA63B4900C0EDD8 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				732CE0D32EA63B4900C0EDD8 /* AccessibilityHelperTests.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		732CE0D72EA63B4900C0EDD8 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				732CE0D52EA63B4900C0EDD8 /* HomeViewModelTests.swift */,
+				732CE0D62EA63B4900C0EDD8 /* WelcomeViewModelTests.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		732CE0D82EA63B4900C0EDD8 /* NeuroGuideTests */ = {
+			isa = PBXGroup;
+			children = (
+				732CE0D22EA63B4900C0EDD8 /* Services */,
+				732CE0D42EA63B4900C0EDD8 /* Utilities */,
+				732CE0D72EA63B4900C0EDD8 /* ViewModels */,
+			);
+			path = NeuroGuideTests;
+			sourceTree = "<group>";
+		};
+		732CE0DB2EA63B4900C0EDD8 /* NeuroGuideUITests */ = {
+			isa = PBXGroup;
+			children = (
+				732CE0D92EA63B4900C0EDD8 /* AccessibilityUITests.swift */,
+				732CE0DA2EA63B4900C0EDD8 /* NavigationFlowUITests.swift */,
+			);
+			path = NeuroGuideUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		732CE06C2EA6380A00C0EDD8 /* NeuroGuideApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 732CE08E2EA6380C00C0EDD8 /* Build configuration list for PBXNativeTarget "NeuroGuideApp" */;
+			buildPhases = (
+				732CE0692EA6380A00C0EDD8 /* Sources */,
+				732CE06A2EA6380A00C0EDD8 /* Frameworks */,
+				732CE06B2EA6380A00C0EDD8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				732CE06F2EA6380A00C0EDD8 /* NeuroGuideApp */,
+			);
+			name = NeuroGuideApp;
+			packageProductDependencies = (
+			);
+			productName = NeuroGuideApp;
+			productReference = 732CE06D2EA6380A00C0EDD8 /* NeuroGuideApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		732CE0792EA6380C00C0EDD8 /* NeuroGuideAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 732CE0912EA6380C00C0EDD8 /* Build configuration list for PBXNativeTarget "NeuroGuideAppTests" */;
+			buildPhases = (
+				732CE0762EA6380C00C0EDD8 /* Sources */,
+				732CE0772EA6380C00C0EDD8 /* Frameworks */,
+				732CE0782EA6380C00C0EDD8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				732CE07C2EA6380C00C0EDD8 /* PBXTargetDependency */,
+			);
+			name = NeuroGuideAppTests;
+			packageProductDependencies = (
+			);
+			productName = NeuroGuideAppTests;
+			productReference = 732CE07A2EA6380C00C0EDD8 /* NeuroGuideAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		732CE0832EA6380C00C0EDD8 /* NeuroGuideAppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 732CE0942EA6380C00C0EDD8 /* Build configuration list for PBXNativeTarget "NeuroGuideAppUITests" */;
+			buildPhases = (
+				732CE0802EA6380C00C0EDD8 /* Sources */,
+				732CE0812EA6380C00C0EDD8 /* Frameworks */,
+				732CE0822EA6380C00C0EDD8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				732CE0862EA6380C00C0EDD8 /* PBXTargetDependency */,
+			);
+			name = NeuroGuideAppUITests;
+			packageProductDependencies = (
+			);
+			productName = NeuroGuideAppUITests;
+			productReference = 732CE0842EA6380C00C0EDD8 /* NeuroGuideAppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		732CE0652EA6380A00C0EDD8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2600;
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					732CE06C2EA6380A00C0EDD8 = {
+						CreatedOnToolsVersion = 26.0.1;
+					};
+					732CE0792EA6380C00C0EDD8 = {
+						CreatedOnToolsVersion = 26.0.1;
+						TestTargetID = 732CE06C2EA6380A00C0EDD8;
+					};
+					732CE0832EA6380C00C0EDD8 = {
+						CreatedOnToolsVersion = 26.0.1;
+						TestTargetID = 732CE06C2EA6380A00C0EDD8;
+					};
+				};
+			};
+			buildConfigurationList = 732CE0682EA6380A00C0EDD8 /* Build configuration list for PBXProject "NeuroGuideApp" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 732CE0642EA6380A00C0EDD8;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 732CE06E2EA6380A00C0EDD8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				732CE06C2EA6380A00C0EDD8 /* NeuroGuideApp */,
+				732CE0792EA6380C00C0EDD8 /* NeuroGuideAppTests */,
+				732CE0832EA6380C00C0EDD8 /* NeuroGuideAppUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		732CE06B2EA6380A00C0EDD8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		732CE0782EA6380C00C0EDD8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		732CE0822EA6380C00C0EDD8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		732CE0692EA6380A00C0EDD8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		732CE0762EA6380C00C0EDD8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				732CE0E22EA63B4900C0EDD8 /* WelcomeViewModelTests.swift in Sources */,
+				732CE0E32EA63B4900C0EDD8 /* HomeViewModelTests.swift in Sources */,
+				732CE0E42EA63B4900C0EDD8 /* NavigationFlowUITests.swift in Sources */,
+				732CE0E52EA63B4900C0EDD8 /* AccessibilityUITests.swift in Sources */,
+				732CE0E62EA63B4900C0EDD8 /* AccessibilityHelperTests.swift in Sources */,
+				732CE0E72EA63B4900C0EDD8 /* LaunchStateManagerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		732CE0802EA6380C00C0EDD8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				732CE0DE2EA63B4900C0EDD8 /* NavigationFlowUITests.swift in Sources */,
+				732CE0DF2EA63B4900C0EDD8 /* AccessibilityUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		732CE07C2EA6380C00C0EDD8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 732CE06C2EA6380A00C0EDD8 /* NeuroGuideApp */;
+			targetProxy = 732CE07B2EA6380C00C0EDD8 /* PBXContainerItemProxy */;
+		};
+		732CE0862EA6380C00C0EDD8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 732CE06C2EA6380A00C0EDD8 /* NeuroGuideApp */;
+			targetProxy = 732CE0852EA6380C00C0EDD8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		732CE08C2EA6380C00C0EDD8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		732CE08D2EA6380C00C0EDD8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		732CE08F2EA6380C00C0EDD8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C492973F42;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.neuroguide.NeuroGuideApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		732CE0902EA6380C00C0EDD8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C492973F42;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.neuroguide.NeuroGuideApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		732CE0922EA6380C00C0EDD8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.neuroguide.NeuroGuideAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NeuroGuideApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NeuroGuideApp";
+			};
+			name = Debug;
+		};
+		732CE0932EA6380C00C0EDD8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.neuroguide.NeuroGuideAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NeuroGuideApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NeuroGuideApp";
+			};
+			name = Release;
+		};
+		732CE0952EA6380C00C0EDD8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.neuroguide.NeuroGuideAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = NeuroGuideApp;
+			};
+			name = Debug;
+		};
+		732CE0962EA6380C00C0EDD8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.neuroguide.NeuroGuideAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = NeuroGuideApp;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		732CE0682EA6380A00C0EDD8 /* Build configuration list for PBXProject "NeuroGuideApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				732CE08C2EA6380C00C0EDD8 /* Debug */,
+				732CE08D2EA6380C00C0EDD8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		732CE08E2EA6380C00C0EDD8 /* Build configuration list for PBXNativeTarget "NeuroGuideApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				732CE08F2EA6380C00C0EDD8 /* Debug */,
+				732CE0902EA6380C00C0EDD8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		732CE0912EA6380C00C0EDD8 /* Build configuration list for PBXNativeTarget "NeuroGuideAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				732CE0922EA6380C00C0EDD8 /* Debug */,
+				732CE0932EA6380C00C0EDD8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		732CE0942EA6380C00C0EDD8 /* Build configuration list for PBXNativeTarget "NeuroGuideAppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				732CE0952EA6380C00C0EDD8 /* Debug */,
+				732CE0962EA6380C00C0EDD8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 732CE0652EA6380A00C0EDD8 /* Project object */;
+}

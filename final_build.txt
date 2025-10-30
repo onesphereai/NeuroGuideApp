@@ -1,0 +1,1274 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -scheme NeuroGuideApp -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 17" clean build
+
+Build settings from command line:
+    SDKROOT = iphonesimulator26.0
+
+2025-10-27 13:34:21.915 xcodebuild[54866:2216579] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+** CLEAN SUCCEEDED **
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (1 target)
+    Target 'NeuroGuideApp' in project 'NeuroGuideApp' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.0.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Assets.xcassets
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+Build description signature: 6445302580403e480fbb55ba2e57b0c1
+Build description path: /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/XCBuildData/6445302580403e480fbb55ba2e57b0c1.xcbuilddata
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.0.sdk /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.0-23A339-26257891a6c027eb51374368541b8346.sdkstatcache
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp.xcodeproj
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.0.sdk -o /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.0-23A339-26257891a6c027eb51374368541b8346.sdkstatcache
+
+CreateBuildDirectory /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp.xcodeproj
+    builtin-create-build-directory /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products
+
+CreateBuildDirectory /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp.xcodeproj
+    builtin-create-build-directory /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex
+
+CreateBuildDirectory /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp.xcodeproj
+    builtin-create-build-directory /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+CreateBuildDirectory /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp.xcodeproj
+    builtin-create-build-directory /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator
+
+CreateBuildDirectory /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/ExplicitPrecompiledModules
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp.xcodeproj
+    builtin-create-build-directory /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+CreateBuildDirectory /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp.xcodeproj
+    builtin-create-build-directory /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator
+
+WriteAuxiliaryFile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp-3144bc3785158219a659aacdea195946-VFS-iphonesimulator/all-product-headers.yaml
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp.xcodeproj
+    write-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp-3144bc3785158219a659aacdea195946-VFS-iphonesimulator/all-product-headers.yaml
+
+WriteAuxiliaryFile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/empty-NeuroGuideApp.plist (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    write-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/empty-NeuroGuideApp.plist
+
+WriteAuxiliaryFile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp.hmap (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    write-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp.hmap
+
+WriteAuxiliaryFile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp.DependencyStaticMetadataFileList (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    write-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp.DependencyStaticMetadataFileList
+
+WriteAuxiliaryFile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp.DependencyMetadataFileList (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    write-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp.DependencyMetadataFileList
+
+WriteAuxiliaryFile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.LinkFileList (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    write-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.LinkFileList
+
+WriteAuxiliaryFile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.SwiftConstValuesFileList (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    write-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.SwiftConstValuesFileList
+
+WriteAuxiliaryFile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.SwiftFileList (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    write-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.SwiftFileList
+
+WriteAuxiliaryFile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp_const_extract_protocols.json (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    write-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp_const_extract_protocols.json
+
+WriteAuxiliaryFile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp-OutputFileMap.json (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    write-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp-OutputFileMap.json
+
+WriteAuxiliaryFile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-project-headers.hmap (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    write-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-project-headers.hmap
+
+WriteAuxiliaryFile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-own-target-headers.hmap (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    write-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-own-target-headers.hmap
+
+WriteAuxiliaryFile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-generated-files.hmap (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    write-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-generated-files.hmap
+
+WriteAuxiliaryFile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-all-target-headers.hmap (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    write-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-all-target-headers.hmap
+
+WriteAuxiliaryFile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-all-non-framework-target-headers.hmap (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    write-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-all-non-framework-target-headers.hmap
+
+WriteAuxiliaryFile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-DebugDylibPath-normal-arm64.txt (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    write-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-DebugDylibPath-normal-arm64.txt
+
+WriteAuxiliaryFile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-DebugDylibInstallName-normal-arm64.txt (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    write-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-DebugDylibInstallName-normal-arm64.txt
+
+MkDir /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    /bin/mkdir -p /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app
+
+WriteAuxiliaryFile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources/Entitlements-Simulated.plist (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    write-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources/Entitlements-Simulated.plist
+
+ProcessProductPackaging "" /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp.app-Simulated.xcent (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+    Entitlements:
+    
+    {
+    "application-identifier" = "C492973F42.com.neuroguide.NeuroGuideApp";
+}
+    
+    builtin-productPackagingUtility -entitlements -format xml -o /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp.app-Simulated.xcent
+
+ProcessProductPackagingDER /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp.app-Simulated.xcent /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp.app-Simulated.xcent.der (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    /usr/bin/derq query -f xml -i /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp.app-Simulated.xcent -o /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp.app-Simulated.xcent.der --raw
+
+Ld /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/__preview.dylib normal (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-ios18.6-simulator -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.0.sdk -O0 -L/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator -F/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator -install_name @rpath/NeuroGuideApp.debug.dylib -dead_strip -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -Xlinker -debug_variant -Xlinker -dependency_info -Xlinker /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp_dependency_info.dat -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __entitlements -Xlinker /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp.app-Simulated.xcent -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __ents_der -Xlinker /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp.app-Simulated.xcent.der -Xlinker -no_adhoc_codesign -o /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/__preview.dylib
+
+GenerateAssetSymbols /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Assets.xcassets (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    /Applications/Xcode.app/Contents/Developer/usr/bin/actool /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Assets.xcassets --compile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app --output-format human-readable-text --notices --warnings --export-dependency-info /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/assetcatalog_dependencies --output-partial-info-plist /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/assetcatalog_generated_info.plist --app-icon AppIcon --accent-color AccentColor --compress-pngs --enable-on-demand-resources YES --development-region en --target-device iphone --target-device ipad --minimum-deployment-target 18.6 --platform iphonesimulator --bundle-identifier com.neuroguide.NeuroGuideApp --generate-swift-asset-symbols /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources/GeneratedAssetSymbols.swift --generate-objc-asset-symbols /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources/GeneratedAssetSymbols.h --generate-asset-symbol-index /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+/* com.apple.actool.compilation-results */
+/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources/GeneratedAssetSymbols.h
+/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources/GeneratedAssetSymbols.swift
+
+
+CpResource /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/content_library.json /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Resources/content_library.json (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Resources/content_library.json /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app
+
+MkDir /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/assetcatalog_output/thinned (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    /bin/mkdir -p /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/assetcatalog_output/thinned
+
+CpResource /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/TESTING_GUIDE.md /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/docs/TESTING_GUIDE.md (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/docs/TESTING_GUIDE.md /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app
+
+CpResource /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/SECURITY_ARCHITECTURE.md /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/docs/SECURITY_ARCHITECTURE.md (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/docs/SECURITY_ARCHITECTURE.md /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app
+
+MkDir /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/assetcatalog_output/unthinned (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    /bin/mkdir -p /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/assetcatalog_output/unthinned
+
+CpResource /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/PRIVACY_ARCHITECTURE.md /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/PRIVACY_ARCHITECTURE.md (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/PRIVACY_ARCHITECTURE.md /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app
+
+CpResource /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/PERFORMANCE_TARGETS.md /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/PERFORMANCE_TARGETS.md (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/PERFORMANCE_TARGETS.md /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app
+
+CpResource /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/ML_INTEGRATION_GUIDE.md /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/ML_INTEGRATION_GUIDE.md (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/ML_INTEGRATION_GUIDE.md /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app
+
+CpResource /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/ADR-004-encryption-strategy.md /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/docs/adr/ADR-004-encryption-strategy.md (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/docs/adr/ADR-004-encryption-strategy.md /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app
+
+CpResource /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/ADR-003-lazy-model-loading.md /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/docs/adr/ADR-003-lazy-model-loading.md (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/docs/adr/ADR-003-lazy-model-loading.md /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app
+
+CpResource /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/ADR-002-model-quality-tiers.md /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/docs/adr/ADR-002-model-quality-tiers.md (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/docs/adr/ADR-002-model-quality-tiers.md /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app
+
+CpResource /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/ADR-001-core-ml-framework.md /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/docs/adr/ADR-001-core-ml-framework.md (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/docs/adr/ADR-001-core-ml-framework.md /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app
+
+CopyStringsFile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/Localizable.strings /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Resources/Localizable.strings (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-copyStrings --validate --outputencoding binary --outfilename Localizable.strings --outdir /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app -- /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Resources/Localizable.strings
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Resources/Localizable.strings:1:1: note: detected encoding of input file as Unicode (UTF-8) (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+CompileAssetCatalogVariant thinned /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Assets.xcassets (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    /Applications/Xcode.app/Contents/Developer/usr/bin/actool /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Assets.xcassets --compile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/assetcatalog_output/thinned --output-format human-readable-text --notices --warnings --export-dependency-info /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/assetcatalog_dependencies_thinned --output-partial-info-plist /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/assetcatalog_generated_info.plist_thinned --app-icon AppIcon --accent-color AccentColor --compress-pngs --enable-on-demand-resources YES --filter-for-thinning-device-configuration iPhone18,3 --filter-for-device-os-version 26.0.1 --development-region en --target-device iphone --target-device ipad --minimum-deployment-target 18.6 --platform iphonesimulator
+/* com.apple.actool.compilation-results */
+/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/assetcatalog_generated_info.plist_thinned
+
+
+SwiftDriver NeuroGuideApp normal arm64 com.apple.xcode.tools.swift.compiler (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-SwiftDriver -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name NeuroGuideApp -Onone -enforce-exclusivity\=checked @/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.SwiftFileList -DDEBUG -default-isolation\=MainActor -enable-bare-slash-regex -enable-upcoming-feature DisableOutwardActorInference -enable-upcoming-feature InferSendableFromCaptures -enable-upcoming-feature GlobalActorIsolatedTypesUsability -enable-upcoming-feature MemberImportVisibility -enable-upcoming-feature InferIsolatedConformances -enable-upcoming-feature NonisolatedNonsendingByDefault -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.0.sdk -target arm64-apple-ios18.6-simulator -g -module-cache-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator -F /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator -emit-localized-strings -emit-localized-strings-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64 -c -j10 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.0-23A339-26257891a6c027eb51374368541b8346.sdkstatcache -output-file-map /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp_const_extract_protocols.json -Xcc -iquote -Xcc /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-generated-files.hmap -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-own-target-headers.hmap -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-all-target-headers.hmap -Xcc -iquote -Xcc /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-project-headers.hmap -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources-normal/arm64 -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources/arm64 -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp-Swift.h -working-directory /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp -experimental-emit-module-separately -disable-cmo
+
+SwiftCompile normal arm64 Compiling\ AppCoordinator.swift,\ NeuroGuideApp.swift,\ ContentFiltering.swift,\ ContentItem.swift,\ ContentFilteringManager.swift,\ ContentLibraryManager.swift,\ ContentLibraryService.swift,\ ContentSearchManager.swift,\ ConfidenceLevel.swift,\ EmotionConsentStatus.swift,\ EmotionExpressionProfile.swift,\ EmotionState.swift,\ ValidationRecord.swift,\ EmotionServices.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/App/AppCoordinator.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/App/NeuroGuideApp.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Content/Models/ContentFiltering.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Content/Models/ContentItem.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Content/Services/ContentFilteringManager.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Content/Services/ContentLibraryManager.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Content/Services/ContentLibraryService.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Content/Services/ContentSearchManager.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Models/ConfidenceLevel.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Models/EmotionConsentStatus.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Models/EmotionExpressionProfile.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Models/EmotionState.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Models/ValidationRecord.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Protocols/EmotionServices.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/App/AppCoordinator.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/App/NeuroGuideApp.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Content/Models/ContentFiltering.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Content/Models/ContentItem.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Content/Services/ContentFilteringManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Content/Services/ContentFilteringManager.swift:25:72: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+    init(contentLibrary: ContentLibraryService = ContentLibraryManager.shared) {
+                                                                       ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Content/Services/ContentLibraryManager.swift:18:16: note: static property declared here
+    static let shared = ContentLibraryManager()
+               ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Content/Services/ContentLibraryManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Content/Services/ContentLibraryService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Content/Services/ContentSearchManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Content/Services/ContentSearchManager.swift:25:72: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+    init(contentLibrary: ContentLibraryService = ContentLibraryManager.shared) {
+                                                                       ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Content/Services/ContentLibraryManager.swift:18:16: note: static property declared here
+    static let shared = ContentLibraryManager()
+               ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Models/ConfidenceLevel.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Models/EmotionConsentStatus.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Models/EmotionExpressionProfile.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Models/EmotionState.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Models/ValidationRecord.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Protocols/EmotionServices.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 Compiling\ PerformanceMonitor.swift,\ PrivacyManager.swift,\ PrivacyService.swift,\ DeviceCapabilityManager.swift,\ DeviceCapabilityService.swift,\ MLLifecycleManager.swift,\ MLModelManager.swift,\ MLModelService.swift,\ EmergencyResource.swift,\ NavigationState.swift,\ OnboardingPage.swift,\ ProfileError.swift,\ AlexithymiaSettings.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Monitoring/PerformanceMonitor.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Privacy/PrivacyManager.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Privacy/PrivacyService.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Services/DeviceCapabilityManager.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Services/DeviceCapabilityService.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Services/MLLifecycleManager.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Services/MLModelManager.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Services/MLModelService.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Models/EmergencyResource.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Models/NavigationState.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Models/OnboardingPage.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Errors/ProfileError.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Models/AlexithymiaSettings.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Monitoring/PerformanceMonitor.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Privacy/PrivacyManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Privacy/PrivacyManager.swift:100:53: warning: variable 'self' was written to, but never read
+        networkMonitor?.pathUpdateHandler = { [weak self] path in
+                                                    ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Privacy/PrivacyService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Services/DeviceCapabilityManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Services/DeviceCapabilityService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Services/MLLifecycleManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Services/MLModelManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Services/MLModelManager.swift:36:19: warning: instance method 'lock' is unavailable from asynchronous contexts; Use async-safe scoped locking instead; this is an error in the Swift 6 language mode
+        modelLock.lock()
+                  ^
+Foundation.NSLock.lock:2:11: note: 'lock()' declared here
+open func lock()}
+          ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Services/MLModelManager.swift:37:27: warning: instance method 'unlock' is unavailable from asynchronous contexts; Use async-safe scoped locking instead; this is an error in the Swift 6 language mode
+        defer { modelLock.unlock() }
+                          ^
+Foundation.NSLock.unlock:2:11: note: 'unlock()' declared here
+open func unlock()}
+          ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Services/MLModelService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Models/EmergencyResource.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Models/NavigationState.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Models/OnboardingPage.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Errors/ProfileError.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Models/AlexithymiaSettings.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 Compiling\ SettingsManager.swift,\ AccessibilityHelper.swift,\ AboutView.swift,\ LegalView.swift,\ EmergencyResourcesView.swift,\ EmotionStateCard.swift,\ ModelCardView.swift,\ EmotionOptInView.swift,\ EmotionProfileSetupView.swift,\ EmotionValidationView.swift,\ HelpArticle.swift,\ HelpView.swift,\ HomeViewModel.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Services/SettingsManager.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Utilities/AccessibilityHelper.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/About/Views/AboutView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/About/Views/LegalView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/EmergencyResources/Views/EmergencyResourcesView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Emotion/Components/EmotionStateCard.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Emotion/Components/ModelCardView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Emotion/EmotionOptInView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Emotion/EmotionProfileSetupView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Emotion/EmotionValidationView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Help/Models/HelpArticle.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Help/Views/HelpView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Home/ViewModels/HomeViewModel.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Services/SettingsManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Utilities/AccessibilityHelper.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/About/Views/AboutView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/About/Views/LegalView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/EmergencyResources/Views/EmergencyResourcesView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Emotion/Components/EmotionStateCard.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Emotion/Components/ModelCardView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Emotion/EmotionOptInView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Emotion/EmotionProfileSetupView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Emotion/EmotionValidationView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Help/Models/HelpArticle.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Help/Views/HelpView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Home/ViewModels/HomeViewModel.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 Compiling\ BiometricAuthManager.swift,\ BiometricAuthService.swift,\ AESEncryptionService.swift,\ EncryptionError.swift,\ EncryptionService.swift,\ KeychainError.swift,\ KeychainManager.swift,\ KeychainService.swift,\ SecureStorageManager.swift,\ SecureStorageService.swift,\ StorageError.swift,\ LaunchStateManager.swift,\ NavigationService.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Biometric/BiometricAuthManager.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Biometric/BiometricAuthService.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Encryption/AESEncryptionService.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Encryption/EncryptionError.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Encryption/EncryptionService.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Keychain/KeychainError.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Keychain/KeychainManager.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Keychain/KeychainService.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Storage/SecureStorageManager.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Storage/SecureStorageService.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Storage/StorageError.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Services/LaunchStateManager.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Services/NavigationService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Biometric/BiometricAuthManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Biometric/BiometricAuthManager.swift:47:9: warning: switch must be exhaustive
+        switch context.biometryType {
+        ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Biometric/BiometricAuthManager.swift:47:9: note: add missing case: '.opticID'
+        switch context.biometryType {
+        ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Biometric/BiometricAuthService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Encryption/AESEncryptionService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Encryption/EncryptionError.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Encryption/EncryptionService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Keychain/KeychainError.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Keychain/KeychainManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Keychain/KeychainService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Storage/SecureStorageManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Storage/SecureStorageManager.swift:91:10: warning: non-Sendable parameter type 'T.Type' cannot be sent from caller of protocol requirement 'load(forKey:as:)' into main actor-isolated implementation; this is an error in the Swift 6 language mode
+    func load<T: Codable>(forKey key: String, as type: T.Type) async throws -> T? {
+         ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Storage/SecureStorageService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Storage/StorageError.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Services/LaunchStateManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Services/NavigationService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 Compiling\ BaselineCalibration.swift,\ ChildProfile.swift,\ CommunicationMode.swift,\ CoRegulationHistory.swift,\ SensoryPreferences.swift,\ Strategy.swift,\ Trigger.swift,\ ChildProfileManager.swift,\ ChildProfileService.swift,\ ProfileCreationViewModel.swift,\ AppLockManager.swift,\ AppLockView.swift,\ BiometricAuthError.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Models/BaselineCalibration.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Models/ChildProfile.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Models/CommunicationMode.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Models/CoRegulationHistory.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Models/SensoryPreferences.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Models/Strategy.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Models/Trigger.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Services/ChildProfileManager.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Services/ChildProfileService.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/ViewModels/ProfileCreationViewModel.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/AppLock/AppLockManager.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/AppLock/AppLockView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Biometric/BiometricAuthError.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Models/BaselineCalibration.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Models/ChildProfile.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Models/CommunicationMode.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Models/CoRegulationHistory.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Models/SensoryPreferences.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Models/Strategy.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Models/Trigger.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Services/ChildProfileManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Services/ChildProfileManager.swift:32:69: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context
+    init(secureStorage: SecureStorageService = SecureStorageManager.shared) {
+                                                                    ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Storage/SecureStorageManager.swift:16:16: note: static property declared here
+    static let shared = SecureStorageManager()
+               ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Services/ChildProfileService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/ViewModels/ProfileCreationViewModel.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/ViewModels/ProfileCreationViewModel.swift:56:68: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+    init(profileManager: ChildProfileService = ChildProfileManager.shared, existingProfile: ChildProfile? = nil) {
+                                                                   ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Services/ChildProfileManager.swift:18:16: note: static property declared here
+    static let shared = ChildProfileManager()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/ViewModels/ProfileCreationViewModel.swift:84:59: warning: left side of nil coalescing operator '??' has non-optional type 'AlexithymiaSettings', so the right side is never used
+        alexithymiaSettings = profile.alexithymiaSettings ?? AlexithymiaSettings()
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
+                                                         
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/AppLock/AppLockManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/AppLock/AppLockManager.swift:36:69: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context
+    init(biometricAuth: BiometricAuthService = BiometricAuthManager.shared) {
+                                                                    ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Biometric/BiometricAuthManager.swift:17:16: note: static property declared here
+    static let shared = BiometricAuthManager()
+               ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/AppLock/AppLockView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Biometric/BiometricAuthError.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 Compiling\ EmotionInterfaceManager.swift,\ EmotionProfileManager.swift,\ EmotionStateClassifier.swift,\ ValidationManager.swift,\ CoRegulationEvent.swift,\ LiveCoachSession.swift,\ ParentStateObservation.swift,\ LiveCoachService.swift,\ CameraCaptureService.swift,\ ChildCameraService.swift,\ DualCameraManager.swift,\ LiveCoachSessionManager.swift,\ ParentCameraService.swift,\ PermissionsManager.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Services/EmotionInterfaceManager.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Services/EmotionProfileManager.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Services/EmotionStateClassifier.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Services/ValidationManager.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Models/CoRegulationEvent.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Models/LiveCoachSession.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Models/ParentStateObservation.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Protocols/LiveCoachService.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/CameraCaptureService.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/ChildCameraService.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/DualCameraManager.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/LiveCoachSessionManager.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/ParentCameraService.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/PermissionsManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Services/EmotionInterfaceManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Services/EmotionProfileManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Services/EmotionStateClassifier.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Services/EmotionStateClassifier.swift:35:61: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+        facialExpressionService: FacialExpressionService = .shared,
+                                                            ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/FacialExpressionService.swift:20:16: note: static property declared here
+    static let shared = FacialExpressionService()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Services/EmotionStateClassifier.swift:36:50: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+        profileManager: EmotionProfileManager = .shared
+                                                 ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Services/EmotionProfileManager.swift:17:16: note: static property declared here
+    static let shared = EmotionProfileManager()
+               ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Services/ValidationManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Models/CoRegulationEvent.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Models/LiveCoachSession.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Models/ParentStateObservation.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Protocols/LiveCoachService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/CameraCaptureService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/CameraCaptureService.swift:82:24: warning: 'videoOrientation' was deprecated in iOS 17.0: Use -videoRotationAngle instead
+            connection.videoOrientation = .portrait
+                       ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/CameraCaptureService.swift:105:17: warning: switch must be exhaustive
+                switch reason {
+                ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/CameraCaptureService.swift:105:17: note: add missing case: '.videoDeviceNotAvailableDueToSystemPressure'
+                switch reason {
+                ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/CameraCaptureService.swift:105:17: note: add missing case: '.sensitiveContentMitigationActivated'
+                switch reason {
+                ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/CameraCaptureService.swift:105:17: note: add missing cases
+                switch reason {
+                ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/CameraCaptureService.swift:98:23: warning: 'AVCaptureSessionWasInterrupted' was deprecated in iOS 18.0: renamed to 'AVCaptureSession.wasInterruptedNotification'
+            forName: .AVCaptureSessionWasInterrupted,
+                      ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/CameraCaptureService.swift:98:23: note: use 'AVCaptureSession.wasInterruptedNotification' instead
+            forName: .AVCaptureSessionWasInterrupted,
+                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      AVCaptureSession.wasInterruptedNotification
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/CameraCaptureService.swift:126:23: warning: 'AVCaptureSessionInterruptionEnded' was deprecated in iOS 18.0: renamed to 'AVCaptureSession.interruptionEndedNotification'
+            forName: .AVCaptureSessionInterruptionEnded,
+                      ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/CameraCaptureService.swift:126:23: note: use 'AVCaptureSession.interruptionEndedNotification' instead
+            forName: .AVCaptureSessionInterruptionEnded,
+                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      AVCaptureSession.interruptionEndedNotification
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/CameraCaptureService.swift:132:17: warning: reference to captured var 'self' in concurrently-executing code; this is an error in the Swift 6 language mode
+                self?.isCapturing = true
+                ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/CameraCaptureService.swift:156:22: warning: main actor-isolated property 'captureSession' cannot be accessed from outside of the actor; this is an error in the Swift 6 language mode
+                self.captureSession.startRunning()
+                ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                await 
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/CameraCaptureService.swift:172:22: warning: main actor-isolated property 'captureSession' cannot be accessed from outside of the actor; this is an error in the Swift 6 language mode
+                self.captureSession.stopRunning()
+                ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                await 
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/ChildCameraService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/ChildCameraService.swift:83:27: warning: 'isVideoOrientationSupported' was deprecated in iOS 17.0: Use -isVideoRotationAngleSupported: instead
+            if connection.isVideoOrientationSupported {
+                          ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/ChildCameraService.swift:84:28: warning: 'videoOrientation' was deprecated in iOS 17.0: Use -videoRotationAngle instead
+                connection.videoOrientation = .portrait
+                           ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/DualCameraManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/DualCameraManager.swift:144:21: warning: reference to captured var 'self' in concurrently-executing code; this is an error in the Swift 6 language mode
+                    self?.isCapturing = true
+                    ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/DualCameraManager.swift:161:21: warning: reference to captured var 'self' in concurrently-executing code; this is an error in the Swift 6 language mode
+                    self?.isCapturing = false
+                    ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/LiveCoachSessionManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/LiveCoachSessionManager.swift:42:70: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+    init(permissionsService: PermissionsService = PermissionsManager.shared) {
+                                                                     ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/PermissionsManager.swift:19:16: note: static property declared here
+    static let shared = PermissionsManager()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/LiveCoachSessionManager.swift:251:13: warning: variable 'suggestion' was never mutated; consider changing to 'let' constant
+        var suggestion = session.suggestionsDelivered[index]
+        ~~~ ^
+        let
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/ParentCameraService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/ParentCameraService.swift:87:27: warning: 'isVideoOrientationSupported' was deprecated in iOS 17.0: Use -isVideoRotationAngleSupported: instead
+            if connection.isVideoOrientationSupported {
+                          ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/ParentCameraService.swift:88:28: warning: 'videoOrientation' was deprecated in iOS 17.0: Use -videoRotationAngle instead
+                connection.videoOrientation = .portrait
+                           ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/PermissionsManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 Compiling\ FacialExpressionService.swift,\ ParentStateDetectionService.swift,\ PoseDetectionService.swift,\ VocalAffectService.swift,\ ArousalBandClassifier.swift,\ ArousalBand.swift,\ DeviceInfo.swift,\ MLModelType.swift,\ ModelPerformanceMetrics.swift,\ ModelQuality.swift,\ ModelRequirements.swift,\ PrivacyStatus.swift,\ ModelPerformanceMonitor.swift,\ PerformanceDashboardView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/FacialExpressionService.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/ParentStateDetectionService.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/PoseDetectionService.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/VocalAffectService.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Inference/ArousalBandClassifier.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Models/ArousalBand.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Models/DeviceInfo.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Models/MLModelType.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Models/ModelPerformanceMetrics.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Models/ModelQuality.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Models/ModelRequirements.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Models/PrivacyStatus.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Monitoring/ModelPerformanceMonitor.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Monitoring/PerformanceDashboardView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/FacialExpressionService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/FacialExpressionService.swift:33:83: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context
+    init(performanceMonitor: ModelPerformanceMonitorProtocol = PerformanceMonitor.shared) {
+                                                                                  ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Monitoring/PerformanceMonitor.swift:18:16: note: static property declared here
+    static let shared = PerformanceMonitor()
+               ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/ParentStateDetectionService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/ParentStateDetectionService.swift:36:83: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context
+    init(performanceMonitor: ModelPerformanceMonitorProtocol = PerformanceMonitor.shared) {
+                                                                                  ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Monitoring/PerformanceMonitor.swift:18:16: note: static property declared here
+    static let shared = PerformanceMonitor()
+               ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/PoseDetectionService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/PoseDetectionService.swift:34:83: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context
+    init(performanceMonitor: ModelPerformanceMonitorProtocol = PerformanceMonitor.shared) {
+                                                                                  ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Monitoring/PerformanceMonitor.swift:18:16: note: static property declared here
+    static let shared = PerformanceMonitor()
+               ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/VocalAffectService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/VocalAffectService.swift:35:83: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context
+    init(performanceMonitor: ModelPerformanceMonitorProtocol = PerformanceMonitor.shared) {
+                                                                                  ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Monitoring/PerformanceMonitor.swift:18:16: note: static property declared here
+    static let shared = PerformanceMonitor()
+               ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Inference/ArousalBandClassifier.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Inference/ArousalBandClassifier.swift:40:46: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+        poseService: PoseDetectionService = .shared,
+                                             ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/PoseDetectionService.swift:20:16: note: static property declared here
+    static let shared = PoseDetectionService()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Inference/ArousalBandClassifier.swift:41:51: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+        facialService: FacialExpressionService = .shared,
+                                                  ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/FacialExpressionService.swift:20:16: note: static property declared here
+    static let shared = FacialExpressionService()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Inference/ArousalBandClassifier.swift:42:45: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+        vocalService: VocalAffectService = .shared
+                                            ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/VocalAffectService.swift:20:16: note: static property declared here
+    static let shared = VocalAffectService()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Inference/ArousalBandClassifier.swift:190:29: warning: expression implicitly coerced from 'PoseFeatures?' to 'Any'
+            modalityCount: [pose, facial, vocal].compactMap { $0 }.count
+                            ^~~~
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Inference/ArousalBandClassifier.swift:190:29: note: provide a default value to avoid this warning
+            modalityCount: [pose, facial, vocal].compactMap { $0 }.count
+                            ^~~~
+                                 ?? <#default value#>
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Inference/ArousalBandClassifier.swift:190:29: note: force-unwrap the value to avoid this warning
+            modalityCount: [pose, facial, vocal].compactMap { $0 }.count
+                            ^~~~
+                                !
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Inference/ArousalBandClassifier.swift:190:29: note: explicitly cast to 'Any' with 'as Any' to silence this warning
+            modalityCount: [pose, facial, vocal].compactMap { $0 }.count
+                            ^~~~
+                                 as Any
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Inference/ArousalBandClassifier.swift:190:35: warning: expression implicitly coerced from 'FacialFeatures?' to 'Any'
+            modalityCount: [pose, facial, vocal].compactMap { $0 }.count
+                                  ^~~~~~
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Inference/ArousalBandClassifier.swift:190:35: note: provide a default value to avoid this warning
+            modalityCount: [pose, facial, vocal].compactMap { $0 }.count
+                                  ^~~~~~
+                                         ?? <#default value#>
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Inference/ArousalBandClassifier.swift:190:35: note: force-unwrap the value to avoid this warning
+            modalityCount: [pose, facial, vocal].compactMap { $0 }.count
+                                  ^~~~~~
+                                        !
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Inference/ArousalBandClassifier.swift:190:35: note: explicitly cast to 'Any' with 'as Any' to silence this warning
+            modalityCount: [pose, facial, vocal].compactMap { $0 }.count
+                                  ^~~~~~
+                                         as Any
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Inference/ArousalBandClassifier.swift:190:43: warning: expression implicitly coerced from 'VocalFeatures?' to 'Any'
+            modalityCount: [pose, facial, vocal].compactMap { $0 }.count
+                                          ^~~~~
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Inference/ArousalBandClassifier.swift:190:43: note: provide a default value to avoid this warning
+            modalityCount: [pose, facial, vocal].compactMap { $0 }.count
+                                          ^~~~~
+                                                ?? <#default value#>
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Inference/ArousalBandClassifier.swift:190:43: note: force-unwrap the value to avoid this warning
+            modalityCount: [pose, facial, vocal].compactMap { $0 }.count
+                                          ^~~~~
+                                               !
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Inference/ArousalBandClassifier.swift:190:43: note: explicitly cast to 'Any' with 'as Any' to silence this warning
+            modalityCount: [pose, facial, vocal].compactMap { $0 }.count
+                                          ^~~~~
+                                                as Any
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Models/ArousalBand.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Models/DeviceInfo.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Models/MLModelType.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Models/ModelPerformanceMetrics.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Models/ModelQuality.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Models/ModelRequirements.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Models/PrivacyStatus.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Monitoring/ModelPerformanceMonitor.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Monitoring/PerformanceDashboardView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftEmitModule normal arm64 Emitting\ module\ for\ NeuroGuideApp (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+EmitSwiftModule normal arm64 (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Content/Services/ContentFilteringManager.swift:25:72: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+    init(contentLibrary: ContentLibraryService = ContentLibraryManager.shared) {
+                                                                       ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Content/Services/ContentLibraryManager.swift:18:16: note: static property declared here
+    static let shared = ContentLibraryManager()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Content/Services/ContentSearchManager.swift:25:72: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+    init(contentLibrary: ContentLibraryService = ContentLibraryManager.shared) {
+                                                                       ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Content/Services/ContentLibraryManager.swift:18:16: note: static property declared here
+    static let shared = ContentLibraryManager()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Services/EmotionStateClassifier.swift:35:61: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+        facialExpressionService: FacialExpressionService = .shared,
+                                                            ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/FacialExpressionService.swift:20:16: note: static property declared here
+    static let shared = FacialExpressionService()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Services/EmotionStateClassifier.swift:36:50: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+        profileManager: EmotionProfileManager = .shared
+                                                 ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Emotion/Services/EmotionProfileManager.swift:17:16: note: static property declared here
+    static let shared = EmotionProfileManager()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/LiveCoachSessionManager.swift:42:70: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+    init(permissionsService: PermissionsService = PermissionsManager.shared) {
+                                                                     ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/LiveCoach/Services/PermissionsManager.swift:19:16: note: static property declared here
+    static let shared = PermissionsManager()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/FacialExpressionService.swift:33:83: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context
+    init(performanceMonitor: ModelPerformanceMonitorProtocol = PerformanceMonitor.shared) {
+                                                                                  ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Monitoring/PerformanceMonitor.swift:18:16: note: static property declared here
+    static let shared = PerformanceMonitor()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/ParentStateDetectionService.swift:36:83: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context
+    init(performanceMonitor: ModelPerformanceMonitorProtocol = PerformanceMonitor.shared) {
+                                                                                  ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Monitoring/PerformanceMonitor.swift:18:16: note: static property declared here
+    static let shared = PerformanceMonitor()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/PoseDetectionService.swift:34:83: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context
+    init(performanceMonitor: ModelPerformanceMonitorProtocol = PerformanceMonitor.shared) {
+                                                                                  ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Monitoring/PerformanceMonitor.swift:18:16: note: static property declared here
+    static let shared = PerformanceMonitor()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/VocalAffectService.swift:35:83: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context
+    init(performanceMonitor: ModelPerformanceMonitorProtocol = PerformanceMonitor.shared) {
+                                                                                  ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Monitoring/PerformanceMonitor.swift:18:16: note: static property declared here
+    static let shared = PerformanceMonitor()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Inference/ArousalBandClassifier.swift:40:46: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+        poseService: PoseDetectionService = .shared,
+                                             ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/PoseDetectionService.swift:20:16: note: static property declared here
+    static let shared = PoseDetectionService()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Inference/ArousalBandClassifier.swift:41:51: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+        facialService: FacialExpressionService = .shared,
+                                                  ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/FacialExpressionService.swift:20:16: note: static property declared here
+    static let shared = FacialExpressionService()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Inference/ArousalBandClassifier.swift:42:45: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+        vocalService: VocalAffectService = .shared
+                                            ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/ML/Detection/VocalAffectService.swift:20:16: note: static property declared here
+    static let shared = VocalAffectService()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Services/ChildProfileManager.swift:32:69: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context
+    init(secureStorage: SecureStorageService = SecureStorageManager.shared) {
+                                                                    ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Storage/SecureStorageManager.swift:16:16: note: static property declared here
+    static let shared = SecureStorageManager()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/ViewModels/ProfileCreationViewModel.swift:56:68: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+    init(profileManager: ChildProfileService = ChildProfileManager.shared, existingProfile: ChildProfile? = nil) {
+                                                                   ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Services/ChildProfileManager.swift:18:16: note: static property declared here
+    static let shared = ChildProfileManager()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/AppLock/AppLockManager.swift:36:69: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context
+    init(biometricAuth: BiometricAuthService = BiometricAuthManager.shared) {
+                                                                    ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Biometric/BiometricAuthManager.swift:17:16: note: static property declared here
+    static let shared = BiometricAuthManager()
+               ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Security/Storage/SecureStorageManager.swift:91:10: warning: non-Sendable parameter type 'T.Type' cannot be sent from caller of protocol requirement 'load(forKey:as:)' into main actor-isolated implementation; this is an error in the Swift 6 language mode
+    func load<T: Codable>(forKey key: String, as type: T.Type) async throws -> T? {
+         ^
+
+SwiftCompile normal arm64 Compiling\ AddStrategySheet.swift,\ AddTriggerSheet.swift,\ CommunicationModeRow.swift,\ ProfilePhotoPickerView.swift,\ SensoryProfileRow.swift,\ StarsView.swift,\ StrategyRow.swift,\ TriggerRow.swift,\ ProfileDetailViewModel.swift,\ BasicInfoStepView.swift,\ CalibrationStepView.swift,\ CommunicationStepView.swift,\ ProfileCreationWizardView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Components/AddStrategySheet.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Components/AddTriggerSheet.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Components/CommunicationModeRow.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Components/ProfilePhotoPickerView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Components/SensoryProfileRow.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Components/StarsView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Components/StrategyRow.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Components/TriggerRow.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/ViewModels/ProfileDetailViewModel.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Views/ProfileCreationWizard/BasicInfoStepView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Views/ProfileCreationWizard/CalibrationStepView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Views/ProfileCreationWizard/CommunicationStepView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Views/ProfileCreationWizard/ProfileCreationWizardView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Components/AddStrategySheet.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Components/AddTriggerSheet.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Components/CommunicationModeRow.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Components/ProfilePhotoPickerView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Components/ProfilePhotoPickerView.swift:65:14: warning: 'onChange(of:perform:)' was deprecated in iOS 17.0: Use `onChange` with a two or zero parameter action closure instead.
+            .onChange(of: selectedItem) { newItem in
+             ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Components/SensoryProfileRow.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Components/StarsView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Components/StrategyRow.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Components/TriggerRow.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/ViewModels/ProfileDetailViewModel.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Views/ProfileCreationWizard/BasicInfoStepView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/ViewModels/ProfileCreationViewModel.swift:56:68: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+    init(profileManager: ChildProfileService = ChildProfileManager.shared, existingProfile: ChildProfile? = nil) {
+                                                                   ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Services/ChildProfileManager.swift:18:16: note: static property declared here
+    static let shared = ChildProfileManager()
+               ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Views/ProfileCreationWizard/CalibrationStepView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Views/ProfileCreationWizard/CommunicationStepView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Views/ProfileCreationWizard/ProfileCreationWizardView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Views/ProfileCreationWizard/ProfileCreationWizardView.swift:113:14: warning: 'onChange(of:perform:)' was deprecated in iOS 17.0: Use `onChange` with a two or zero parameter action closure instead.
+            .onChange(of: viewModel.isComplete) { isComplete in
+             ^
+
+SwiftCompile normal arm64 Compiling\ SensoryPreferencesStepView.swift,\ TriggersStepView.swift,\ ProfileDetailView.swift,\ AccessibilitySettingsView.swift,\ NotificationsSettingsView.swift,\ PrivacyDataSettingsView.swift,\ SettingsView.swift,\ SupportView.swift,\ WelcomeViewModel.swift,\ WelcomeView.swift,\ AccessibleCard.swift,\ OneHandedLayout.swift,\ GeneratedAssetSymbols.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Views/ProfileCreationWizard/SensoryPreferencesStepView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Views/ProfileCreationWizard/TriggersStepView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Views/ProfileDetail/ProfileDetailView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Settings/Views/AccessibilitySettingsView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Settings/Views/NotificationsSettingsView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Settings/Views/PrivacyDataSettingsView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Settings/Views/SettingsView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Support/Views/SupportView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Welcome/ViewModels/WelcomeViewModel.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Welcome/Views/WelcomeView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Shared/ViewModifiers/AccessibleCard.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Shared/ViewModifiers/OneHandedLayout.swift /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources/GeneratedAssetSymbols.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Views/ProfileCreationWizard/SensoryPreferencesStepView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/ViewModels/ProfileCreationViewModel.swift:56:68: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+    init(profileManager: ChildProfileService = ChildProfileManager.shared, existingProfile: ChildProfile? = nil) {
+                                                                   ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Core/Profile/Services/ChildProfileManager.swift:18:16: note: static property declared here
+    static let shared = ChildProfileManager()
+               ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Views/ProfileCreationWizard/TriggersStepView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Views/ProfileDetail/ProfileDetailView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Profile/Views/ProfileDetail/ProfileDetailView.swift:87:10: warning: 'onChange(of:perform:)' was deprecated in iOS 17.0: Use `onChange` with a two or zero parameter action closure instead.
+        .onChange(of: showingEditSheet) { isPresented in
+         ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Settings/Views/AccessibilitySettingsView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Settings/Views/NotificationsSettingsView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Settings/Views/PrivacyDataSettingsView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Settings/Views/PrivacyDataSettingsView.swift:47:22: warning: 'onChange(of:perform:)' was deprecated in iOS 17.0: Use `onChange` with a two or zero parameter action closure instead.
+                    .onChange(of: biometricEnabled) { newValue in
+                     ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Settings/Views/SettingsView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Support/Views/SupportView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Welcome/ViewModels/WelcomeViewModel.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Welcome/Views/WelcomeView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Shared/ViewModifiers/AccessibleCard.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Shared/ViewModifiers/OneHandedLayout.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources/GeneratedAssetSymbols.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+LinkAssetCatalog /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Assets.xcassets (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-linkAssetCatalog --thinned /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/assetcatalog_output/thinned --thinned-dependencies /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/assetcatalog_dependencies_thinned --thinned-info-plist-content /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/assetcatalog_generated_info.plist_thinned --unthinned /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/assetcatalog_output/unthinned --unthinned-dependencies /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/assetcatalog_dependencies_unthinned --unthinned-info-plist-content /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/assetcatalog_generated_info.plist_unthinned --output /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app --plist-output /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/assetcatalog_generated_info.plist
+
+SwiftDriverJobDiscovery normal arm64 Compiling BiometricAuthManager.swift, BiometricAuthService.swift, AESEncryptionService.swift, EncryptionError.swift, EncryptionService.swift, KeychainError.swift, KeychainManager.swift, KeychainService.swift, SecureStorageManager.swift, SecureStorageService.swift, StorageError.swift, LaunchStateManager.swift, NavigationService.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+SwiftCompile normal arm64 Compiling\ EmergencyAccessButton.swift,\ FeatureCardView.swift,\ HomeView.swift,\ ProfileSummaryView.swift,\ CameraPreviewView.swift,\ DegradedModeView.swift,\ DualCameraPreviewView.swift,\ LiveCoachView.swift,\ LiveCoachViewModel.swift,\ OnboardingViewModel.swift,\ OnboardingPageView.swift,\ OnboardingProgressView.swift,\ OnboardingView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Home/Views/EmergencyAccessButton.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Home/Views/FeatureCardView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Home/Views/HomeView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Home/Views/ProfileSummaryView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/LiveCoach/Components/CameraPreviewView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/LiveCoach/Components/DegradedModeView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/LiveCoach/Components/DualCameraPreviewView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/LiveCoach/LiveCoachView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/LiveCoach/LiveCoachViewModel.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Onboarding/ViewModels/OnboardingViewModel.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Onboarding/Views/OnboardingPageView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Onboarding/Views/OnboardingProgressView.swift /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Onboarding/Views/OnboardingView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Home/Views/EmergencyAccessButton.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Home/Views/FeatureCardView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Home/Views/HomeView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Home/Views/ProfileSummaryView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/LiveCoach/Components/CameraPreviewView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/LiveCoach/Components/CameraPreviewView.swift:101:26: warning: 'isVideoOrientationSupported' was deprecated in iOS 17.0: Use -isVideoRotationAngleSupported: instead
+              connection.isVideoOrientationSupported else { return }
+                         ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/LiveCoach/Components/CameraPreviewView.swift:106:35: warning: 'AVCaptureVideoOrientation' was deprecated in iOS 17.0: Use AVCaptureDeviceRotationCoordinator instead
+            let videoOrientation: AVCaptureVideoOrientation?
+                                  ^
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/LiveCoach/Components/CameraPreviewView.swift:122:28: warning: 'videoOrientation' was deprecated in iOS 17.0: Use -videoRotationAngle instead
+                connection.videoOrientation = orientation
+                           ^
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/LiveCoach/Components/DegradedModeView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/LiveCoach/Components/DualCameraPreviewView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/LiveCoach/LiveCoachView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+/Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/LiveCoach/LiveCoachView.swift:266:24: warning: value 'confidence' was defined but never used; consider replacing with boolean test
+                if let confidence = viewModel.currentConfidence {
+                   ~~~~^~~~~~~~~~~~~
+                                                                != nil
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/LiveCoach/LiveCoachViewModel.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Onboarding/ViewModels/OnboardingViewModel.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Onboarding/Views/OnboardingPageView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Onboarding/Views/OnboardingProgressView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+SwiftCompile normal arm64 /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp/NeuroGuideApp/Features/Onboarding/Views/OnboardingView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+
+ProcessInfoPlistFile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/Info.plist /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/empty-NeuroGuideApp.plist (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-infoPlistUtility /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/empty-NeuroGuideApp.plist -producttype com.apple.product-type.application -genpkginfo /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/assetcatalog_generated_info.plist -o /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/Info.plist
+
+SwiftDriverJobDiscovery normal arm64 Compiling PerformanceMonitor.swift, PrivacyManager.swift, PrivacyService.swift, DeviceCapabilityManager.swift, DeviceCapabilityService.swift, MLLifecycleManager.swift, MLModelManager.swift, MLModelService.swift, EmergencyResource.swift, NavigationState.swift, OnboardingPage.swift, ProfileError.swift, AlexithymiaSettings.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+SwiftDriverJobDiscovery normal arm64 Compiling EmotionInterfaceManager.swift, EmotionProfileManager.swift, EmotionStateClassifier.swift, ValidationManager.swift, CoRegulationEvent.swift, LiveCoachSession.swift, ParentStateObservation.swift, LiveCoachService.swift, CameraCaptureService.swift, ChildCameraService.swift, DualCameraManager.swift, LiveCoachSessionManager.swift, ParentCameraService.swift, PermissionsManager.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+SwiftDriverJobDiscovery normal arm64 Emitting module for NeuroGuideApp (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+SwiftDriver\ Compilation\ Requirements NeuroGuideApp normal arm64 com.apple.xcode.tools.swift.compiler (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-Swift-Compilation-Requirements -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name NeuroGuideApp -Onone -enforce-exclusivity\=checked @/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.SwiftFileList -DDEBUG -default-isolation\=MainActor -enable-bare-slash-regex -enable-upcoming-feature DisableOutwardActorInference -enable-upcoming-feature InferSendableFromCaptures -enable-upcoming-feature GlobalActorIsolatedTypesUsability -enable-upcoming-feature MemberImportVisibility -enable-upcoming-feature InferIsolatedConformances -enable-upcoming-feature NonisolatedNonsendingByDefault -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.0.sdk -target arm64-apple-ios18.6-simulator -g -module-cache-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator -F /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator -emit-localized-strings -emit-localized-strings-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64 -c -j10 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.0-23A339-26257891a6c027eb51374368541b8346.sdkstatcache -output-file-map /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp_const_extract_protocols.json -Xcc -iquote -Xcc /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-generated-files.hmap -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-own-target-headers.hmap -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-all-target-headers.hmap -Xcc -iquote -Xcc /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-project-headers.hmap -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources-normal/arm64 -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources/arm64 -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp-Swift.h -working-directory /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp -experimental-emit-module-separately -disable-cmo
+
+SwiftMergeGeneratedHeaders /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources/NeuroGuideApp-Swift.h /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp-Swift.h (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-swiftHeaderTool -arch arm64 /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp-Swift.h -o /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources/NeuroGuideApp-Swift.h
+
+Copy /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.swiftmodule/arm64-apple-ios-simulator.swiftmodule /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.swiftmodule (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.swiftmodule /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.swiftmodule/arm64-apple-ios-simulator.swiftmodule
+
+Copy /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.swiftmodule/arm64-apple-ios-simulator.swiftdoc /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.swiftdoc (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.swiftdoc /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.swiftmodule/arm64-apple-ios-simulator.swiftdoc
+
+Copy /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.swiftmodule/arm64-apple-ios-simulator.abi.json /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.abi.json (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.abi.json /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.swiftmodule/arm64-apple-ios-simulator.abi.json
+
+Copy /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.swiftsourceinfo (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.swiftsourceinfo /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo
+
+SwiftDriverJobDiscovery normal arm64 Compiling AppCoordinator.swift, NeuroGuideApp.swift, ContentFiltering.swift, ContentItem.swift, ContentFilteringManager.swift, ContentLibraryManager.swift, ContentLibraryService.swift, ContentSearchManager.swift, ConfidenceLevel.swift, EmotionConsentStatus.swift, EmotionExpressionProfile.swift, EmotionState.swift, ValidationRecord.swift, EmotionServices.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+SwiftDriverJobDiscovery normal arm64 Compiling AddStrategySheet.swift, AddTriggerSheet.swift, CommunicationModeRow.swift, ProfilePhotoPickerView.swift, SensoryProfileRow.swift, StarsView.swift, StrategyRow.swift, TriggerRow.swift, ProfileDetailViewModel.swift, BasicInfoStepView.swift, CalibrationStepView.swift, CommunicationStepView.swift, ProfileCreationWizardView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+SwiftDriverJobDiscovery normal arm64 Compiling BaselineCalibration.swift, ChildProfile.swift, CommunicationMode.swift, CoRegulationHistory.swift, SensoryPreferences.swift, Strategy.swift, Trigger.swift, ChildProfileManager.swift, ChildProfileService.swift, ProfileCreationViewModel.swift, AppLockManager.swift, AppLockView.swift, BiometricAuthError.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+SwiftDriverJobDiscovery normal arm64 Compiling FacialExpressionService.swift, ParentStateDetectionService.swift, PoseDetectionService.swift, VocalAffectService.swift, ArousalBandClassifier.swift, ArousalBand.swift, DeviceInfo.swift, MLModelType.swift, ModelPerformanceMetrics.swift, ModelQuality.swift, ModelRequirements.swift, PrivacyStatus.swift, ModelPerformanceMonitor.swift, PerformanceDashboardView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+SwiftDriverJobDiscovery normal arm64 Compiling SensoryPreferencesStepView.swift, TriggersStepView.swift, ProfileDetailView.swift, AccessibilitySettingsView.swift, NotificationsSettingsView.swift, PrivacyDataSettingsView.swift, SettingsView.swift, SupportView.swift, WelcomeViewModel.swift, WelcomeView.swift, AccessibleCard.swift, OneHandedLayout.swift, GeneratedAssetSymbols.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+SwiftDriverJobDiscovery normal arm64 Compiling SettingsManager.swift, AccessibilityHelper.swift, AboutView.swift, LegalView.swift, EmergencyResourcesView.swift, EmotionStateCard.swift, ModelCardView.swift, EmotionOptInView.swift, EmotionProfileSetupView.swift, EmotionValidationView.swift, HelpArticle.swift, HelpView.swift, HomeViewModel.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+SwiftDriverJobDiscovery normal arm64 Compiling EmergencyAccessButton.swift, FeatureCardView.swift, HomeView.swift, ProfileSummaryView.swift, CameraPreviewView.swift, DegradedModeView.swift, DualCameraPreviewView.swift, LiveCoachView.swift, LiveCoachViewModel.swift, OnboardingViewModel.swift, OnboardingPageView.swift, OnboardingProgressView.swift, OnboardingView.swift (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+SwiftDriver\ Compilation NeuroGuideApp normal arm64 com.apple.xcode.tools.swift.compiler (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-Swift-Compilation -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name NeuroGuideApp -Onone -enforce-exclusivity\=checked @/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.SwiftFileList -DDEBUG -default-isolation\=MainActor -enable-bare-slash-regex -enable-upcoming-feature DisableOutwardActorInference -enable-upcoming-feature InferSendableFromCaptures -enable-upcoming-feature GlobalActorIsolatedTypesUsability -enable-upcoming-feature MemberImportVisibility -enable-upcoming-feature InferIsolatedConformances -enable-upcoming-feature NonisolatedNonsendingByDefault -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.0.sdk -target arm64-apple-ios18.6-simulator -g -module-cache-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator -F /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator -emit-localized-strings -emit-localized-strings-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64 -c -j10 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.0-23A339-26257891a6c027eb51374368541b8346.sdkstatcache -output-file-map /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp_const_extract_protocols.json -Xcc -iquote -Xcc /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-generated-files.hmap -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-own-target-headers.hmap -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-all-target-headers.hmap -Xcc -iquote -Xcc /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-project-headers.hmap -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources-normal/arm64 -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources/arm64 -Xcc -I/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp-Swift.h -working-directory /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp -experimental-emit-module-separately -disable-cmo
+
+Ld /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/NeuroGuideApp.debug.dylib normal (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-ios18.6-simulator -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.0.sdk -O0 -L/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator -L/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator -F/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator -F/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator -filelist /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.LinkFileList -install_name @rpath/NeuroGuideApp.debug.dylib -Xlinker -rpath -Xlinker /usr/lib/swift -Xlinker -rpath -Xlinker @executable_path/Frameworks -dead_strip -Xlinker -object_path_lto -Xlinker /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp_lto.o -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -Xlinker -debug_variant -Xlinker -dependency_info -Xlinker /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp_dependency_info.dat -fobjc-link-runtime -fprofile-instr-generate -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator -L/usr/lib/swift -Xlinker -add_ast_path -Xlinker /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.swiftmodule @/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp-linker-args.resp -Xlinker -alias -Xlinker _main -Xlinker ___debug_main_executable_dylib_entry_point -Xlinker -no_adhoc_codesign -o /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/NeuroGuideApp.debug.dylib
+
+ConstructStubExecutorLinkFileList /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-ExecutorLinkFileList-normal-arm64.txt (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    construct-stub-executor-link-file-list /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/NeuroGuideApp.debug.dylib /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libPreviewsJITStubExecutor_no_swift_entry_point.a /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libPreviewsJITStubExecutor.a --output /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-ExecutorLinkFileList-normal-arm64.txt
+note: Using stub executor library with Swift entry point. (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+
+Ld /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/NeuroGuideApp normal (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-ios18.6-simulator -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.0.sdk -O0 -L/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator -F/Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator -Xlinker -rpath -Xlinker @executable_path -Xlinker -rpath -Xlinker @executable_path/Frameworks -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -Xlinker -debug_variant -e ___debug_blank_executor_main -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __debug_dylib -Xlinker /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-DebugDylibPath-normal-arm64.txt -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __debug_instlnm -Xlinker /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-DebugDylibInstallName-normal-arm64.txt -Xlinker -filelist -Xlinker /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp-ExecutorLinkFileList-normal-arm64.txt -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __entitlements -Xlinker /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp.app-Simulated.xcent -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __ents_der -Xlinker /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp.app-Simulated.xcent.der /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/NeuroGuideApp.debug.dylib -Xlinker -no_adhoc_codesign -o /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/NeuroGuideApp
+
+CopySwiftLibs /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/NeuroGuideApp.debug.dylib --scan-folder /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/Frameworks --scan-folder /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/PlugIns --scan-folder /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/SystemExtensions --scan-folder /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/Extensions --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/Frameworks --strip-bitcode --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+ExtractAppIntentsMetadata (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/appintentsmetadataprocessor --toolchain-dir /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --module-name NeuroGuideApp --sdk-root /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.0.sdk --xcode-version 17A400 --platform-family iOS --deployment-target 18.6 --bundle-identifier com.neuroguide.NeuroGuideApp --output /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app --target-triple arm64-apple-ios18.6-simulator --binary-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/NeuroGuideApp --dependency-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp_dependency_info.dat --stringsdata-file /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/ExtractedAppShortcutsMetadata.stringsdata --source-file-list /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.SwiftFileList --metadata-file-list /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp.DependencyMetadataFileList --static-metadata-file-list /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp.DependencyStaticMetadataFileList --swift-const-vals-list /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/Objects-normal/arm64/NeuroGuideApp.SwiftConstValuesFileList --compile-time-extraction --deployment-aware-processing --validate-assistant-intents --no-app-shortcuts-localization
+2025-10-27 13:34:32.313 appintentsmetadataprocessor[54948:2217456] Starting appintentsmetadataprocessor export
+2025-10-27 13:34:32.315 appintentsmetadataprocessor[54948:2217456] warning: Metadata extraction skipped. No AppIntents.framework dependency found.
+
+AppIntentsSSUTraining (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/appintentsnltrainingprocessor --infoplist-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/Info.plist --temp-dir-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/ssu --bundle-id com.neuroguide.NeuroGuideApp --product-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app --extracted-metadata-path /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/Metadata.appintents --metadata-file-list /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Intermediates.noindex/NeuroGuideApp.build/Debug-iphonesimulator/NeuroGuideApp.build/NeuroGuideApp.DependencyMetadataFileList --archive-ssu-assets
+2025-10-27 13:34:32.335 appintentsnltrainingprocessor[54949:2217457] Parsing options for appintentsnltrainingprocessor
+2025-10-27 13:34:32.336 appintentsnltrainingprocessor[54949:2217457] No AppShortcuts found - Skipping.
+
+CodeSign /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/NeuroGuideApp.debug.dylib (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/NeuroGuideApp.debug.dylib
+
+CodeSign /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/__preview.dylib (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app/__preview.dylib
+
+CodeSign /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app
+
+RegisterExecutionPolicyException /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-RegisterExecutionPolicyException /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app
+
+Validate /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    builtin-validationUtility /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app -shallow-bundle -infoplist-subpath Info.plist
+
+Touch /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app (in target 'NeuroGuideApp' from project 'NeuroGuideApp')
+    cd /Users/ammarkhalid/workspace/nureo-guide/NeuroGuideApp
+    /usr/bin/touch -c /Users/ammarkhalid/Library/Developer/Xcode/DerivedData/NeuroGuideApp-ewcvprgdglbcooackdjxjupgqkav/Build/Products/Debug-iphonesimulator/NeuroGuideApp.app
+
+** BUILD SUCCEEDED **
+
