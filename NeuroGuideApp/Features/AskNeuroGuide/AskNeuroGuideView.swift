@@ -14,6 +14,7 @@ struct AskNeuroGuideView: View {
     @StateObject private var viewModel = AskNeuroGuideViewModel()
     @StateObject private var bookmarkManager = BookmarkManager.shared
     @StateObject private var historyManager = SearchHistoryManager.shared
+    @EnvironmentObject var coordinator: AppCoordinator
     @State private var showErrorAlert = false
     @State private var errorAlertTitle = ""
     @State private var errorAlertMessage = ""
@@ -39,10 +40,22 @@ struct AskNeuroGuideView: View {
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    // History button
-                    Button(action: { showHistory = true }) {
-                        Image(systemName: "clock")
-                            .font(.body)
+                    HStack(spacing: 16) {
+                        // Home button
+                        Button(action: {
+                            coordinator.navigate(to: .home)
+                        }) {
+                            Image(systemName: "house")
+                                .font(.body)
+                        }
+                        .accessibilityLabel("Go to home")
+
+                        // History button
+                        Button(action: { showHistory = true }) {
+                            Image(systemName: "clock")
+                                .font(.body)
+                        }
+                        .accessibilityLabel("View search history")
                     }
                 }
 
@@ -64,6 +77,7 @@ struct AskNeuroGuideView: View {
                             }
                         }
                     }
+                    .accessibilityLabel("View bookmarks")
                 }
             }
             .alert(errorAlertTitle, isPresented: $showErrorAlert) {

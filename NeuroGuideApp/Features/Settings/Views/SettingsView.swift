@@ -23,6 +23,46 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             List {
+                // Profile Section
+                Section {
+                    Button(action: {
+                        AccessibilityHelper.shared.buttonTap()
+                        coordinator.navigateToProfileSelection()
+                    }) {
+                        HStack(spacing: 12) {
+                            // Icon
+                            Image(systemName: "person.2.fill")
+                                .font(.system(size: 20))
+                                .foregroundColor(.white)
+                                .frame(width: 32, height: 32)
+                                .background(Color.blue)
+                                .cornerRadius(8)
+                                .accessibilityHidden(true)
+
+                            // Title
+                            Text("Switch Profile")
+                                .font(.body)
+                                .foregroundColor(.primary)
+
+                            Spacer()
+
+                            // Chevron
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundColor(.secondary)
+                                .accessibilityHidden(true)
+                        }
+                        .padding(.vertical, 4)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Switch Profile")
+                    .accessibilityHint("Double tap to select a different profile")
+                    .accessibilityIdentifier("settings_switch_profile_button")
+                } header: {
+                    Text("Profile")
+                }
+
                 // App Settings Section
                 Section {
                     NavigationLink(destination: LiveCoachSettingsView().environmentObject(settingsManager)) {

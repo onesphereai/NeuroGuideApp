@@ -17,20 +17,51 @@ struct LiveCoachView: View {
     @State private var sessionNotes = ""
     @State private var showAddObservation = false
     @State private var observationText = ""
+    @EnvironmentObject var navigationState: NavigationState
+
+    // Unit 9: Baseline alert message
+    private var baselineAlertMessage: String {
+        "Your child's baseline is \(viewModel.baselineDaysOld) days old. For best accuracy, we recommend recalibrating every 30 days as your child grows and changes.\n\nYou can continue with the current baseline or recalibrate now (takes 45 seconds)."
+    }
 
     var body: some View {
         NavigationView {
-            Group {
-                ZStack {
-                    if viewModel.isSessionActive {
-                        // Active session view
-                        activeSessionView(viewModel: viewModel)
-                    } else {
-                        // Start session view
-                        startSessionView(viewModel: viewModel)
+            mainContent
+                .navigationTitle("Live Coach")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(action: {
+                            navigationState.push(.home)
+                        }) {
+                            HStack(spacing: 4) {
+                                Image(systemName: "chevron.left")
+                                Text("Home")
+                            }
+                        }
+                        .accessibilityLabel("Back to Home")
                     }
                 }
-                    .alert("End Session?", isPresented: $showEndSessionConfirmation) {
+                .onAppear {
+                    viewModel.setup()
+                }
+        }
+        .navigationViewStyle(.stack)
+    }
+
+    private var mainContent: some View {
+        Group {
+            ZStack {
+                if viewModel.isSessionActive {
+                    // Active session view
+                    activeSessionView(viewModel: viewModel)
+                } else {
+                    // Start session view
+                    startSessionView(viewModel: viewModel)
+                }
+            }
+        }
+        .alert("End Session?", isPresented: $showEndSessionConfirmation) {
                         Button("Cancel", role: .cancel) { }
                         Button("End Session", role: .destructive) {
                             Task {
@@ -53,13 +84,20 @@ struct LiveCoachView: View {
                             Text(errorMessage)
                         }
                     }
-            }
-            .navigationTitle("Live Coach")
-            .navigationBarTitleDisplayMode(.inline)
-            .onAppear {
-                viewModel.setup()
-            }
-        }
+                    .alert("Baseline Needs Updating", isPresented: $viewModel.showBaselineStaleAlert) {
+                        Button("Continue Anyway", role: .cancel) {
+                            viewModel.continueWithStaleBaseline()
+                        }
+                        Button("Recalibrate Now") {
+                            viewModel.requestRecalibration()
+                            // Present profile detail modal if profile exists
+                            if let profile = viewModel.currentProfile {
+                                navigationState.presentedModal = .profileDetail(profile: profile)
+                            }
+                        }
+                    } message: {
+                        Text(baselineAlertMessage)
+                    }
     }
 
     // MARK: - Start Session View
@@ -133,7 +171,8 @@ struct LiveCoachView: View {
     // MARK: - Active Session View
 
     private func activeSessionView(viewModel: LiveCoachViewModel) -> some View {
-        VStack(spacing: 0) {
+        ZStack {
+            VStack(spacing: 0) {
             // Session header
             sessionHeaderView(viewModel: viewModel)
 
@@ -155,10 +194,15 @@ struct LiveCoachView: View {
                         }
                     }
 
-                    // Current arousal band
-                    if let arousalBand = viewModel.currentArousalBand {
-                        currentArousalBandCard(arousalBand: arousalBand, viewModel: viewModel)
-                    }
+                    // Unit 7: Tier 2 - Stabilized arousal band display
+                    StabilizedBandDisplay(band: viewModel.stabilizedArousalBand)
+
+                    // Unit 8: Co-Regulation Summary
+                    CoRegulationSummaryCard(
+                        eventsCount: viewModel.coRegulationEventsCount,
+                        successRate: viewModel.getCoRegulationStats().successRate,
+                        latestEvent: viewModel.latestCoRegulationEvent
+                    )
 
                     // Movement and behaviors
                     if let movement = viewModel.currentMovementEnergy {
@@ -183,7 +227,36 @@ struct LiveCoachView: View {
 
             // Bottom controls
             sessionControlsView(viewModel: viewModel)
+            }
+
+            // Camera Stability Indicator (top-right overlay)
+            if viewModel.isCameraActive {
+                VStack {
+                    HStack {
+                        Spacer()
+                        CameraStabilityIndicator(
+                            isStable: viewModel.isCameraStable,
+                            motionDescription: viewModel.cameraMotionDescription
+                        )
+                        .padding(.top, 8)
+                        .padding(.trailing, 16)
+                    }
+                    Spacer()
+                }
+            }
+
+            // Unit 8: Co-Regulation Celebration Overlay
+            if viewModel.showCoRegulationCelebration,
+               let event = viewModel.latestCoRegulationEvent {
+                Color.black.opacity(0.3)
+                    .ignoresSafeArea()
+                    .transition(.opacity)
+
+                CoRegulationCelebrationView(event: event)
+                    .transition(.scale.combined(with: .opacity))
+            }
         }
+        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.showCoRegulationCelebration)
         .sheet(item: Binding(
             get: { viewModel.validationPrompt },
             set: { _ in }
@@ -261,33 +334,40 @@ struct LiveCoachView: View {
     // MARK: - Camera Preview
 
     private func cameraPreviewSection(session: AVFoundation.AVCaptureSession, viewModel: LiveCoachViewModel) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Image(systemName: "video.fill")
-                    .foregroundColor(.blue)
-                Text("Live Camera")
-                    .font(.headline)
-                Spacer()
-                if let confidence = viewModel.currentConfidence {
-                    HStack(spacing: 4) {
-                        Circle()
-                            .fill(Color.green)
-                            .frame(width: 8, height: 8)
-                        Text("Detecting")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
+        GeometryReader { geometry in
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Image(systemName: "video.fill")
+                        .foregroundColor(.blue)
+                    Text("Live Camera")
+                        .font(.headline)
+                    Spacer()
+                    if let confidence = viewModel.currentConfidence {
+                        HStack(spacing: 4) {
+                            Circle()
+                                .fill(Color.green)
+                                .frame(width: 8, height: 8)
+                            Text("Detecting")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
                     }
                 }
-            }
 
-            CameraPreviewView(session: session)
-                .frame(height: 250)
-                .cornerRadius(12)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.blue.opacity(0.3), lineWidth: 2)
-                )
+                ZStack {
+                    CameraPreviewView(session: session)
+                        .frame(maxWidth: .infinity, maxHeight: geometry.size.height * 0.6)
+                        .aspectRatio(4/3, contentMode: .fit)
+                        .cornerRadius(12)
+
+                    // Unit 7: Tier 1 - Ambient arousal indicator overlay
+                    AmbientArousalIndicator(arousalBand: viewModel.currentArousalBand)
+                        .frame(maxWidth: .infinity, maxHeight: geometry.size.height * 0.6)
+                        .aspectRatio(4/3, contentMode: .fit)
+                }
+            }
         }
+        .frame(minHeight: 400)
     }
 
     private func dualCameraPreviewSection(
@@ -326,18 +406,20 @@ struct LiveCoachView: View {
                 }
             }
 
-            DualCameraPreviewView(
-                childSession: childSession,
-                parentSession: parentSession,
-                childState: viewModel.currentArousalBand,
-                parentState: viewModel.currentParentState
-            )
-            .frame(height: 300)
-            .cornerRadius(12)
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color.blue.opacity(0.3), lineWidth: 2)
-            )
+            ZStack {
+                DualCameraPreviewView(
+                    childSession: childSession,
+                    parentSession: parentSession,
+                    childState: viewModel.currentArousalBand,
+                    parentState: viewModel.currentParentState
+                )
+                .frame(height: 300)
+                .cornerRadius(12)
+
+                // Unit 7: Tier 1 - Ambient arousal indicator overlay
+                AmbientArousalIndicator(arousalBand: viewModel.currentArousalBand)
+                    .frame(height: 300)
+            }
         }
     }
 

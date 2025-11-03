@@ -74,6 +74,12 @@ class LLMResponseGenerator {
 
         print("🤖 Generating LLM response for: \(question)")
 
+        // GUARDRAIL: Check if question is neurodivergence-related
+        if !isNeurodivergenceRelated(question: question) {
+            print("🚫 Question rejected - not neurodivergence related")
+            return createOutOfScopeResponse()
+        }
+
         guard let apiKey = groqAPIKey else {
             throw LLMResponseError.noAPIKey
         }
@@ -90,7 +96,7 @@ class LLMResponseGenerator {
             source: ContentSource(
                 title: "AI-Generated Response",
                 section: determineTopic(for: question),
-                author: "attune AI (Llama 3.1 8B)",
+                author: "attune AI",
                 credibilityLevel: .expertRecommended
             ),
             relevanceScore: 0.95,
@@ -181,7 +187,14 @@ class LLMResponseGenerator {
             "messages": [
                 [
                     "role": "system",
-                    "content": "You are attune, an expert in autism support and neurodiversity-affirming practices. You provide evidence-based, compassionate guidance to parents of autistic children."
+                    "content": """
+                    You are attune, an expert in autism support and neurodiversity-affirming practices. You provide evidence-based, compassionate guidance to parents of autistic children.
+
+                    IMPORTANT GUARDRAILS:
+                    - ONLY respond to questions about autism, neurodivergence, ADHD, sensory processing, developmental differences, and related parenting support
+                    - If a question is about unrelated topics (sports, politics, general trivia, etc.), politely decline by saying: "I'm specifically designed to support parents of neurodivergent children. I can help with questions about autism, ADHD, sensory processing, and neurodiversity-affirming parenting. Could you rephrase your question to relate to these topics?"
+                    - Do NOT answer questions that are clearly off-topic, even if they mention children or parenting in general
+                    """
                 ],
                 [
                     "role": "user",
@@ -312,6 +325,92 @@ class LLMResponseGenerator {
         } else {
             return "General Support"
         }
+    }
+
+    // MARK: - Guardrails
+
+    /// Check if question is related to neurodivergence topics
+    private func isNeurodivergenceRelated(question: String) -> Bool {
+        let lowercased = question.lowercased()
+
+        // Neurodivergence-related keywords
+        let neurodivergenceKeywords = [
+            // Core conditions
+            "autism", "autistic", "adhd", "add", "dyslexia", "dyspraxia", "tourette",
+            "neurodivergent", "neurodiversity", "neurodiverse",
+
+            // Autism-specific
+            "asperger", "asd", "spectrum", "stimming", "stim", "echolalia", "scripting",
+            "meltdown", "shutdown", "masking", "sensory overload",
+
+            // Sensory processing
+            "sensory", "proprioception", "vestibular", "interoception",
+            "hypersensitive", "hyposensitive", "sensory seeking", "sensory avoiding",
+
+            // Development & behavior
+            "developmental delay", "developmental difference", "executive function",
+            "motor skills", "fine motor", "gross motor",
+
+            // Communication
+            "nonverbal", "non-verbal", "nonspeaking", "aac", "augmentative communication",
+            "speech delay", "language delay",
+
+            // Emotional regulation
+            "regulation", "dysregulation", "co-regulation", "self-regulation",
+            "emotional regulation", "arousal",
+
+            // Common challenges
+            "routine", "transition", "change", "rigidity", "flexibility",
+            "social skills", "social interaction", "eye contact",
+
+            // Support & strategies
+            "iep", "504", "special education", "accommodations", "modifications",
+            "visual schedule", "social story", "fidget", "weighted blanket",
+
+            // Parent support
+            "parenting autistic", "neurodivergent child", "special needs",
+            "parent burnout", "caregiver stress"
+        ]
+
+        // Check if question contains any neurodivergence keywords
+        for keyword in neurodivergenceKeywords {
+            if lowercased.contains(keyword) {
+                return true
+            }
+        }
+
+        // If no keywords found, it's likely off-topic
+        return false
+    }
+
+    /// Create a polite out-of-scope response
+    private func createOutOfScopeResponse() -> ContentAnswer {
+        let content = """
+        I'm specifically designed to support parents of neurodivergent children with questions about autism, ADHD, sensory processing, and neurodiversity-affirming parenting.
+
+        I can help with topics like:
+        • Understanding autism and neurodivergence
+        • Sensory processing and regulation strategies
+        • Communication support and AAC
+        • Managing meltdowns and emotional regulation
+        • School accommodations (IEPs, 504 plans)
+        • Parent self-care and burnout prevention
+
+        Could you rephrase your question to relate to neurodivergence or parenting a neurodivergent child?
+        """
+
+        return ContentAnswer(
+            content: content,
+            source: ContentSource(
+                title: "Out of Scope",
+                section: "System Message",
+                author: "attune",
+                credibilityLevel: .expertRecommended
+            ),
+            relevanceScore: 0.0,
+            strategies: nil,
+            resourceCitations: []
+        )
     }
 }
 

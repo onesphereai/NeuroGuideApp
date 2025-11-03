@@ -27,6 +27,12 @@ class ProfileCreationViewModel: ObservableObject {
     @Published var photoData: Data?
     @Published var profileColor: String = "#4A90E2"  // Default blue
 
+    // Diagnosis Info
+    @Published var selectedDiagnosis: NeurodivergentDiagnosis = .preferNotToSpecify
+    @Published var additionalDiagnoses: [NeurodivergentDiagnosis] = []
+    @Published var diagnosisNotes: String = ""
+    @Published var professionallyDiagnosed: Bool = false
+
     // Sensory Preferences (Bolt 3.2)
     @Published var sensoryPreferences: SensoryPreferences = SensoryPreferences()
     @Published var specificSensoryTriggers: String = ""
@@ -76,6 +82,14 @@ class ProfileCreationViewModel: ObservableObject {
         photoData = profile.photoData
         profileColor = profile.profileColor
 
+        // Diagnosis
+        if let diagnosis = profile.diagnosisInfo {
+            selectedDiagnosis = diagnosis.primaryDiagnosis
+            additionalDiagnoses = diagnosis.additionalDiagnoses
+            diagnosisNotes = diagnosis.notes ?? ""
+            professionallyDiagnosed = diagnosis.professionallyDiagnosed
+        }
+
         // Sensory Preferences
         sensoryPreferences = profile.sensoryPreferences
         specificSensoryTriggers = profile.sensoryPreferences.specificTriggers.joined(separator: "\n")
@@ -105,6 +119,8 @@ class ProfileCreationViewModel: ObservableObject {
         switch currentStep {
         case .basicInfo:
             return !name.isEmpty && age >= 2 && age <= 8
+        case .diagnosis:
+            return true // Optional step
         case .sensoryPreferences:
             return true // Optional step
         case .communication:
@@ -169,6 +185,19 @@ class ProfileCreationViewModel: ObservableObject {
         do {
             var profile: ChildProfile
 
+            // Create diagnosis info if provided
+            let diagnosisInfo: DiagnosisInfo? = {
+                if selectedDiagnosis != .preferNotToSpecify {
+                    return DiagnosisInfo(
+                        primaryDiagnosis: selectedDiagnosis,
+                        additionalDiagnoses: additionalDiagnoses,
+                        notes: diagnosisNotes.isEmpty ? nil : diagnosisNotes,
+                        professionallyDiagnosed: professionallyDiagnosed
+                    )
+                }
+                return nil
+            }()
+
             if isEditingExistingProfile, let existing = existingProfile {
                 // Update existing profile (preserves ID, createdAt, coRegulationHistory)
                 profile = ChildProfile(
@@ -177,6 +206,7 @@ class ProfileCreationViewModel: ObservableObject {
                     age: age,
                     pronouns: pronouns.isEmpty ? nil : pronouns,
                     photoData: photoData,
+                    diagnosisInfo: diagnosisInfo,
                     profileColor: profileColor
                 )
                 profile.createdAt = existing.createdAt
@@ -188,6 +218,7 @@ class ProfileCreationViewModel: ObservableObject {
                     age: age,
                     pronouns: pronouns.isEmpty ? nil : pronouns,
                     photoData: photoData,
+                    diagnosisInfo: diagnosisInfo,
                     profileColor: profileColor
                 )
             }
@@ -231,6 +262,20 @@ class ProfileCreationViewModel: ObservableObject {
         photoData = data
     }
 
+    // MARK: - Diagnosis Management
+
+    func toggleAdditionalDiagnosis(_ diagnosis: NeurodivergentDiagnosis) {
+        if let index = additionalDiagnoses.firstIndex(of: diagnosis) {
+            additionalDiagnoses.remove(at: index)
+        } else {
+            additionalDiagnoses.append(diagnosis)
+        }
+    }
+
+    func isAdditionalDiagnosisSelected(_ diagnosis: NeurodivergentDiagnosis) -> Bool {
+        return additionalDiagnoses.contains(diagnosis)
+    }
+
     // MARK: - Trigger Management
 
     func addTrigger(_ trigger: Trigger) {
@@ -256,14 +301,16 @@ class ProfileCreationViewModel: ObservableObject {
 
 enum ProfileCreationStep: Int, CaseIterable {
     case basicInfo = 0
-    case sensoryPreferences = 1
-    case communication = 2
-    case triggers = 3
-    case calibration = 4
+    case diagnosis = 1
+    case sensoryPreferences = 2
+    case communication = 3
+    case triggers = 4
+    case calibration = 5
 
     var title: String {
         switch self {
         case .basicInfo: return "Basic Information"
+        case .diagnosis: return "Diagnosis (Optional)"
         case .sensoryPreferences: return "Sensory Preferences"
         case .communication: return "Communication"
         case .triggers: return "Triggers & Strategies"
@@ -275,6 +322,8 @@ enum ProfileCreationStep: Int, CaseIterable {
         switch self {
         case .basicInfo:
             return "Tell us about your child"
+        case .diagnosis:
+            return "Does your child have a neurodivergent diagnosis? This helps us personalize the app."
         case .sensoryPreferences:
             return "What are your child's sensory preferences?"
         case .communication:

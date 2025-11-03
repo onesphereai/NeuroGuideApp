@@ -12,6 +12,7 @@ import Foundation
 import AVFoundation
 import Vision
 import Combine
+import CoreImage
 
 /// Integration service that connects new ML analyzers with existing LiveCoach system
 @MainActor
@@ -33,9 +34,14 @@ class LiveCoachMLIntegration: ObservableObject {
     private let environmentAnalyzer = EnvironmentAnalyzer()
     private let facialAnalyzer = FacialAnalyzer()
     private let coachingEngine = CoachingEngine()
+    private let cameraStabilizer = CameraMotionStabilizer.shared
+    private let arousalClassifier = ArousalBandClassifier.shared
 
     private var parentMonitoringEnabled = false
     private var childName: String?
+    private var childProfile: ChildProfile?
+    private var previousCGImage: CGImage?
+    private var latestCameraMotion: CameraMotion?
 
     // MARK: - Initialization
 
@@ -59,6 +65,29 @@ class LiveCoachMLIntegration: ObservableObject {
         print("Coaching engine configured - Child: \(childName ?? "none"), LLM: \(useLLM)")
     }
 
+    /// Set child profile for diagnosis-aware detection and camera stabilization
+    func setChildProfile(_ profile: ChildProfile?) {
+        self.childProfile = profile
+        arousalClassifier.setChildProfile(profile)
+
+        if let profile = profile {
+            print("✅ Child profile set for ML integration: \(profile.name)")
+            if let diagnosis = profile.diagnosisInfo?.primaryDiagnosis {
+                print("   Diagnosis: \(diagnosis.displayName)")
+            }
+        } else {
+            print("⚠️ Child profile cleared from ML integration")
+        }
+    }
+
+    /// Reset camera stabilization (call at session start)
+    func resetStabilization() {
+        cameraStabilizer.reset()
+        previousCGImage = nil
+        latestCameraMotion = nil
+        print("📹 Camera stabilization reset for new session")
+    }
+
     // MARK: - Analysis
 
     /// Process a video frame and optionally audio buffer
@@ -76,8 +105,51 @@ class LiveCoachMLIntegration: ObservableObject {
 
         // 1. Analyze pose (child movement and behaviors)
         let poseData = try await poseAnalyzer.analyzePose(from: videoFrame)
-        let movementEnergy = poseAnalyzer.calculateMovementEnergy()
+        var movementEnergy = poseAnalyzer.calculateMovementEnergy()
         let detectedBehaviors = poseAnalyzer.detectAllBehaviors()
+
+        // 1b. Apply camera stabilization to filter out device movement
+        var cameraMotion: CameraMotion?
+        var cameraIsStable = true
+
+        // Convert pixel buffer to CGImage for motion detection
+        if let cgImage = CGImage.create(from: videoFrame) {
+            // Detect camera motion between frames
+            if let previous = previousCGImage {
+                do {
+                    cameraMotion = try await cameraStabilizer.detectCameraMotion(
+                        currentFrame: cgImage,
+                        previousFrame: previous
+                    )
+
+                    // Filter movement energy to remove camera contribution
+                    if let motion = cameraMotion, motion.isMoving {
+                        // Convert enum to numeric value for stabilization
+                        let rawEnergyValue = movementEnergyToValue(movementEnergy)
+
+                        let stabilizedMovement = cameraStabilizer.filterMovementEnergy(
+                            rawMovementEnergy: rawEnergyValue,
+                            cameraMotion: motion
+                        )
+
+                        // Convert back to enum
+                        movementEnergy = mapMovementLevel(stabilizedMovement.stabilizedEnergy)
+
+                        print("📹 Camera movement detected - stabilized: \(movementEnergy) (camera contribution: \(String(format: "%.2f", stabilizedMovement.cameraContribution)))")
+                        cameraIsStable = false
+                    } else {
+                        cameraIsStable = true
+                    }
+
+                    latestCameraMotion = cameraMotion
+                } catch {
+                    print("⚠️ Camera stabilization failed: \(error.localizedDescription)")
+                }
+            }
+
+            // Store for next frame comparison
+            previousCGImage = cgImage
+        }
 
         // 2. Analyze audio (if available)
         var vocalStress: VocalStress = .calm
@@ -256,6 +328,34 @@ class LiveCoachMLIntegration: ObservableObject {
         // Clamp between 0.60 and 0.96
         return max(0.60, min(0.96, finalConfidence))
     }
+
+    /// Map movement energy value to level enum
+    private func mapMovementLevel(_ energy: Double) -> MovementEnergy {
+        if energy < 0.35 {
+            return .low
+        } else if energy < 0.7 {
+            return .moderate
+        } else {
+            return .high
+        }
+    }
+
+    /// Convert MovementEnergy enum to numeric value
+    private func movementEnergyToValue(_ energy: MovementEnergy) -> Double {
+        switch energy {
+        case .low:
+            return 0.25
+        case .moderate:
+            return 0.5
+        case .high:
+            return 0.85
+        }
+    }
+
+    /// Get current camera stability status
+    func getCameraStabilityInfo() -> (isStable: Bool, motion: CameraMotion?) {
+        return (cameraStabilizer.isCameraStable(), latestCameraMotion)
+    }
 }
 
 // MARK: - Supporting Types
@@ -289,5 +389,19 @@ enum MLIntegrationError: LocalizedError {
         case .analysisError(let message):
             return "Analysis error: \(message)"
         }
+    }
+}
+
+// MARK: - CGImage Extension for CVPixelBuffer
+
+extension CGImage {
+    /// Create CGImage from CVPixelBuffer for camera stabilization
+    static func create(from pixelBuffer: CVPixelBuffer) -> CGImage? {
+        let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
+        let context = CIContext(options: nil)
+        guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else {
+            return nil
+        }
+        return cgImage
     }
 }

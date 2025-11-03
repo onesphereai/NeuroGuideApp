@@ -13,6 +13,10 @@ import Combine
 /// Manages current screen and modal presentation state
 class NavigationState: ObservableObject {
 
+    // MARK: - Singleton
+
+    static let shared = NavigationState()
+
     // MARK: - Published Properties
 
     /// The currently displayed screen
@@ -28,7 +32,7 @@ class NavigationState: ObservableObject {
 
     /// Initialize with a starting screen
     /// - Parameter startScreen: The initial screen to display (default: .welcome)
-    init(startScreen: Screen = .welcome) {
+    private init(startScreen: Screen = .welcome) {
         self.currentScreen = startScreen
         self.presentedModal = nil
         self.navigationHistory = [startScreen]

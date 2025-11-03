@@ -45,6 +45,9 @@ struct ProfileCreationWizardView: View {
                     BasicInfoStepView(viewModel: viewModel)
                         .tag(ProfileCreationStep.basicInfo)
 
+                    DiagnosisStepView(viewModel: viewModel)
+                        .tag(ProfileCreationStep.diagnosis)
+
                     SensoryPreferencesStepView(viewModel: viewModel)
                         .tag(ProfileCreationStep.sensoryPreferences)
 

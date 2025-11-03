@@ -31,6 +31,10 @@ class AudioCaptureService: ObservableObject {
     private var inputNode: AVAudioInputNode?
     private var audioBufferCallback: ((AVAudioPCMBuffer) -> Void)?
 
+    // Store latest buffer for on-demand access
+    private var latestBuffer: AVAudioPCMBuffer?
+    private let bufferLock = NSLock()
+
     // Audio queue for engine operations
     private let audioQueue = DispatchQueue(label: "com.neuroguide.audioCapture", qos: .userInitiated)
 
@@ -215,6 +219,11 @@ class AudioCaptureService: ObservableObject {
 
     /// Process audio buffer from microphone
     private func processAudioBuffer(_ buffer: AVAudioPCMBuffer) {
+        // Store latest buffer for on-demand access
+        bufferLock.lock()
+        latestBuffer = buffer
+        bufferLock.unlock()
+
         // Calculate audio level (for UI feedback)
         updateAudioLevel(buffer)
 
@@ -266,6 +275,14 @@ class AudioCaptureService: ObservableObject {
         guard audioLevel > 0 else { return -Float.infinity }
 
         return 20.0 * log10(audioLevel)
+    }
+
+    /// Get the latest audio buffer
+    /// - Returns: Most recent audio buffer, or nil if none available
+    func getLatestBuffer() -> AVAudioPCMBuffer? {
+        bufferLock.lock()
+        defer { bufferLock.unlock() }
+        return latestBuffer
     }
 }
 

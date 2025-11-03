@@ -39,15 +39,16 @@ struct BasicInfoStepView: View {
                         .accessibilityAddTraits(.isHeader)
 
                     Picker("Age", selection: $viewModel.age) {
-                        ForEach(2...8, id: \.self) { age in
-                            Text("\(age) years old")
-                                .tag(age)
+                        // Age range: 1-50 years
+                        ForEach(1...50, id: \.self) { years in
+                            Text("\(years) year\(years == 1 ? "" : "s") old")
+                                .tag(years)
                         }
                     }
                     .pickerStyle(.wheel)
                     .frame(height: 150)
                     .accessibilityLabel("Child's age")
-                    .accessibilityValue("\(viewModel.age) years old")
+                    .accessibilityValue("\(viewModel.age) year\(viewModel.age == 1 ? "" : "s") old")
                 }
 
                 // Pronouns field (optional)

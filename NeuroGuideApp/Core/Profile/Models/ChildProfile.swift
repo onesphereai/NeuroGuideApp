@@ -15,9 +15,10 @@ struct ChildProfile: Codable, Identifiable {
 
     let id: UUID
     var name: String
-    var age: Int // 2-8 years
+    var age: Int // 1-50 years
     var pronouns: String?
     var photoData: Data? // Optional photo stored locally
+    var diagnosisInfo: DiagnosisInfo?  // Neurodivergent diagnosis (optional)
 
     // MARK: - Personalization Data
 
@@ -45,6 +46,7 @@ struct ChildProfile: Codable, Identifiable {
         age: Int,
         pronouns: String? = nil,
         photoData: Data? = nil,
+        diagnosisInfo: DiagnosisInfo? = nil,
         profileColor: String = "#4A90E2"  // Default blue
     ) {
         self.id = id
@@ -52,6 +54,7 @@ struct ChildProfile: Codable, Identifiable {
         self.age = age
         self.pronouns = pronouns
         self.photoData = photoData
+        self.diagnosisInfo = diagnosisInfo
         self.profileColor = profileColor
         self.sensoryPreferences = SensoryPreferences()
         self.communicationMode = .verbal
@@ -147,6 +150,19 @@ extension ChildProfile {
             }
         }
     }
+
+    /// Get diagnosis-specific baseline expectations
+    func getDiagnosisBaselines() -> DiagnosisBaselines? {
+        guard let diagnosis = diagnosisInfo?.primaryDiagnosis else {
+            return nil
+        }
+        return DiagnosisBaselines.baselines(for: diagnosis)
+    }
+
+    /// Get arousal threshold adjustments based on diagnosis
+    func getArousalThresholdAdjustments() -> ArousalThresholdAdjustments {
+        return getDiagnosisBaselines()?.arousalThresholdAdjustments ?? ArousalThresholdAdjustments()
+    }
 }
 
 // MARK: - Computed Properties
@@ -163,10 +179,10 @@ extension ChildProfile {
     /// Age group for content filtering
     var ageGroup: AgeGroup {
         switch age {
-        case 2...3: return .toddler
+        case 1...3: return .toddler
         case 4...5: return .preschool
-        case 6...8: return .earlyElementary
-        default: return .preschool // Fallback
+        case 6...12: return .earlyElementary
+        default: return .earlyElementary // Fallback for older ages
         }
     }
 

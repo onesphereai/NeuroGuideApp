@@ -76,6 +76,8 @@ struct RootView: View {
                 switch navigationState.currentScreen {
                 case .welcome:
                     WelcomeView()
+                case .profileSelection:
+                    ProfileSelectionView()
                 case .home:
                     HomeView()
                 case .settings:
@@ -84,6 +86,8 @@ struct RootView: View {
                     LiveCoachView()
                 case .askQuestion:
                     AskNeuroGuideView()
+                case .sessionHistory:
+                    SessionHistoryListView()
                 case .emotionCheck, .profile:
                     // These screens will be implemented in future Bolts
                     // For now, show placeholder

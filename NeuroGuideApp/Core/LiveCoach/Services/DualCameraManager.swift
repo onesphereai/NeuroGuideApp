@@ -159,10 +159,42 @@ class DualCameraManager: ObservableObject {
 
                 await MainActor.run {
                     self?.isCapturing = false
+                    // Clean up the session and camera services
+                    self?.cleanupSession()
                 }
                 print("⏸️ Dual camera capture stopped")
             }
+        } else {
+            // Clean up even if session wasn't running
+            cleanupSession()
         }
+    }
+
+    /// Clean up camera session and services
+    private func cleanupSession() {
+        // Remove all inputs and outputs from the session
+        if let session = multiCamSession {
+            session.beginConfiguration()
+
+            // Remove all inputs
+            for input in session.inputs {
+                session.removeInput(input)
+            }
+
+            // Remove all outputs
+            for output in session.outputs {
+                session.removeOutput(output)
+            }
+
+            session.commitConfiguration()
+        }
+
+        // Reset references
+        multiCamSession = nil
+        childCameraService = nil
+        parentCameraService = nil
+
+        print("🧹 Camera session cleaned up")
     }
 
     // MARK: - Preview Access

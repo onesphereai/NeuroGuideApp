@@ -22,9 +22,23 @@ protocol ChildProfileService {
     /// Delete the current profile
     func deleteProfile() async throws
 
+    /// Delete a specific profile by ID
+    func deleteProfile(id: UUID) async throws
+
     /// Check if profile is complete (has required fields)
     func isProfileComplete() async -> Bool
 
     /// Check if a profile exists
     func hasProfile() async -> Bool
+
+    // MARK: - Multi-Profile Support
+
+    /// Get all profiles
+    func getAllProfiles() async throws -> [ChildProfile]
+
+    /// Set the active profile
+    func setActiveProfile(_ profile: ChildProfile) async throws
+
+    /// Get a specific profile by ID
+    func getProfile(id: UUID) async throws -> ChildProfile?
 }

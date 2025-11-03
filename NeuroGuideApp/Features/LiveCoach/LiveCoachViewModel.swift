@@ -22,7 +22,8 @@ class LiveCoachViewModel: ObservableObject {
     @Published private(set) var isStarting = false
     @Published private(set) var isPaused = false
     @Published private(set) var sessionDuration = "0:00"
-    @Published private(set) var currentArousalBand: ArousalBand?
+    @Published private(set) var currentArousalBand: ArousalBand?  // Tier 1: Real-time (3 Hz)
+    @Published private(set) var stabilizedArousalBand: ArousalBand?  // Tier 2: Stabilized (15-30s)
     @Published private(set) var currentConfidence: Double?
     @Published private(set) var suggestions: [String] = []
     @Published private(set) var suggestionsWithResources: [CoachingSuggestionWithResource] = []
@@ -42,6 +43,20 @@ class LiveCoachViewModel: ObservableObject {
     @Published private(set) var currentMovementEnergy: MovementEnergy?
     @Published private(set) var detectedBehaviors: [ChildBehavior] = []
 
+    // Camera Stabilization Status
+    @Published private(set) var isCameraStable: Bool = true
+    @Published private(set) var cameraMotionDescription: String?
+
+    // Unit 8: Co-Regulation Feedback
+    @Published private(set) var latestCoRegulationEvent: CoRegulationEvent?
+    @Published private(set) var coRegulationEventsCount: Int = 0
+    @Published private(set) var showCoRegulationCelebration: Bool = false
+
+    // Unit 9: Baseline Staleness Check
+    @Published var showBaselineStaleAlert: Bool = false
+    @Published private(set) var baselineDaysOld: Int = 0
+    private var bypassStaleBaselineCheck: Bool = false
+
     // MARK: - Private Properties
 
     private lazy var sessionManager: LiveCoachService = LiveCoachSessionManager.shared
@@ -58,6 +73,7 @@ class LiveCoachViewModel: ObservableObject {
     private lazy var validationManager: ValidationManager = ValidationManager.shared
     private lazy var settingsManager: SettingsManager = SettingsManager()
     private lazy var recordingManager: SessionRecordingManager = SessionRecordingManager.shared
+    private lazy var bandStabilizer = StabilizedBandTracker(sustainThreshold: 20.0)  // Unit 7: Multi-tier display
     private var cancellables = Set<AnyCancellable>()
     private var durationTask: Task<Void, Never>?
     private var detectionTask: Task<Void, Never>?
@@ -73,7 +89,8 @@ class LiveCoachViewModel: ObservableObject {
     private var audioBufferLock = NSLock()
 
     // Current child profile
-    private var currentProfile: ChildProfile?
+    // Unit 9: Expose profile for navigation to recalibration
+    private(set) var currentProfile: ChildProfile?
 
     // MARK: - Initialization
 
@@ -102,6 +119,24 @@ class LiveCoachViewModel: ObservableObject {
             return
         }
 
+        // Unit 9: Check if baseline needs recalibration (blocking unless bypassed)
+        if !bypassStaleBaselineCheck && profile.needsCalibration() {
+            let daysOld = getDaysOld(profile.baselineCalibration?.calibratedAt)
+            baselineDaysOld = daysOld
+
+            if daysOld > 30 {
+                print("⚠️ Baseline is \(daysOld) days old - showing recalibration prompt")
+                showBaselineStaleAlert = true
+                // Block session start - wait for user decision
+                return
+            } else if profile.baselineCalibration == nil {
+                print("⚠️ No baseline calibration found - using defaults")
+            }
+        } else if bypassStaleBaselineCheck {
+            print("ℹ️ User chose to continue with stale baseline")
+            bypassStaleBaselineCheck = false // Reset for next time
+        }
+
         // Request permissions if not yet determined
         if cameraStatus == .notDetermined || microphoneStatus == .notDetermined {
             print("📱 Requesting camera and microphone permissions...")
@@ -115,6 +150,9 @@ class LiveCoachViewModel: ObservableObject {
             isSessionActive = true
             degradationMode = session.degradedMode
             startDurationTimer()
+
+            // Reset camera stabilization for new session
+            mlIntegration.resetStabilization()
 
             // Setup audio capture if microphone permission granted
             if microphoneStatus == .granted {
@@ -281,7 +319,7 @@ class LiveCoachViewModel: ObservableObject {
 
         // Update current arousal band
         if let reading = session.arousalBandHistory.last {
-            currentArousalBand = reading.arousalBand
+            updateArousalBand(reading.arousalBand)  // Unit 7: Multi-tier update
             currentConfidence = reading.confidence
         }
 
@@ -307,8 +345,23 @@ class LiveCoachViewModel: ObservableObject {
                 // Check emotion interface status
                 isEmotionInterfaceEnabled = emotionInterface.isEnabled
 
+                // Configure ML integration with child profile for diagnosis-aware detection
+                mlIntegration.setChildProfile(currentProfile)
+
                 // Configure coaching engine with child name for LLM personalization
                 mlIntegration.configureCoaching(childName: childName, useLLM: true)
+
+                // Configure arousal classifier with baseline calibration for personalized thresholds
+                if let profile = currentProfile {
+                    ArousalBandClassifier.shared.setBaselineCalibration(profile.baselineCalibration)
+
+                    if profile.baselineCalibration != nil {
+                        print("✅ Arousal detection personalized with baseline calibration")
+                    } else {
+                        print("⚠️ No baseline calibration - using default thresholds")
+                        print("   Tip: Complete baseline calibration in profile settings for more accurate detection")
+                    }
+                }
 
                 if let name = childName {
                     print("✅ Loaded profile for \(name)")
@@ -346,9 +399,19 @@ class LiveCoachViewModel: ObservableObject {
     private func resetSessionData() {
         sessionDuration = "0:00"
         currentArousalBand = nil
+        stabilizedArousalBand = nil  // Unit 7: Reset stabilized band
+        bandStabilizer.reset()       // Unit 7: Reset tracker
         currentConfidence = nil
         suggestions = []
         suggestionsCount = 0
+
+        // Unit 8: Reset co-regulation tracking
+        latestCoRegulationEvent = nil
+        coRegulationEventsCount = 0
+        showCoRegulationCelebration = false
+
+        // Unit 9: Reset baseline bypass flag
+        bypassStaleBaselineCheck = false
     }
 
     private func handleMemoryWarning() {
@@ -675,15 +738,40 @@ class LiveCoachViewModel: ObservableObject {
                 source: .mlModel
             )
 
-            // Update UI
-            currentArousalBand = analysis.arousalBand
+            // Record parent state for co-regulation detection (from audio analysis)
+            let parentState = mapStressToParentState(analysis.parentStressLevel)
+            let parentEngagement = calculateParentEngagement(analysis.parentStressLevel)
+            coRegulationDetector.recordParentState(parentState, engagement: parentEngagement)
+
+            // Update UI (real-time indicators)
             currentConfidence = analysis.confidence
             currentMovementEnergy = analysis.movementEnergy
             detectedBehaviors = analysis.detectedBehaviors
 
-            // Update suggestions with ML-generated recommendations
-            suggestions = analysis.suggestions
-            suggestionsWithResources = analysis.suggestionsWithResources
+            // Update camera stability status
+            let stabilityInfo = mlIntegration.getCameraStabilityInfo()
+            isCameraStable = stabilityInfo.isStable
+            cameraMotionDescription = stabilityInfo.motion?.description
+
+            // Update arousal band with stabilization and co-regulation detection (Unit 7 + Unit 8)
+            await updateArousalBandWithStabilization(
+                band: analysis.arousalBand,
+                suggestions: analysis.suggestions,
+                suggestionsWithResources: analysis.suggestionsWithResources
+            )
+
+            // Record LLM suggestions in session history
+            for suggestion in analysis.suggestionsWithResources {
+                do {
+                    try await sessionManager.recordDeliveredSuggestion(
+                        contentItemID: UUID(), // Generate UUID for LLM suggestion
+                        suggestionText: suggestion.text,
+                        arousalBand: analysis.arousalBand
+                    )
+                } catch {
+                    print("⚠️ Failed to record suggestion: \(error)")
+                }
+            }
 
         } catch {
             print("⚠️ ML detection failed: \(error.localizedDescription)")
@@ -707,7 +795,7 @@ class LiveCoachViewModel: ObservableObject {
             )
 
             // Update UI
-            currentArousalBand = randomBand
+            updateArousalBand(randomBand)  // Unit 7: Multi-tier update
             currentConfidence = simulatedConfidence
 
             // Generate suggestions
@@ -758,18 +846,40 @@ class LiveCoachViewModel: ObservableObject {
                 source: .mlModel
             )
 
-            // Record for co-regulation detection
-            coRegulationDetector.recordChildState(analysis.arousalBand)
+            // Record parent state for co-regulation detection (continuous monitoring)
+            let parentState = mapStressToParentState(analysis.parentStressLevel)
+            let parentEngagement = calculateParentEngagement(analysis.parentStressLevel)
+            coRegulationDetector.recordParentState(parentState, engagement: parentEngagement)
 
-            // Update UI
-            currentArousalBand = analysis.arousalBand
+            // Update UI (real-time indicators)
             currentConfidence = analysis.confidence
             currentMovementEnergy = analysis.movementEnergy
             detectedBehaviors = analysis.detectedBehaviors
 
-            // Update suggestions with ML-generated recommendations
-            suggestions = analysis.suggestions
-            suggestionsWithResources = analysis.suggestionsWithResources
+            // Update camera stability status
+            let stabilityInfo = mlIntegration.getCameraStabilityInfo()
+            isCameraStable = stabilityInfo.isStable
+            cameraMotionDescription = stabilityInfo.motion?.description
+
+            // Update arousal band for both tiers and handle stabilized changes
+            await updateArousalBandWithStabilization(
+                band: analysis.arousalBand,
+                suggestions: analysis.suggestions,
+                suggestionsWithResources: analysis.suggestionsWithResources
+            )
+
+            // Record LLM suggestions in session history
+            for suggestion in analysis.suggestionsWithResources {
+                do {
+                    try await sessionManager.recordDeliveredSuggestion(
+                        contentItemID: UUID(), // Generate UUID for LLM suggestion
+                        suggestionText: suggestion.text,
+                        arousalBand: analysis.arousalBand
+                    )
+                } catch {
+                    print("⚠️ Failed to record suggestion: \(error)")
+                }
+            }
 
             // Classify emotion if emotion interface is enabled
             if isEmotionInterfaceEnabled {
@@ -790,13 +900,6 @@ class LiveCoachViewModel: ObservableObject {
                 }
             }
 
-            // Check for co-regulation events
-            if let session = sessionManager.currentSession,
-               let event = coRegulationDetector.detectCoRegulationEvent(sessionID: session.id) {
-                try await sessionManager.recordCoRegulationEvent(event)
-                print("🤝 Co-regulation detected!")
-            }
-
         } catch {
             print("⚠️ Child ML detection failed: \(error.localizedDescription)")
         }
@@ -811,5 +914,158 @@ class LiveCoachViewModel: ObservableObject {
 
         // Future: Could add separate parent-specific UI feedback here
         print("📹 Parent frame received (analysis handled in child frame processing)")
+    }
+
+    // MARK: - Unit 7: Multi-Tier Display Helpers
+
+    /// Update arousal band for both tiers (real-time and stabilized)
+    /// Triggers co-regulation detection and suggestion updates ONLY on stabilized changes
+    private func updateArousalBandWithStabilization(
+        band: ArousalBand,
+        suggestions: [String],
+        suggestionsWithResources: [CoachingSuggestionWithResource]
+    ) async {
+        // Tier 1: Immediate update for ambient indicator
+        currentArousalBand = band
+
+        // Tier 2: Update stabilizer and get stable band if sustained
+        if let stableBand = bandStabilizer.update(band: band) {
+            stabilizedArousalBand = stableBand
+            print("✅ Stabilized band updated: \(stableBand.rawValue)")
+
+            // Only update these when stabilized band changes (not on every frame):
+
+            // 1. Record child state for co-regulation detection
+            coRegulationDetector.recordChildState(stableBand)
+
+            // 2. Check for co-regulation events (Unit 8: Co-Regulation Feedback)
+            if let session = sessionManager.currentSession,
+               let event = coRegulationDetector.detectCoRegulationEvent(sessionID: session.id) {
+                do {
+                    try await sessionManager.recordCoRegulationEvent(event)
+
+                    // Trigger celebration feedback
+                    await handleCoRegulationEvent(event)
+                } catch {
+                    print("⚠️ Failed to record co-regulation event: \(error)")
+                }
+            }
+
+            // 3. Update suggestions (synced with stabilized band changes)
+            self.suggestions = suggestions
+            self.suggestionsWithResources = suggestionsWithResources
+            print("💡 Suggestions updated with stabilized band change")
+        }
+    }
+
+    /// Simple arousal band update (for session restore, camera-only, mock modes)
+    /// Does NOT trigger co-regulation detection or suggestion updates
+    private func updateArousalBand(_ band: ArousalBand) {
+        // Tier 1: Immediate update for ambient indicator
+        currentArousalBand = band
+
+        // Tier 2: Update stabilizer (no additional actions)
+        if let stableBand = bandStabilizer.update(band: band) {
+            stabilizedArousalBand = stableBand
+            print("✅ Stabilized band updated: \(stableBand.rawValue)")
+        }
+    }
+
+    // MARK: - Unit 8: Co-Regulation Feedback Handlers
+
+    /// Handle detected co-regulation event with celebration feedback
+    private func handleCoRegulationEvent(_ event: CoRegulationEvent) async {
+        // Update state
+        latestCoRegulationEvent = event
+        coRegulationEventsCount += 1
+
+        // Trigger haptic feedback
+        triggerSuccessHaptic()
+
+        // Show celebration UI
+        showCoRegulationCelebration = true
+
+        // Log success
+        print("🎉 Co-regulation event #\(coRegulationEventsCount): \(event.eventDescription)")
+
+        // Auto-dismiss celebration after 3 seconds
+        Task {
+            try? await Task.sleep(nanoseconds: 3_000_000_000)
+            await MainActor.run {
+                showCoRegulationCelebration = false
+            }
+        }
+    }
+
+    /// Trigger haptic feedback for successful co-regulation
+    private func triggerSuccessHaptic() {
+        #if os(iOS)
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
+        #endif
+    }
+
+    /// Get session co-regulation statistics
+    func getCoRegulationStats() -> (total: Int, successRate: Double) {
+        let total = coRegulationEventsCount
+        // For now, all detected events are considered successful
+        // In the future, filter by event.wasSuccessful
+        let successful = total
+        let rate = total > 0 ? Double(successful) / Double(total) : 0.0
+        return (total, rate)
+    }
+
+    // MARK: - Unit 9: Baseline Staleness Helpers
+
+    /// Calculate how many days old the baseline is
+    private func getDaysOld(_ date: Date?) -> Int {
+        guard let date = date else { return 999 } // Very old if no baseline
+        let days = Calendar.current.dateComponents([.day], from: date, to: Date()).day ?? 999
+        return max(days, 0)
+    }
+
+    /// User chose to continue with stale baseline
+    func continueWithStaleBaseline() {
+        showBaselineStaleAlert = false
+        bypassStaleBaselineCheck = true
+        print("ℹ️ User chose to continue with stale baseline - restarting session")
+        // Restart session with bypass flag set
+        Task {
+            await startSession()
+        }
+    }
+
+    /// User chose to recalibrate - navigate to calibration
+    func requestRecalibration() {
+        showBaselineStaleAlert = false
+        // Navigation will be handled by LiveCoachView
+        print("🎯 User requested baseline recalibration")
+    }
+
+    // MARK: - Co-Regulation Mapping Helpers
+
+    /// Map StressLevel to ParentState for co-regulation detection
+    private func mapStressToParentState(_ stressLevel: StressLevel) -> ParentState {
+        switch stressLevel {
+        case .calm:
+            return .calm
+        case .building:
+            return .coRegulating  // Assume building stress = actively co-regulating
+        case .high:
+            return .stressed
+        }
+    }
+
+    /// Calculate parent engagement level from stress
+    /// Lower stress typically indicates better capacity for co-regulation
+    private func calculateParentEngagement(_ stressLevel: StressLevel) -> Double {
+        switch stressLevel {
+        case .calm:
+            return 0.85  // Calm parent = high engagement capacity
+        case .building:
+            return 0.70  // Building stress = moderate engagement
+        case .high:
+            return 0.40  // High stress = low engagement capacity
+        }
     }
 }

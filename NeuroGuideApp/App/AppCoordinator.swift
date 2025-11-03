@@ -36,20 +36,25 @@ class AppCoordinator: ObservableObject {
         // Initialize launch state manager first
         let tempLaunchStateManager = LaunchStateManager()
 
+        // Use the shared NavigationState singleton
+        let sharedNavigationState = NavigationState.shared
+
         // Determine starting screen based on launch state
         let startingScreen: Screen
         if tempLaunchStateManager.checkFirstLaunch() || !tempLaunchStateManager.hasCompletedWelcome {
             startingScreen = .welcome
         } else {
-            startingScreen = .home
+            // Navigate to profile selection instead of directly to home
+            startingScreen = .profileSelection
         }
 
-        // Initialize all stored properties before using self
-        let tempNavigationState = NavigationState(startScreen: startingScreen)
+        // Set the starting screen on the singleton
+        sharedNavigationState.reset(to: startingScreen)
 
+        // Initialize all stored properties before using self
         self.launchStateManager = tempLaunchStateManager
-        self.navigationState = tempNavigationState
-        self.navigationService = DefaultNavigationService(navigationState: tempNavigationState)
+        self.navigationState = sharedNavigationState
+        self.navigationService = DefaultNavigationService(navigationState: sharedNavigationState)
 
         // Now we can safely use self - increment launch count
         self.launchStateManager.incrementLaunchCount()
@@ -125,8 +130,8 @@ class AppCoordinator: ObservableObject {
             // Show onboarding
             showOnboarding()
         } else {
-            // Go directly to home
-            navigate(to: .home)
+            // Go to profile selection
+            navigate(to: .profileSelection)
             AccessibilityHelper.announce("Welcome back to attune.")
         }
     }
@@ -141,21 +146,21 @@ class AppCoordinator: ObservableObject {
         AccessibilityHelper.announce("Starting tutorial")
     }
 
-    /// Complete the onboarding tutorial and navigate to home
+    /// Complete the onboarding tutorial and navigate to profile selection
     func completeOnboarding() {
         launchStateManager.markOnboardingComplete()
 
         // Dismiss onboarding modal
         dismissModal()
 
-        // Navigate to home
-        navigate(to: .home)
+        // Navigate to profile selection
+        navigate(to: .profileSelection)
 
         // Trigger success haptic
         AccessibilityHelper.shared.success()
 
         // Announce completion to VoiceOver
-        AccessibilityHelper.announce("Tutorial complete. Welcome to attune home.")
+        AccessibilityHelper.announce("Tutorial complete. Let's create your first profile.")
     }
 
     /// Replay the onboarding tutorial (from Settings)
@@ -193,6 +198,10 @@ class AppCoordinator: ObservableObject {
         case "profile":
             // Show profile creation wizard
             presentModal(.profileCreation)
+        case "session_history":
+            // Navigate to Session History screen
+            navigate(to: .sessionHistory)
+            AccessibilityHelper.announce("Opening Session History")
         default:
             break
         }
@@ -201,6 +210,12 @@ class AppCoordinator: ObservableObject {
     /// Navigate to settings
     func navigateToSettings() {
         navigate(to: .settings)
+    }
+
+    /// Navigate to profile selection
+    func navigateToProfileSelection() {
+        navigate(to: .profileSelection)
+        AccessibilityHelper.announce("Profile selection")
     }
 
     /// Handle emergency access button tap
@@ -272,10 +287,20 @@ struct FeatureCard: Identifiable {
         isAvailable: true
     )
 
+    static let sessionHistory = FeatureCard(
+        id: "session_history",
+        title: "Session History",
+        description: "View past coaching sessions",
+        iconName: "clock.arrow.circlepath",
+        color: "Primary",
+        isAvailable: true
+    )
+
     static let allFeatures: [FeatureCard] = [
         .liveCoach,
         .emotionCheck,
         .askQuestion,
-        .profile
+        .profile,
+        .sessionHistory
     ]
 }

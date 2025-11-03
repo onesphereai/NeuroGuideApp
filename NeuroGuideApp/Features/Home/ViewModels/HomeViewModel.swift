@@ -67,6 +67,11 @@ class HomeViewModel: ObservableObject {
         coordinator?.handleEmergencyAccess()
     }
 
+    /// Switch to a different profile
+    func switchProfile() {
+        coordinator?.navigateToProfileSelection()
+    }
+
     /// Refresh the home screen content
     func refresh() async {
         // Update greeting in case time of day changed

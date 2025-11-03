@@ -142,27 +142,49 @@ class PoseDetectionService: ObservableObject {
             return 0.3 // First frame, assume low movement
         }
 
-        // Calculate average displacement of keypoints between frames
-        var totalDisplacement = 0.0
-        var matchedPoints = 0
+        // Calculate displacement vectors for all keypoints
+        var displacements: [(name: String, dx: Double, dy: Double)] = []
 
         for current in keypoints {
             if let prev = previous.first(where: { $0.name == current.name }) {
-                let displacement = distance(current.position, prev.position)
-                totalDisplacement += displacement
-                matchedPoints += 1
+                let dx = current.position.x - prev.position.x
+                let dy = current.position.y - prev.position.y
+                displacements.append((current.name, dx, dy))
             }
         }
 
-        if matchedPoints > 0 {
-            let avgDisplacement = totalDisplacement / Double(matchedPoints)
-            // Normalize displacement to 0-1 (assume max significant displacement of 0.15 in normalized coords)
-            let normalized = min(avgDisplacement / 0.15, 1.0)
-            // Higher displacement = higher arousal
-            return normalized
+        guard !displacements.isEmpty else { return 0.3 }
+
+        // Step 1: Calculate average displacement (camera motion estimate)
+        let avgDx = displacements.reduce(0.0) { $0 + $1.dx } / Double(displacements.count)
+        let avgDy = displacements.reduce(0.0) { $0 + $1.dy } / Double(displacements.count)
+
+        // Step 2: Subtract camera motion to get child-relative movement
+        // Calculate variance from average (how much keypoints deviate from uniform motion)
+        var relativeTotalDisplacement = 0.0
+
+        for displacement in displacements {
+            // Remove camera motion component
+            let relativeDx = displacement.dx - avgDx
+            let relativeDy = displacement.dy - avgDy
+            let relativeDistance = sqrt(relativeDx * relativeDx + relativeDy * relativeDy)
+            relativeTotalDisplacement += relativeDistance
         }
 
-        return 0.3
+        let avgRelativeDisplacement = relativeTotalDisplacement / Double(displacements.count)
+
+        // Step 3: Normalize to 0-1
+        // If avgRelativeDisplacement is small → uniform motion (camera) → low intensity
+        // If avgRelativeDisplacement is large → non-uniform motion (child) → high intensity
+        let normalized = min(avgRelativeDisplacement / 0.10, 1.0) // Adjusted threshold for relative motion
+
+        // Debug logging for camera motion detection
+        let cameraMotion = sqrt(avgDx * avgDx + avgDy * avgDy)
+        if cameraMotion > 0.02 { // Log significant camera motion
+            print("📹 Camera motion detected: \(String(format: "%.3f", cameraMotion)) | Child motion: \(String(format: "%.3f", normalized))")
+        }
+
+        return normalized
     }
 
     private func calculateBodyTension(keypoints: [BodyKeypoint]) -> Double {

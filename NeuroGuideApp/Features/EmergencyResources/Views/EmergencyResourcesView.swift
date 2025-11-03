@@ -30,12 +30,18 @@ struct EmergencyResourcesView: View {
                     VStack(spacing: 24) {
                         // Disclaimer banner
                         if showingDisclaimer {
-                            DisclaimerBanner(onDismiss: {
-                                withAnimation {
-                                    showingDisclaimer = false
+                            DisclaimerBanner(
+                                region: resourcesManager.currentRegion,
+                                onDismiss: {
+                                    withAnimation {
+                                        showingDisclaimer = false
+                                    }
                                 }
-                            })
+                            )
                         }
+
+                        // Region indicator
+                        RegionIndicatorView(region: resourcesManager.currentRegion)
 
                         // Crisis resources
                         ResourceCategorySection(
@@ -84,7 +90,7 @@ struct EmergencyResourcesView: View {
                 // Emergency call button (floating)
                 VStack {
                     Spacer()
-                    EmergencyCallButton()
+                    EmergencyCallButton(region: resourcesManager.currentRegion)
                         .padding()
                 }
             }
@@ -102,15 +108,51 @@ struct EmergencyResourcesView: View {
             }
         }
         .onAppear {
+            // Detect user's region
+            resourcesManager.detectRegion()
             AccessibilityHelper.announce("Emergency Resources. This app is not for crisis intervention. Please call emergency services if needed.")
         }
+    }
+}
+
+// MARK: - Region Indicator
+
+struct RegionIndicatorView: View {
+    let region: Region
+
+    var body: some View {
+        HStack {
+            Image(systemName: "globe")
+                .foregroundColor(.blue)
+            Text("Showing resources for: \(region.displayName)")
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+            Spacer()
+        }
+        .padding(.horizontal)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Showing resources for \(region.displayName)")
     }
 }
 
 // MARK: - Disclaimer Banner
 
 struct DisclaimerBanner: View {
+    let region: Region
     let onDismiss: () -> Void
+
+    private var emergencyNumber: String {
+        switch region {
+        case .unitedStates, .canada:
+            return "911"
+        case .unitedKingdom:
+            return "999"
+        case .australia:
+            return "000"
+        case .international:
+            return "your local emergency number"
+        }
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -128,11 +170,11 @@ struct DisclaimerBanner: View {
                 .accessibilityLabel("Dismiss disclaimer")
             }
 
-            Text("attune is not a crisis intervention service. If you or your child are in immediate danger, please call 911 or your local emergency services.")
+            Text("attune is not a crisis intervention service. If you or your child are in immediate danger, please call \(emergencyNumber) or your local emergency services.")
                 .font(.body)
                 .foregroundColor(.secondary)
 
-            Text("The resources below provide specialized support for mental health and autism-related crises.")
+            Text("The resources below provide specialized support for mental health and autism-related crises in your region.")
                 .font(.caption)
                 .foregroundColor(.secondary)
         }
@@ -140,7 +182,7 @@ struct DisclaimerBanner: View {
         .background(Color.orange.opacity(0.1))
         .cornerRadius(12)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Important disclaimer. attune is not a crisis intervention service. If you or your child are in immediate danger, please call 911 or local emergency services.")
+        .accessibilityLabel("Important disclaimer. attune is not a crisis intervention service. If you or your child are in immediate danger, please call \(emergencyNumber) or local emergency services.")
     }
 }
 
@@ -253,6 +295,21 @@ struct ResourceCard: View {
 // MARK: - Emergency Call Button
 
 struct EmergencyCallButton: View {
+    let region: Region
+
+    private var emergencyNumber: String {
+        switch region {
+        case .unitedStates, .canada:
+            return "911"
+        case .unitedKingdom:
+            return "999"
+        case .australia:
+            return "000"
+        case .international:
+            return "112"  // International emergency number
+        }
+    }
+
     var body: some View {
         Button(action: {
             callEmergencyServices()
@@ -260,7 +317,7 @@ struct EmergencyCallButton: View {
             HStack {
                 Image(systemName: "phone.fill")
                     .font(.title3)
-                Text("Call 911")
+                Text("Call \(emergencyNumber)")
                     .font(.headline)
             }
             .foregroundColor(.white)
@@ -270,7 +327,7 @@ struct EmergencyCallButton: View {
             .cornerRadius(12)
             .shadow(color: Color.black.opacity(0.2), radius: 8, x: 0, y: 4)
         }
-        .accessibilityLabel("Call 911 for emergency")
+        .accessibilityLabel("Call \(emergencyNumber) for emergency")
         .accessibilityHint("Double tap to call emergency services")
         .accessibilityIdentifier("emergency_call_button")
     }
@@ -278,10 +335,10 @@ struct EmergencyCallButton: View {
     private func callEmergencyServices() {
         AccessibilityHelper.shared.buttonTap()
 
-        if let url = URL(string: "tel://911") {
+        if let url = URL(string: "tel://\(emergencyNumber)") {
             if UIApplication.shared.canOpenURL(url) {
                 UIApplication.shared.open(url)
-                AccessibilityHelper.announce("Calling 911")
+                AccessibilityHelper.announce("Calling \(emergencyNumber)")
             }
         }
     }

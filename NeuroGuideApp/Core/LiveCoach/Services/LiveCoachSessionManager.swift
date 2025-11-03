@@ -93,6 +93,15 @@ class LiveCoachSessionManager: LiveCoachService, ObservableObject {
         // Archive session
         sessionHistory.append(session)
 
+        // Convert to SessionAnalysisResult and save to SessionHistoryManager
+        let analysisResult = convertToAnalysisResult(session: session)
+        do {
+            try await SessionHistoryManager.shared.saveSession(analysisResult)
+            print("💾 Session saved to history")
+        } catch {
+            print("❌ Failed to save session to history: \(error)")
+        }
+
         // Clear current session
         currentSession = nil
 
@@ -308,5 +317,75 @@ class LiveCoachSessionManager: LiveCoachService, ObservableObject {
         currentSession = session
 
         print("🔄 Permission updated: \(update.permissionType) -> \(update.status.displayName)")
+    }
+
+    /// Convert LiveCoachSession to SessionAnalysisResult for history storage
+    private func convertToAnalysisResult(session: LiveCoachSession) -> SessionAnalysisResult {
+        // Use default values for child name and color (async profile fetching not possible in this context)
+        let childName = "Child"
+        let profileColor = "#4A90E2"
+
+        // Convert arousal history to timeline
+        let arousalTimeline = session.arousalBandHistory.enumerated().map { index, reading in
+            ArousalBandSample(
+                timestamp: Double(index) * 3.0, // 3-second intervals
+                band: reading.arousalBand,
+                confidence: reading.confidence
+            )
+        }
+
+        // Create behavior spectrum from arousal timeline
+        let spectrum = BehaviorSpectrum(from: arousalTimeline, profileColor: profileColor)
+
+        // Convert parent state history to emotion timeline
+        let emotionTimeline = session.parentStateHistory.map { observation in
+            EmotionSample(
+                timestamp: observation.timestamp.timeIntervalSince(session.startTime),
+                emotion: mapParentStateToEmotion(observation.state),
+                intensity: observation.confidence,
+                confidence: observation.confidence
+            )
+        }
+
+        // Convert suggestions to CoachingSuggestion format
+        let coachingSuggestions = session.suggestionsDelivered.map { suggestion in
+            CoachingSuggestion(
+                text: suggestion.suggestionText,
+                category: .regulation,
+                priority: .medium
+            )
+        }
+
+        // Generate parent advice from emotion timeline
+        let parentAdvice = ParentRegulationAdvice.generate(from: emotionTimeline, arousalTimeline: arousalTimeline)
+
+        return SessionAnalysisResult(
+            childID: session.childID,
+            childName: childName,
+            recordedAt: session.startTime,
+            duration: session.duration,
+            videoURL: nil, // Live sessions don't have saved video
+            childBehaviorSpectrum: spectrum,
+            arousalTimeline: arousalTimeline,
+            parentEmotionTimeline: emotionTimeline,
+            coachingSuggestions: coachingSuggestions,
+            parentAdvice: parentAdvice,
+            processingDuration: 0.0, // No processing for live sessions
+            degradationMode: session.degradedMode
+        )
+    }
+
+    /// Map ParentState to ParentEmotion
+    private func mapParentStateToEmotion(_ state: ParentState) -> ParentEmotion {
+        switch state {
+        case .calm:
+            return .calm
+        case .coRegulating:
+            return .regulated
+        case .stressed:
+            return .stressed
+        case .dysregulated:
+            return .overwhelmed
+        }
     }
 }

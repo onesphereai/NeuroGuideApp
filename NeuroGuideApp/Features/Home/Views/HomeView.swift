@@ -93,6 +93,23 @@ struct HomeView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        viewModel.switchProfile()
+                    }) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "person.2.fill")
+                                .font(.system(size: 16))
+                            Text("Switch")
+                                .font(.system(size: 14, weight: .medium))
+                        }
+                        .foregroundColor(.blue)
+                    }
+                    .accessibilityLabel("Switch profile")
+                    .accessibilityHint("Double tap to select a different profile")
+                    .accessibilityIdentifier("home_switch_profile_button")
+                }
+
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         viewModel.navigateToSettings()

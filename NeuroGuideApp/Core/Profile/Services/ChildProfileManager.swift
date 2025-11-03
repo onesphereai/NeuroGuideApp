@@ -26,6 +26,8 @@ class ChildProfileManager: ChildProfileService, ObservableObject {
 
     private let secureStorage: SecureStorageService
     private let storageKey = SecureStorageKeys.childProfile
+    private let profilesListKey = SecureStorageKeys.profilesList
+    private let activeProfileIDKey = SecureStorageKeys.activeProfileID
 
     // MARK: - Initialization
 
@@ -50,8 +52,18 @@ class ChildProfileManager: ChildProfileService, ObservableObject {
         defer { isLoading = false }
 
         do {
-            try await secureStorage.save(profile, forKey: storageKey)
+            // Save to profile-specific key
+            let profileKey = profileStorageKey(for: profile.id)
+            try await secureStorage.save(profile, forKey: profileKey)
+
+            // Add to profiles list
+            try await addProfileToList(profile)
+
+            // Set as active profile
+            try await setActiveProfile(profile)
+
             currentProfile = profile
+            print("✅ Profile created: \(profile.name)")
         } catch {
             throw ProfileError.saveFailed(underlying: error)
         }
@@ -228,10 +240,108 @@ class ChildProfileManager: ChildProfileService, ObservableObject {
         profile.coRegulationHistory.recordSession(strategies: strategies, helpfulness: helpfulness)
         try await updateProfile(profile: profile)
     }
+
+    // MARK: - Multi-Profile Support
+
+    func getAllProfiles() async throws -> [ChildProfile] {
+        isLoading = true
+        defer { isLoading = false }
+
+        // Try to load profiles list
+        do {
+            guard let profileIDs = try await secureStorage.load(
+                forKey: profilesListKey,
+                as: [UUID].self
+            ) else {
+                return []
+            }
+
+            var profiles: [ChildProfile] = []
+            for id in profileIDs {
+                if let profile = try? await getProfile(id: id) {
+                    profiles.append(profile)
+                }
+            }
+
+            return profiles
+        } catch {
+            // If no profiles list exists, return empty array
+            return []
+        }
+    }
+
+    func setActiveProfile(_ profile: ChildProfile) async throws {
+        // Save the profile ID as active
+        try await secureStorage.save(profile.id, forKey: activeProfileIDKey)
+
+        // Also save to the legacy single-profile key for backward compatibility
+        try await secureStorage.save(profile, forKey: storageKey)
+
+        currentProfile = profile
+        print("✅ Active profile set: \(profile.name)")
+    }
+
+    func getProfile(id: UUID) async throws -> ChildProfile? {
+        let profileKey = profileStorageKey(for: id)
+
+        do {
+            let profile = try await secureStorage.load(forKey: profileKey, as: ChildProfile.self)
+            return profile
+        } catch {
+            return nil
+        }
+    }
+
+    func deleteProfile(id: UUID) async throws {
+        isLoading = true
+        defer { isLoading = false }
+
+        // Delete the profile
+        let profileKey = profileStorageKey(for: id)
+        try await secureStorage.delete(forKey: profileKey)
+
+        // Update profiles list
+        if var profileIDs = try? await secureStorage.load(
+            forKey: profilesListKey,
+            as: [UUID].self
+        ) {
+            profileIDs.removeAll { $0 == id }
+            try await secureStorage.save(profileIDs, forKey: profilesListKey)
+        }
+
+        // If this was the active profile, clear it
+        if currentProfile?.id == id {
+            currentProfile = nil
+            try? await secureStorage.delete(forKey: activeProfileIDKey)
+            try? await secureStorage.delete(forKey: storageKey)
+        }
+
+        print("✅ Profile deleted: \(id)")
+    }
+
+    // MARK: - Private Helpers
+
+    private func profileStorageKey(for id: UUID) -> String {
+        return "child.profile.\(id.uuidString)"
+    }
+
+    private func addProfileToList(_ profile: ChildProfile) async throws {
+        var profileIDs = (try? await secureStorage.load(
+            forKey: profilesListKey,
+            as: [UUID].self
+        )) ?? []
+
+        if !profileIDs.contains(profile.id) {
+            profileIDs.append(profile.id)
+            try await secureStorage.save(profileIDs, forKey: profilesListKey)
+        }
+    }
 }
 
 // MARK: - Storage Keys Extension
 
 extension SecureStorageKeys {
     static let childProfile = "child.profile"
+    static let profilesList = "child.profiles.list"
+    static let activeProfileID = "child.profile.active.id"
 }

@@ -31,12 +31,14 @@ protocol NavigationService {
 /// Represents the main screens in the app
 enum Screen: Equatable {
     case welcome
+    case profileSelection  // Multi-profile selection screen
     case home
     case settings
     case liveCoach  // Placeholder for future Bolt
     case emotionCheck  // Placeholder for future Bolt
     case askQuestion  // Placeholder for future Bolt
     case profile  // Placeholder for future Bolt
+    case sessionHistory  // Session history and reports
 }
 
 // MARK: - Modal Enum

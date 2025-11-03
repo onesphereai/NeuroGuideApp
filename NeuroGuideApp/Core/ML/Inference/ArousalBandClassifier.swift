@@ -29,21 +29,81 @@ class ArousalBandClassifier: ObservableObject {
     private let poseService: PoseDetectionService
     private let facialService: FacialExpressionService
     private let vocalService: VocalAffectService
+    private let diagnosisAdjuster: DiagnosisAwareArousalAdjuster
 
     // History for temporal smoothing
     private var arousalHistory: [ArousalReading] = []
     private let historyWindow: Int = 5  // Keep last 5 readings
+
+    // Profile-specific baseline calibration and diagnosis
+    private var baselineCalibration: BaselineCalibration?
+    private var childProfile: ChildProfile?
+
+    // Default thresholds (used when no baseline available)
+    private let defaultThresholds = ArousalThresholds(
+        shutdownThreshold: 0.20,
+        greenThreshold: 0.45,
+        yellowThreshold: 0.65,
+        orangeThreshold: 0.85
+    )
 
     // MARK: - Initialization
 
     init(
         poseService: PoseDetectionService = .shared,
         facialService: FacialExpressionService = .shared,
-        vocalService: VocalAffectService = .shared
+        vocalService: VocalAffectService = .shared,
+        diagnosisAdjuster: DiagnosisAwareArousalAdjuster = .shared
     ) {
         self.poseService = poseService
         self.facialService = facialService
         self.vocalService = vocalService
+        self.diagnosisAdjuster = diagnosisAdjuster
+    }
+
+    // MARK: - Configuration
+
+    /// Set child profile for diagnosis-aware arousal detection
+    /// This personalizes arousal detection based on diagnosis and baseline
+    /// - Parameter profile: Child profile with diagnosis and baseline data
+    func setChildProfile(_ profile: ChildProfile?) {
+        self.childProfile = profile
+        self.baselineCalibration = profile?.baselineCalibration
+
+        if let profile = profile {
+            print("✅ Child profile set for arousal detection")
+            if let diagnosis = profile.diagnosisInfo?.primaryDiagnosis {
+                print("   Diagnosis: \(diagnosis.displayName)")
+                let adjustments = profile.getArousalThresholdAdjustments()
+                print("   Movement threshold: \(String(format: "%.1fx", adjustments.movementThresholdMultiplier))")
+                print("   Vocal threshold: \(String(format: "%.1fx", adjustments.vocalThresholdMultiplier))")
+                print("   Expression sensitivity: \(String(format: "%.1fx", adjustments.expressionSensitivity))")
+            }
+            if let baseline = baselineCalibration {
+                print("   Movement baseline: \(String(format: "%.2f", baseline.movementBaseline.averageMovementEnergy))")
+                print("   Vocal baseline: \(String(format: "%.1f", baseline.vocalBaseline.averagePitch))Hz")
+            }
+        } else {
+            print("⚠️ No child profile - using default detection")
+        }
+    }
+
+    /// Set baseline calibration from child profile (legacy method)
+    /// - Parameter baseline: Baseline calibration data from child profile
+    func setBaselineCalibration(_ baseline: BaselineCalibration?) {
+        self.baselineCalibration = baseline
+        if let baseline = baseline {
+            print("✅ Baseline calibration set - thresholds will be personalized")
+            print("   Movement baseline: \(String(format: "%.2f", baseline.movementBaseline.averageMovementEnergy))")
+            print("   Vocal baseline: \(String(format: "%.1f", baseline.vocalBaseline.averagePitch))Hz, \(String(format: "%.1f", baseline.vocalBaseline.averageVolume))dB")
+        } else {
+            print("⚠️ Using default thresholds - no baseline calibration available")
+        }
+    }
+
+    /// Get current thresholds being used (for debugging/transparency)
+    func getCurrentThresholds() -> ArousalThresholds {
+        return calculatePersonalizedThresholds()
     }
 
     // MARK: - Classification
@@ -194,20 +254,77 @@ class ArousalBandClassifier: ObservableObject {
     }
 
     private func mapToArousalBand(arousalScore: Double) -> ArousalBand {
-        // Map 0-1 arousal score to arousal bands
-        // Thresholds tuned for neurodivergent children
+        // Map 0-1 arousal score to arousal bands using personalized thresholds
+        let thresholds = calculatePersonalizedThresholds()
 
-        if arousalScore < 0.2 {
+        if arousalScore < thresholds.shutdownThreshold {
             return .shutdown  // Under-aroused, withdrawn
-        } else if arousalScore < 0.45 {
+        } else if arousalScore < thresholds.greenThreshold {
             return .green  // Regulated, calm
-        } else if arousalScore < 0.65 {
+        } else if arousalScore < thresholds.yellowThreshold {
             return .yellow  // Elevated, early warning
-        } else if arousalScore < 0.85 {
+        } else if arousalScore < thresholds.orangeThreshold {
             return .orange  // High arousal, needs support
         } else {
             return .red  // Crisis, safety priority
         }
+    }
+
+    /// Calculate personalized thresholds based on baseline calibration and diagnosis
+    /// Adjusts thresholds to account for child's typical arousal levels and neurodivergent traits
+    private func calculatePersonalizedThresholds() -> ArousalThresholds {
+        // Get diagnosis adjustments if profile is available
+        let diagnosisAdjustments = childProfile?.getArousalThresholdAdjustments() ?? ArousalThresholdAdjustments()
+
+        guard let baseline = baselineCalibration else {
+            // No baseline - apply diagnosis adjustments to default thresholds
+            return ArousalThresholds(
+                shutdownThreshold: defaultThresholds.shutdownThreshold,
+                greenThreshold: defaultThresholds.greenThreshold * diagnosisAdjustments.movementThresholdMultiplier,
+                yellowThreshold: defaultThresholds.yellowThreshold * diagnosisAdjustments.movementThresholdMultiplier,
+                orangeThreshold: defaultThresholds.orangeThreshold  // Never adjust red zone - always conservative
+            )
+        }
+
+        // RESEARCH NOTE: This adjustment algorithm is based on:
+        // 1. Individual differences in baseline arousal (Gray's Reinforcement Sensitivity Theory)
+        // 2. Autism-specific considerations (different baseline movement/expression patterns)
+        // 3. Diagnosis-specific threshold adjustments (ADHD, SPD, etc.)
+        // 4. Safety-first principle (don't adjust red zone threshold - always conservative)
+
+        // Calculate baseline-adjusted center point (child's typical "green zone")
+        // Movement energy is primary factor (0.0-1.0 scale)
+        let movementBaseline = baseline.movementBaseline.averageMovementEnergy
+
+        // Vocal baseline as secondary adjustment factor
+        // Normalize pitch and volume to 0-1 scale
+        // Typical child: 200-300Hz pitch, 45-65dB volume
+        let normalizedPitch = min(max((baseline.vocalBaseline.averagePitch - 200) / 100, 0.0), 1.0)
+        let normalizedVolume = min(max((baseline.vocalBaseline.averageVolume - 45) / 20, 0.0), 1.0)
+        let vocalBaseline = (normalizedPitch + normalizedVolume) / 2.0
+
+        // Weighted combination: movement is more reliable indicator
+        let baselineArousal = (movementBaseline * 0.7) + (vocalBaseline * 0.3)
+
+        // Calculate adjustment offset from default "green center" (0.325)
+        let defaultGreenCenter = (defaultThresholds.shutdownThreshold + defaultThresholds.greenThreshold) / 2.0
+        let adjustmentOffset = baselineArousal - defaultGreenCenter
+
+        // Apply conservative adjustment (limit to ±0.15 to avoid extreme miscalibration)
+        let clampedOffset = min(max(adjustmentOffset, -0.15), 0.15)
+
+        // Apply both baseline and diagnosis adjustments
+        // Diagnosis multipliers increase thresholds (more tolerance for high arousal behaviors)
+        let diagnosisMultiplier = (diagnosisAdjustments.movementThresholdMultiplier +
+                                   diagnosisAdjustments.vocalThresholdMultiplier) / 2.0
+
+        // Adjust thresholds while maintaining safety margins
+        return ArousalThresholds(
+            shutdownThreshold: max(defaultThresholds.shutdownThreshold + clampedOffset, 0.10),
+            greenThreshold: max((defaultThresholds.greenThreshold + clampedOffset) * diagnosisMultiplier, 0.30),
+            yellowThreshold: max((defaultThresholds.yellowThreshold + (clampedOffset * 0.7)) * diagnosisMultiplier, 0.50),
+            orangeThreshold: defaultThresholds.orangeThreshold  // Never adjust red zone - always conservative
+        )
     }
 
     private func calculateConfidence(
@@ -334,6 +451,27 @@ struct ArousalReading: Identifiable {
     let band: ArousalBand
     let confidence: Double
     let timestamp: Date
+}
+
+// MARK: - Arousal Thresholds
+
+/// Personalized arousal band thresholds for a specific child
+struct ArousalThresholds {
+    let shutdownThreshold: Double   // Below this = shutdown
+    let greenThreshold: Double       // Below this = green (if above shutdown)
+    let yellowThreshold: Double      // Below this = yellow (if above green)
+    let orangeThreshold: Double      // Below this = orange, above = red
+
+    var description: String {
+        return """
+        Arousal Thresholds:
+          Shutdown: < \(String(format: "%.2f", shutdownThreshold))
+          Green: < \(String(format: "%.2f", greenThreshold))
+          Yellow: < \(String(format: "%.2f", yellowThreshold))
+          Orange: < \(String(format: "%.2f", orangeThreshold))
+          Red: >= \(String(format: "%.2f", orangeThreshold))
+        """
+    }
 }
 
 // MARK: - Mock Classifier (for testing without camera)

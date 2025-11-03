@@ -12,6 +12,49 @@
 import Foundation
 import NaturalLanguage
 
+/// Available Groq models with different capabilities
+enum GroqModel: String {
+    case llama3_1_70b = "llama-3.1-70b-versatile"      // Best reasoning, pattern detection (slower)
+    case llama3_1_8b = "llama-3.1-8b-instant"          // Fast, good quality (real-time)
+    case mixtral_8x7b = "mixtral-8x7b-32768"           // Balanced alternative
+
+    var displayName: String {
+        switch self {
+        case .llama3_1_70b: return "Llama 3.1 70B (Best Quality)"
+        case .llama3_1_8b: return "Llama 3.1 8B (Fastest)"
+        case .mixtral_8x7b: return "Mixtral 8x7B (Balanced)"
+        }
+    }
+
+    var description: String {
+        switch self {
+        case .llama3_1_70b:
+            return "Best for complex reasoning, pattern detection, and detailed analysis. Slower but smarter."
+        case .llama3_1_8b:
+            return "Ultra-fast responses, perfect for real-time coaching. Good quality with minimal latency."
+        case .mixtral_8x7b:
+            return "Balanced speed and quality. Good alternative to Llama models."
+        }
+    }
+}
+
+/// Context for model selection
+enum ModelContext {
+    case realTimeSuggestions  // Use fast model (8B)
+    case deepAnalysis         // Use smart model (70B)
+    case sessionReport        // Use smart model (70B)
+    case askNeuroGuide        // Use smart model (70B)
+
+    var recommendedModel: GroqModel {
+        switch self {
+        case .realTimeSuggestions:
+            return .llama3_1_8b  // Speed priority
+        case .deepAnalysis, .sessionReport, .askNeuroGuide:
+            return .llama3_1_70b  // Quality priority
+        }
+    }
+}
+
 /// Service for generating coaching suggestions using on-device LLM
 @available(iOS 18.0, *)
 class LLMCoachingService {
@@ -25,7 +68,10 @@ class LLMCoachingService {
     private let isAppleIntelligenceAvailable: Bool
     private var groqAPIKey: String?
     private let groqAPIURL = "https://api.groq.com/openai/v1/chat/completions"
-    private let groqModel = "llama-3.1-8b-instant"  // Ultra-fast Groq model for real-time suggestions
+
+    // Model configuration
+    private var defaultModel: GroqModel = .llama3_1_70b  // Default to best quality
+    private var preferFastModel: Bool = false  // Set to true to prefer speed over quality
 
     // Caching for optimization
     private var lastArousalBand: ArousalBand?
@@ -56,7 +102,7 @@ class LLMCoachingService {
         if isAppleIntelligenceAvailable {
             print("✅ Apple Intelligence available - using on-device LLM")
         } else if groqAPIKey != nil {
-            print("✅ Groq API configured - using Llama 3.1 8B Instant")
+            print("✅ Groq API configured - Default model: \(defaultModel.displayName)")
         } else {
             print("⚠️ No LLM available - will use rule-based suggestions")
         }
@@ -69,6 +115,36 @@ class LLMCoachingService {
         self.groqAPIKey = apiKey
         saveAPIKey(apiKey)
         print("✅ Groq API key configured")
+    }
+
+    /// Set the default model for all requests
+    /// - Parameter model: The Groq model to use as default
+    func setDefaultModel(_ model: GroqModel) {
+        self.defaultModel = model
+        print("🔧 Default model set to: \(model.displayName)")
+    }
+
+    /// Enable fast model preference for real-time scenarios
+    /// When enabled, always uses fast model (8B) regardless of context
+    func setPreferFastModel(_ enabled: Bool) {
+        self.preferFastModel = enabled
+        print("🔧 Prefer fast model: \(enabled ? "enabled" : "disabled")")
+    }
+
+    /// Get the current model being used
+    func getCurrentModel() -> GroqModel {
+        return defaultModel
+    }
+
+    /// Select appropriate model based on context
+    private func selectModel(for context: ModelContext) -> GroqModel {
+        // If fast model preference is enabled, always use fast model
+        if preferFastModel {
+            return .llama3_1_8b
+        }
+
+        // Otherwise, use context-appropriate model or default
+        return context.recommendedModel
     }
 
     private func loadAPIKey() {
@@ -92,14 +168,18 @@ class LLMCoachingService {
         behaviors: [ChildBehavior],
         environmentContext: EnvironmentContext,
         parentStress: StressLevel,
-        childName: String?
+        childName: String?,
+        sessionContext: SessionContext? = nil,
+        modelContext: ModelContext = .realTimeSuggestions
     ) async -> [CoachingSuggestionWithResource] {
         let suggestions = await generateSuggestions(
             arousalBand: arousalBand,
             behaviors: behaviors,
             environmentContext: environmentContext,
             parentStress: parentStress,
-            childName: childName
+            childName: childName,
+            sessionContext: sessionContext,
+            modelContext: modelContext
         )
 
         return suggestions.map { enrichWithResource($0) }
@@ -111,7 +191,9 @@ class LLMCoachingService {
         behaviors: [ChildBehavior],
         environmentContext: EnvironmentContext,
         parentStress: StressLevel,
-        childName: String?
+        childName: String?,
+        sessionContext: SessionContext? = nil,
+        modelContext: ModelContext = .realTimeSuggestions
     ) async -> [String] {
         // Optimization: Check if arousal band has changed
         // If same as last request and we have cached suggestions, return them
@@ -135,7 +217,8 @@ class LLMCoachingService {
                     behaviors: behaviors,
                     environmentContext: environmentContext,
                     parentStress: parentStress,
-                    childName: childName
+                    childName: childName,
+                    sessionContext: sessionContext
                 )
                 updateCache(arousalBand: arousalBand, suggestions: suggestions)
                 return suggestions
@@ -144,14 +227,17 @@ class LLMCoachingService {
 
         // Priority 2: Use Groq API if configured (cloud)
         if let apiKey = groqAPIKey, !apiKey.isEmpty {
-            print("🤖 Calling Groq API for coaching suggestions...")
+            let selectedModel = selectModel(for: modelContext)
+            print("🤖 Calling Groq API - Model: \(selectedModel.displayName)")
             do {
                 let suggestions = try await generateGroqSuggestions(
                     arousalBand: arousalBand,
                     behaviors: behaviors,
                     environmentContext: environmentContext,
                     parentStress: parentStress,
-                    childName: childName
+                    childName: childName,
+                    sessionContext: sessionContext,
+                    model: selectedModel
                 )
                 print("✅ Groq returned \(suggestions.count) suggestions")
                 updateCache(arousalBand: arousalBand, suggestions: suggestions)
@@ -191,7 +277,8 @@ class LLMCoachingService {
         behaviors: [ChildBehavior],
         environmentContext: EnvironmentContext,
         parentStress: StressLevel,
-        childName: String?
+        childName: String?,
+        sessionContext: SessionContext?
     ) async -> [String] {
         // Build context prompt for LLM
         let prompt = buildContextPrompt(
@@ -199,7 +286,8 @@ class LLMCoachingService {
             behaviors: behaviors,
             environmentContext: environmentContext,
             parentStress: parentStress,
-            childName: childName
+            childName: childName,
+            sessionContext: sessionContext
         )
 
         // TODO: Use Apple Intelligence API when available
@@ -220,7 +308,9 @@ class LLMCoachingService {
         behaviors: [ChildBehavior],
         environmentContext: EnvironmentContext,
         parentStress: StressLevel,
-        childName: String?
+        childName: String?,
+        sessionContext: SessionContext?,
+        model: GroqModel
     ) async throws -> [String] {
         guard let apiKey = groqAPIKey else {
             throw LLMError.noAPIKey
@@ -232,26 +322,27 @@ class LLMCoachingService {
             behaviors: behaviors,
             environmentContext: environmentContext,
             parentStress: parentStress,
-            childName: childName
+            childName: childName,
+            sessionContext: sessionContext
         )
 
-        // Call Groq API
-        let suggestions = try await callGroqAPI(prompt: prompt, apiKey: apiKey)
+        // Call Groq API with selected model
+        let suggestions = try await callGroqAPI(prompt: prompt, apiKey: apiKey, model: model)
         return suggestions
     }
 
-    private func callGroqAPI(prompt: String, apiKey: String) async throws -> [String] {
+    private func callGroqAPI(prompt: String, apiKey: String, model: GroqModel) async throws -> [String] {
         guard let url = URL(string: groqAPIURL) else {
             throw LLMError.invalidURL
         }
 
         print("📤 Sending request to Groq API...")
-        print("   Model: \(groqModel)")
+        print("   Model: \(model.rawValue)")
         print("   Prompt length: \(prompt.count) chars")
 
         // Build request body (OpenAI-compatible format)
         let requestBody: [String: Any] = [
-            "model": groqModel,
+            "model": model.rawValue,
             "messages": [
                 [
                     "role": "user",
@@ -451,51 +542,115 @@ class LLMCoachingService {
         behaviors: [ChildBehavior],
         environmentContext: EnvironmentContext,
         parentStress: StressLevel,
-        childName: String?
+        childName: String?,
+        sessionContext: SessionContext?
     ) -> String {
         var prompt = """
-        You are a professional neurodiversity-affirming specialist providing evidence-based guidance to a parent supporting their child with special needs (ASD, ADHD, GDD, SPD, etc.).
-        Each child will be at different stages of autism specturm and have unique sensory processing needs.
+        You are a compassionate neurodiversity-affirming coach providing real-time, evidence-based guidance to a parent supporting their neurodivergent child during a co-regulation session.
 
-        Clinical Assessment:
-        - Arousal regulation state: \(arousalBand.displayName)
-        - Observable behaviors: \(behaviors.map { $0.displayName }.joined(separator: ", "))
-        - Environmental factors: \(describeEnvironment(environmentContext))
-        - Caregiver stress indicators: \(parentStress.displayName)
         """
 
-        if let name = childName {
-            prompt += "\n- Child: \(name)"
+        // Add child profile if available
+        if let context = sessionContext, let profile = context.childProfile {
+            prompt += """
+            CHILD PROFILE:
+            - Name: \(profile.name), Age: \(profile.age)
+            - Diagnosis: \(profile.diagnosisInfo?.primaryDiagnosis.displayName ?? "Not specified")
+            - Communication: \(profile.communicationMode.description)
+            """
+
+            if !profile.triggers.isEmpty {
+                prompt += "\n- Known triggers: \(profile.triggers.prefix(3).map { $0.description }.joined(separator: ", "))"
+            }
+
+            if !profile.soothingStrategies.isEmpty {
+                prompt += "\n- Effective strategies: \(profile.soothingStrategies.prefix(3).map { $0.description }.joined(separator: ", "))"
+            }
+
+            prompt += "\n\n"
+        } else if let name = childName {
+            prompt += "CHILD: \(name)\n\n"
+        }
+
+        // Add session context if available
+        if let context = sessionContext {
+            prompt += """
+            SESSION CONTEXT:
+            - Duration: \(context.durationMinutes) minutes
+            - Behavior trend: \(context.behaviorSummary)
+
+            AROUSAL TIMELINE (Recent observations):
+            \(context.arousalTimelineFormatted)
+
+            """
+
+            // Add patterns if detected
+            if !context.patterns.isEmpty {
+                prompt += """
+                PATTERNS OBSERVED THIS SESSION:
+                \(context.patternsFormatted)
+
+                """
+            }
+
+            // Add previous suggestions to avoid repetition
+            if !context.recentSuggestions.isEmpty {
+                prompt += """
+                PREVIOUS SUGGESTIONS (avoid repeating):
+                \(context.recentSuggestionsFormatted)
+
+                """
+            }
+
+            // Add co-regulation moments
+            if !context.coRegulationEvents.isEmpty {
+                prompt += """
+                CO-REGULATION MOMENTS:
+                \(context.coRegulationEventsFormatted)
+
+                """
+            }
         }
 
         prompt += """
+        CURRENT SITUATION:
+        - Arousal state: \(arousalBand.displayName)
+        - Observable behaviors: \(behaviors.map { $0.displayName }.joined(separator: ", "))
+        - Environment: \(describeEnvironment(environmentContext))
+        - Parent stress level: \(parentStress.displayName)
 
-        Provide 3 professional, evidence-based intervention recommendations:
+        Based on:
+        1. The child's known profile and what works for them
+        2. The session trends and patterns observed so far
+        3. What has already been suggested (avoid repetition unless reinforcing success)
+        4. The trajectory (escalating, improving, or stable)
+        5. Co-regulation quality between parent and child
+
+        Provide 3 specific, actionable coaching suggestions:
 
         Format requirements:
-        - Start each suggestion with an action verb
-        - Use clear, professional non-clinical, empathetic language
-        - Be direct and specific (avoid casual phrasing)
-        - Each recommendation: 1-2 sentences maximum
-        - Focus on immediate, practical interventions
+        - Start each with an action verb
+        - Use warm, clear, professional language
+        - 1-2 sentences maximum per suggestion
+        - Be immediately actionable
+        - If progress is being made, acknowledge it and build on success
+        - If previous suggestions haven't helped, adapt your approach
 
         Principles:
-        - Neurodiversity-affirming approach (no ABA/compliance terminology)
-        - Prioritize autonomic nervous system regulation
+        - Neurodiversity-affirming (no ABA/compliance terminology)
+        - Prioritize nervous system regulation
         - Consider sensory processing needs
-        - Support co-regulation between caregiver and child
+        - Support parent-child co-regulation
         - Evidence-based, trauma-informed strategies
+        - Affirm parent efforts
 
         Priority order:
         1. Most urgent safety/regulation need
         2. Environmental or sensory modification
-        3. Caregiver self-regulation support
+        3. Parent self-regulation support
 
         Recommendations:
-
-        For reference links make sure that links are from reputable autism organizations such as Autism Speaks or National Autistic Society.
         """
-        
 
         return prompt
     }
