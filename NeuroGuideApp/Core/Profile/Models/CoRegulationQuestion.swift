@@ -63,7 +63,7 @@ enum CoRegulationQuestion: Int, CaseIterable, Identifiable {
         case .physicalProximity:
             return "When your child is overwhelmed, what do they usually seek from you?"
         case .recoveryTime:
-            return "How long does it typically take your child to return to baseline after dysregulation?"
+            return "After a tough moment, how long does it usually take for your child to feel calm again?"
         case .postRegulationConnection:
             return "After a dysregulation episode, how does your child reconnect?"
         case .parentConfidence:
@@ -89,7 +89,7 @@ enum CoRegulationQuestion: Int, CaseIterable, Identifiable {
         case .physicalProximity:
             return "Choose the one that feels true most of the time."
         case .recoveryTime:
-            return nil
+            return "Choose the option that fits most of the time."
         case .postRegulationConnection:
             return nil
         case .parentConfidence:
