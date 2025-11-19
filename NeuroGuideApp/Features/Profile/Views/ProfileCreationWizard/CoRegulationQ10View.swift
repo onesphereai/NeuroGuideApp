@@ -13,55 +13,57 @@ struct CoRegulationQ10View: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: NGSpacing.lg) {
-            // Question text
-            VStack(alignment: .leading, spacing: NGSpacing.sm) {
-                Text(CoRegulationQuestion.specificScenarios.questionText)
-                    .font(.ngTitle3)
-                    .foregroundColor(.ngTextPrimary)
+            // Question heading
+            Text("10. Specific Scenarios (Optional)")
+                .font(.ngTitle3)
+                .foregroundColor(.ngTextPrimary)
 
-                if let helperText = CoRegulationQuestion.specificScenarios.helperText {
-                    Text(helperText)
-                        .font(.ngSubheadline)
-                        .foregroundColor(.ngTextSecondary)
-                }
-            }
-
-            // Scenario text fields
+            // Scenario text fields with enhanced rows
             VStack(alignment: .leading, spacing: NGSpacing.md) {
-                ScenarioTextRow(
-                    label: "Morning transitions:",
+                EnhancedScenarioTextRow(
+                    label: "Morning transitions",
+                    subtitle: "Getting out the door, starting the day, breakfast routine",
+                    placeholder: "E.g., visual schedule, extra time, calm music...",
                     text: Binding(
                         get: { viewModel.coRegulationAssessment.morningTransitionsStrategy ?? "" },
                         set: { viewModel.coRegulationAssessment.morningTransitionsStrategy = $0.isEmpty ? nil : $0 }
                     )
                 )
 
-                ScenarioTextRow(
-                    label: "Bedtime routines:",
+                EnhancedScenarioTextRow(
+                    label: "Bedtime routines",
+                    subtitle: "Wind down, brushing teeth, settling in for sleep",
+                    placeholder: "E.g., dim lights, white noise, same order every night...",
                     text: Binding(
                         get: { viewModel.coRegulationAssessment.bedtimeRoutinesStrategy ?? "" },
                         set: { viewModel.coRegulationAssessment.bedtimeRoutinesStrategy = $0.isEmpty ? nil : $0 }
                     )
                 )
 
-                ScenarioTextRow(
-                    label: "Public meltdowns:",
+                EnhancedScenarioTextRow(
+                    label: "Public meltdowns",
+                    subtitle: "Store, playground, crowded spaces, out in the community",
+                    placeholder: "E.g., leaving quickly, firm hug, quiet corner...",
                     text: Binding(
                         get: { viewModel.coRegulationAssessment.publicMeltdownsStrategy ?? "" },
                         set: { viewModel.coRegulationAssessment.publicMeltdownsStrategy = $0.isEmpty ? nil : $0 }
                     )
                 )
 
-                ScenarioTextRow(
-                    label: "Sibling conflicts:",
+                EnhancedScenarioTextRow(
+                    label: "Sibling conflicts",
+                    subtitle: "Fights over toys, attention, fairness struggles",
+                    placeholder: "E.g., separate first, validate both, redirect...",
                     text: Binding(
                         get: { viewModel.coRegulationAssessment.siblingConflictsStrategy ?? "" },
                         set: { viewModel.coRegulationAssessment.siblingConflictsStrategy = $0.isEmpty ? nil : $0 }
                     )
                 )
 
-                ScenarioTextRow(
-                    label: "Unexpected changes:",
+                EnhancedScenarioTextRow(
+                    label: "Unexpected changes",
+                    subtitle: "Plans shifting, surprises, disruptions to routine",
+                    placeholder: "E.g., prep ahead when possible, simple explanation, extra patience...",
                     text: Binding(
                         get: { viewModel.coRegulationAssessment.unexpectedChangesStrategy ?? "" },
                         set: { viewModel.coRegulationAssessment.unexpectedChangesStrategy = $0.isEmpty ? nil : $0 }

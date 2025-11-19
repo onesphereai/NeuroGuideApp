@@ -69,7 +69,7 @@ enum CoRegulationQuestion: Int, CaseIterable, Identifiable {
         case .parentConfidence:
             return "How confident do you feel in co-regulating with your child?"
         case .supportNeeds:
-            return "What would help you most in supporting your child's regulation?"
+            return "What would help you feel more confident supporting your child?"
         case .specificScenarios:
             return "What typically helps in these situations?"
         }
@@ -95,7 +95,7 @@ enum CoRegulationQuestion: Int, CaseIterable, Identifiable {
         case .parentConfidence:
             return nil
         case .supportNeeds:
-            return nil
+            return "Choose all that apply — you're not alone in this."
         case .specificScenarios:
             return "Optional - share what works in common challenging moments"
         }
