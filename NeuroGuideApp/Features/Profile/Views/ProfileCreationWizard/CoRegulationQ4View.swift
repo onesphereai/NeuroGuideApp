@@ -18,6 +18,14 @@ struct CoRegulationQ4View: View {
                 .font(.ngTitle3)
                 .foregroundColor(.ngTextPrimary)
 
+            // Helper text
+            if let helperText = CoRegulationQuestion.communicationApproach.helperText {
+                Text(helperText)
+                    .font(.ngSubheadline)
+                    .foregroundColor(.ngTextSecondary)
+                    .italic()
+            }
+
             // Options list
             VStack(alignment: .leading, spacing: NGSpacing.sm) {
                 ForEach(CommunicationApproach.allCases, id: \.self) { approach in
