@@ -133,11 +133,11 @@ enum ParentSelfRegulationStrategy: String, Codable, CaseIterable {
 }
 
 enum CommunicationApproach: String, Codable, CaseIterable {
-    case minimalVerbal = "Minimal verbal communication"
-    case simpleDirectives = "Simple, calm directives"
-    case noTalkingPresence = "No talking, just presence"
-    case visualSupports = "Visual supports/AAC"
-    case dependsSituation = "Depends on the situation"
+    case minimalVerbal = "Very little talking"
+    case simpleDirectives = "Simple, calm directions"
+    case noTalkingPresence = "No talking — just being present"
+    case visualSupports = "Visual supports (pictures, gestures, AAC)"
+    case dependsSituation = "It depends on the situation"
     case other = "Other"
 }
 

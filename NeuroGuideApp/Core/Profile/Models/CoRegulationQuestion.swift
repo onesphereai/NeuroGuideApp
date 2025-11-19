@@ -59,7 +59,7 @@ enum CoRegulationQuestion: Int, CaseIterable, Identifiable {
         case .parentSelfRegulation:
             return "When your child is overwhelmed, how do you usually manage your own emotions?"
         case .communicationApproach:
-            return "What communication approach works best when your child is upset?"
+            return "When your child is upset, what type of communication helps them most?"
         case .physicalProximity:
             return "During dysregulation, does your child typically:"
         case .recoveryTime:
@@ -85,7 +85,7 @@ enum CoRegulationQuestion: Int, CaseIterable, Identifiable {
         case .parentSelfRegulation:
             return "Choose all that apply. No right or wrong answers — every parent is doing their best."
         case .communicationApproach:
-            return nil
+            return "Choose the option that feels closest — every child is different."
         case .physicalProximity:
             return nil
         case .recoveryTime:
