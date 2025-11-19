@@ -14,7 +14,12 @@ struct CoRegulationStepView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 // Q1: Current Co-Regulation Practices
-                questionSection(number: 1, title: "What do you typically do when your child becomes dysregulated?") {
+                questionSection(number: 1, title: "When your child becomes overwhelmed or dysregulated, how do you usually respond?") {
+                    Text("Select all that apply. No judgment — every parent does their best.")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .padding(.bottom, 8)
+                    
                     ForEach(CoRegulationPractice.allCases, id: \.self) { practice in
                         if practice != .other {
                             CheckboxRow(
