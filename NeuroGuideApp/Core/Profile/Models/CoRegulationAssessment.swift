@@ -152,11 +152,11 @@ enum PhysicalProximityPreference: String, Codable, CaseIterable {
 }
 
 enum RecoveryTime: String, Codable, CaseIterable {
-    case zeroToFive = "0-5 minutes"
-    case fiveToFifteen = "5-15 minutes"
-    case fifteenToThirty = "15-30 minutes"
+    case zeroToFive = "0–5 minutes"
+    case fiveToFifteen = "5–15 minutes"
+    case fifteenToThirty = "15–30 minutes"
     case thirtyPlus = "30+ minutes"
-    case variesGreatly = "It varies greatly"
+    case variesALot = "It varies a lot / depends on the situation"
 }
 
 enum PostRegulationBehavior: String, Codable, CaseIterable {
