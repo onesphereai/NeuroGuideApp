@@ -89,7 +89,16 @@ struct CoRegulationStepView: View {
                 Divider()
 
                 // Q3: Parent's Self-Regulation
-                questionSection(number: 3, title: "How do you typically regulate your own emotions when your child is dysregulated?") {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("3. When your child is overwhelmed, how do you usually manage your own emotions?")
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                    
+                    Text("Choose all that apply. No right or wrong answers — every parent is doing their best.")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .italic()
+                    
                     ForEach(ParentSelfRegulationStrategy.allCases, id: \.self) { strategy in
                         if strategy != .other {
                             CheckboxRow(
@@ -115,6 +124,9 @@ struct CoRegulationStepView: View {
                         .padding(.leading, 32)
                     }
                 }
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(12)
 
                 Divider()
 
