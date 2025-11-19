@@ -36,6 +36,7 @@ struct CoRegulationAssessment: Codable {
 
     // MARK: - Question 5: Physical Proximity Preferences
     var physicalProximityPreference: PhysicalProximityPreference?
+    var physicalProximityPreferenceOther: String?
 
     // MARK: - Question 6: Recovery Time Patterns
     var recoveryTime: RecoveryTime?
@@ -71,6 +72,7 @@ struct CoRegulationAssessment: Codable {
         self.communicationApproach = nil
         self.communicationApproachOther = nil
         self.physicalProximityPreference = nil
+        self.physicalProximityPreferenceOther = nil
         self.recoveryTime = nil
         self.postRegulationConnection = []
         self.postRegulationConnectionOther = nil
@@ -142,10 +144,11 @@ enum CommunicationApproach: String, Codable, CaseIterable {
 }
 
 enum PhysicalProximityPreference: String, Codable, CaseIterable {
-    case seekCloseness = "Seek physical closeness"
-    case needSpace = "Need space/distance"
-    case varies = "It varies depending on the trigger"
-    case unsure = "Unsure/still learning"
+    case seekCloseness = "They come close or seek physical comfort"
+    case needSpace = "They need space or distance"
+    case varies = "It varies depending on what's happening"
+    case unsure = "I'm not sure / still learning"
+    case other = "Other"
 }
 
 enum RecoveryTime: String, Codable, CaseIterable {
