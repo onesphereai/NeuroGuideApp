@@ -14,6 +14,10 @@ struct CoRegulationAssessment: Codable {
     var currentPracticesOther: String?
 
     // MARK: - Question 2: Effective Calming Strategies (1-5 rating)
+    // NEW: Comprehensive strategy ratings (replaces individual properties)
+    var strategyRatings: [CalmingStrategyRating] = []
+    
+    // DEPRECATED: Legacy individual properties (kept for migration)
     var deepPressureRating: Int?  // 1-5
     var rhythmicMovementRating: Int?  // 1-5
     var quietEnvironmentRating: Int?  // 1-5
@@ -61,6 +65,7 @@ struct CoRegulationAssessment: Codable {
     init() {
         self.currentPractices = []
         self.currentPracticesOther = nil
+        self.strategyRatings = CalmingStrategyFactory.createDefaultStrategies()
         self.parentSelfRegulation = []
         self.parentSelfRegulationOther = nil
         self.communicationApproach = nil
@@ -115,12 +120,15 @@ enum CoRegulationPractice: String, Codable, CaseIterable {
 }
 
 enum ParentSelfRegulationStrategy: String, Codable, CaseIterable {
-    case deepBreaths = "Take deep breaths"
+    case deepBreaths = "Take slow, deep breaths"
     case stepAway = "Step away briefly if safe"
-    case groundingTechniques = "Use grounding techniques"
-    case remindTemporary = "Remind myself this is temporary"
+    case groundingTechniques = "Use grounding techniques (touch, noticing surroundings)"
+    case remindMomentPass = "Remind myself this moment will pass"
+    case calmingSelfTalk = "Use calming self-talk"
     case seekSupport = "Seek support from partner/family"
-    case struggle = "I struggle with this"
+    case textCallSupport = "Text or call someone for support"
+    case reactBeforeMean = "I react before I mean to"
+    case struggleStayCalm = "I struggle to stay calm in the moment"
     case other = "Other"
 }
 
