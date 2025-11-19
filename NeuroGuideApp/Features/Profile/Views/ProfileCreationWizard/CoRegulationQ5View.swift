@@ -18,14 +18,40 @@ struct CoRegulationQ5View: View {
                 .font(.ngTitle3)
                 .foregroundColor(.ngTextPrimary)
 
+            // Helper text
+            if let helperText = CoRegulationQuestion.physicalProximity.helperText {
+                Text(helperText)
+                    .font(.ngSubheadline)
+                    .foregroundColor(.ngTextSecondary)
+                    .italic()
+            }
+
             // Options list
             VStack(alignment: .leading, spacing: NGSpacing.sm) {
                 ForEach(PhysicalProximityPreference.allCases, id: \.self) { preference in
-                    RadioRow(
-                        label: preference.rawValue,
-                        isSelected: viewModel.coRegulationAssessment.physicalProximityPreference == preference,
-                        action: { viewModel.coRegulationAssessment.physicalProximityPreference = preference }
-                    )
+                    if preference != .other {
+                        RadioRow(
+                            label: preference.rawValue,
+                            isSelected: viewModel.coRegulationAssessment.physicalProximityPreference == preference,
+                            action: { viewModel.coRegulationAssessment.physicalProximityPreference = preference }
+                        )
+                    }
+                }
+
+                // Other option with text field
+                RadioRow(
+                    label: "Other:",
+                    isSelected: viewModel.coRegulationAssessment.physicalProximityPreference == .other,
+                    action: { viewModel.coRegulationAssessment.physicalProximityPreference = .other }
+                )
+
+                if viewModel.coRegulationAssessment.physicalProximityPreference == .other {
+                    TextField("Please specify", text: Binding(
+                        get: { viewModel.coRegulationAssessment.physicalProximityPreferenceOther ?? "" },
+                        set: { viewModel.coRegulationAssessment.physicalProximityPreferenceOther = $0 }
+                    ))
+                    .textFieldStyle(.roundedBorder)
+                    .padding(.leading, 32)
                 }
             }
 
