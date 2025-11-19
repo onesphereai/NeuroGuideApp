@@ -18,6 +18,13 @@ struct CoRegulationQ7View: View {
                 .font(.ngTitle3)
                 .foregroundColor(.ngTextPrimary)
 
+            // Helper text
+            if let helperText = CoRegulationQuestion.postRegulationConnection.helperText {
+                Text(helperText)
+                    .font(.ngBody)
+                    .foregroundColor(.ngTextSecondary)
+            }
+
             // Options list
             VStack(alignment: .leading, spacing: NGSpacing.sm) {
                 ForEach(PostRegulationBehavior.allCases, id: \.self) { behavior in
