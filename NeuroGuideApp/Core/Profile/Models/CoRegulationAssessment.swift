@@ -160,11 +160,11 @@ enum RecoveryTime: String, Codable, CaseIterable {
 }
 
 enum PostRegulationBehavior: String, Codable, CaseIterable {
-    case returnsWithoutAcknowledgment = "Returns to activity without acknowledgment"
-    case seeksPhysicalComfort = "Seeks physical comfort"
-    case talksAboutIt = "Talks about what happened"
-    case needsQuietTime = "Needs continued quiet time"
-    case increasedClinginess = "Shows increased clinginess"
+    case returnsToActivity = "They go back to their activity without needing to talk about it"
+    case seeksCloseness = "They seek closeness or physical comfort"
+    case talksWhenReady = "They talk about what happened when they're ready"
+    case checksInSubtly = "They check in subtly (eye contact, sitting near you)"
+    case needsMoreTime = "They need more time before reconnecting"
     case other = "Other"
 }
 
