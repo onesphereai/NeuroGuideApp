@@ -93,13 +93,24 @@ struct CoRegulationAssessment: Codable {
 
 // MARK: - Supporting Enums
 
+/// Question 1 options - Updated Nov 2025 (AT-18) to include full spectrum of parent responses
 enum CoRegulationPractice: String, Codable, CaseIterable {
-    case stayCalmPresent = "Stay calm and present"
-    case calmingVoice = "Use calming voice/tone"
-    case physicalComfort = "Offer physical comfort (hugs, hand-holding)"
-    case sensoryTools = "Provide sensory tools (weighted blanket, fidgets)"
-    case quietSpace = "Create quiet space"
-    case followLead = "Follow their lead"
+    // Reactive/Stressed Responses
+    case raiseVoice = "I raise my voice or get frustrated"
+    case walkAway = "I walk away to calm myself"
+    case askToStop = "I ask them to stop or \"behave\""
+    case useTimeOut = "I use time-out / ask them to go to another room"
+    case tryDistract = "I try to distract them quickly"
+    
+    // Constructive Co-Regulation Responses
+    case stayClose = "I stay close to them"
+    case calmVoice = "I use a calm voice"
+    case physicalComfort = "I offer physical comfort (hugs, hand-holding)"
+    case nameFeelings = "I help them name their feelings"
+    case guideBreathing = "I guide their breathing or help them slow down"
+    case changeEnvironment = "I change the environment (dim lights, reduce noise)"
+    
+    // Other
     case other = "Other"
 }
 
