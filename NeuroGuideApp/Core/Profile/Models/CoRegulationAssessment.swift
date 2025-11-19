@@ -169,10 +169,10 @@ enum PostRegulationBehavior: String, Codable, CaseIterable {
 }
 
 enum SupportNeed: String, Codable, CaseIterable {
-    case understandTriggers = "Understanding their triggers better"
-    case moreStrategies = "More strategies to try"
-    case helpRegulating = "Help regulating my own emotions"
-    case supportFromOthers = "Support from others who understand"
-    case knowingNormal = "Knowing what's 'normal'"
+    case understandTriggers = "Understanding what sets them off"
+    case moreStrategies = "New strategies to try"
+    case helpRegulating = "Managing my own stress in the moment"
+    case supportFromOthers = "Connecting with other parents who get it"
+    case knowingNormal = "Knowing I'm not alone"
     case other = "Other"
 }

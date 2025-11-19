@@ -198,6 +198,33 @@ struct ScenarioTextRow: View {
     }
 }
 
+struct EnhancedScenarioTextRow: View {
+    let label: String
+    let subtitle: String
+    let placeholder: String
+    @Binding var text: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: NGSpacing.sm) {
+            Text(label)
+                .font(.ngCallout)
+                .fontWeight(.medium)
+                .foregroundColor(.ngTextPrimary)
+
+            Text(subtitle)
+                .font(.ngSubheadline)
+                .foregroundColor(.ngTextSecondary)
+
+            TextField(placeholder, text: $text, axis: .vertical)
+                .textFieldStyle(.roundedBorder)
+                .lineLimit(2...4)
+                .font(.ngBody)
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("\(label). \(subtitle)")
+    }
+}
+
 #Preview {
     NavigationView {
         CoRegulationStepView(viewModel: ProfileCreationViewModel())

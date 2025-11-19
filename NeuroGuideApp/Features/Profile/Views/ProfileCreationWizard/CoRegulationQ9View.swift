@@ -13,10 +13,18 @@ struct CoRegulationQ9View: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: NGSpacing.lg) {
-            // Question text
-            Text(CoRegulationQuestion.supportNeeds.questionText)
-                .font(.ngTitle3)
-                .foregroundColor(.ngTextPrimary)
+            // Question text and helper text
+            VStack(alignment: .leading, spacing: NGSpacing.sm) {
+                Text(CoRegulationQuestion.supportNeeds.questionText)
+                    .font(.ngTitle3)
+                    .foregroundColor(.ngTextPrimary)
+
+                if let helperText = CoRegulationQuestion.supportNeeds.helperText {
+                    Text(helperText)
+                        .font(.ngSubheadline)
+                        .foregroundColor(.ngTextSecondary)
+                }
+            }
 
             // Options list
             VStack(alignment: .leading, spacing: NGSpacing.sm) {
