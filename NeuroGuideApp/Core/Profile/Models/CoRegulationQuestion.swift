@@ -67,7 +67,7 @@ enum CoRegulationQuestion: Int, CaseIterable, Identifiable {
         case .postRegulationConnection:
             return "After your child has calmed, how do they usually reconnect with you?"
         case .parentConfidence:
-            return "How confident do you feel in co-regulating with your child?"
+            return "How confident do you feel supporting your child during tough moments?"
         case .supportNeeds:
             return "What would help you most in supporting your child's regulation?"
         case .specificScenarios:
