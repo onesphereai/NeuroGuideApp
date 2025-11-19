@@ -1,0 +1,8 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project NeuroGuideApp.xcodeproj -scheme NeuroGuideApp -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 17 Pro" clean build
+
+Build settings from command line:
+    SDKROOT = iphonesimulator26.0
+
+2025-11-18 21:53:07.990 xcodebuild[35937:4855837] Writing error result bundle to /var/folders/f7/zmxt7x_j0wg1hyzzgs2pjzk00000gn/T/ResultBundle_2025-18-11_21-53-0007.xcresult
+xcodebuild: error: 'NeuroGuideApp.xcodeproj' does not exist.

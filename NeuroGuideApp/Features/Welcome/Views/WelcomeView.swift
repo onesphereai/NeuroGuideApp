@@ -31,14 +31,14 @@ struct WelcomeView: View {
 
     var body: some View {
         ZStack {
-            // Background gradient
+            // Consistent purple gradient background
             LinearGradient(
-                gradient: Gradient(colors: [
-                    Color.blue.opacity(0.1),
-                    Color.purple.opacity(0.1)
-                ]),
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
+                colors: [
+                    Color.ngBackgroundGradientTop,
+                    Color.ngBackgroundGradientBottom
+                ],
+                startPoint: .top,
+                endPoint: .bottom
             )
             .ignoresSafeArea()
 

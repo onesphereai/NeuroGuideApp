@@ -97,8 +97,8 @@ class DiagnosisAwareArousalAdjuster {
         }
 
         // Special handling for autism diagnosis
-        if let diagnosis = profile.diagnosisInfo?.primaryDiagnosis,
-           diagnosis == .autism {
+        if let diagnosisInfo = profile.diagnosisInfo,
+           diagnosisInfo.hasDiagnosis(.autism) {
             // For autism, higher baseline movement is expected
             // Only trigger on *changes* from baseline, not absolute levels
             adjusted *= 0.8
@@ -167,8 +167,8 @@ class DiagnosisAwareArousalAdjuster {
         }
 
         // Special handling for autism (masked emotions common)
-        if let diagnosis = profile.diagnosisInfo?.primaryDiagnosis,
-           diagnosis == .autism {
+        if let diagnosisInfo = profile.diagnosisInfo,
+           diagnosisInfo.hasDiagnosis(.autism) {
             // Reduce weight of facial expression in arousal detection
             adjusted *= 0.6
         }

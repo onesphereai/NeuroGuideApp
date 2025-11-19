@@ -51,11 +51,6 @@ struct ProfileDetailView: View {
                     // Strategies Section
                     strategiesSection
 
-                    // Baseline Calibration Section
-                    if viewModel.profile.baselineCalibration != nil {
-                        baselineSection
-                    }
-
                     Spacer(minLength: 40)
                 }
                 .padding()

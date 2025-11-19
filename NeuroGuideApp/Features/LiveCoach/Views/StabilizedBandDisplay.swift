@@ -58,7 +58,7 @@ struct StabilizedBandDisplay: View {
                     ProgressView()
                         .scaleEffect(1.2)
 
-                    Text("Establishing baseline...")
+                    Text("Stabilizing readings...")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
@@ -124,7 +124,7 @@ struct StabilizedBandDisplayCompact: View {
             } else {
                 HStack(spacing: 12) {
                     ProgressView()
-                    Text("Establishing baseline...")
+                    Text("Stabilizing readings...")
                         .font(.caption)
                         .foregroundColor(.secondary)
                     Spacer()

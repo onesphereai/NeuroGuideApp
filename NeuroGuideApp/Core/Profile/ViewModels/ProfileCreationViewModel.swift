@@ -25,13 +25,16 @@ class ProfileCreationViewModel: ObservableObject {
     @Published var age: Int = 5
     @Published var pronouns: String = ""
     @Published var photoData: Data?
+    @Published var profileEmoji: String = "👧🏽"  // Default emoji
     @Published var profileColor: String = "#4A90E2"  // Default blue
 
-    // Diagnosis Info
-    @Published var selectedDiagnosis: NeurodivergentDiagnosis = .preferNotToSpecify
-    @Published var additionalDiagnoses: [NeurodivergentDiagnosis] = []
+    // Diagnosis Info - Multi-select
+    @Published var selectedDiagnoses: Set<NeurodivergentDiagnosis> = []
     @Published var diagnosisNotes: String = ""
     @Published var professionallyDiagnosed: Bool = false
+    @Published var diagnosisReportData: Data? = nil
+    @Published var reportAnalysis: String? = nil
+    @Published var isAnalyzingReport: Bool = false
 
     // Sensory Preferences (Bolt 3.2)
     @Published var sensoryPreferences: SensoryPreferences = SensoryPreferences()
@@ -45,6 +48,9 @@ class ProfileCreationViewModel: ObservableObject {
     // Triggers & Strategies (Bolt 3.3)
     @Published var triggers: [Trigger] = []
     @Published var strategies: [Strategy] = []
+
+    // Co-Regulation Assessment
+    @Published var coRegulationAssessment: CoRegulationAssessment = CoRegulationAssessment()
 
     // Calibration (will be used in Bolt 3.4)
     @Published var skipCalibration: Bool = false
@@ -80,14 +86,16 @@ class ProfileCreationViewModel: ObservableObject {
         age = profile.age
         pronouns = profile.pronouns ?? ""
         photoData = profile.photoData
+        profileEmoji = profile.profileEmoji ?? "👧🏽"
         profileColor = profile.profileColor
 
         // Diagnosis
         if let diagnosis = profile.diagnosisInfo {
-            selectedDiagnosis = diagnosis.primaryDiagnosis
-            additionalDiagnoses = diagnosis.additionalDiagnoses
+            selectedDiagnoses = Set(diagnosis.diagnoses)
             diagnosisNotes = diagnosis.notes ?? ""
             professionallyDiagnosed = diagnosis.professionallyDiagnosed
+            diagnosisReportData = diagnosis.diagnosisReportData
+            reportAnalysis = diagnosis.reportAnalysis
         }
 
         // Sensory Preferences
@@ -102,6 +110,9 @@ class ProfileCreationViewModel: ObservableObject {
         // Triggers & Strategies
         triggers = profile.triggers
         strategies = profile.soothingStrategies
+
+        // Co-Regulation Assessment
+        coRegulationAssessment = profile.coRegulationAssessment
 
         // Calibration
         skipCalibration = profile.baselineCalibration == nil
@@ -118,7 +129,7 @@ class ProfileCreationViewModel: ObservableObject {
     var canGoNext: Bool {
         switch currentStep {
         case .basicInfo:
-            return !name.isEmpty && age >= 2 && age <= 8
+            return !name.isEmpty && age >= 2 && age <= 18
         case .diagnosis:
             return true // Optional step
         case .sensoryPreferences:
@@ -126,6 +137,8 @@ class ProfileCreationViewModel: ObservableObject {
         case .communication:
             return true // Optional step
         case .triggers:
+            return true // Optional step
+        case .coRegulation:
             return true // Optional step
         case .calibration:
             return true // Can skip calibration
@@ -187,12 +200,13 @@ class ProfileCreationViewModel: ObservableObject {
 
             // Create diagnosis info if provided
             let diagnosisInfo: DiagnosisInfo? = {
-                if selectedDiagnosis != .preferNotToSpecify {
+                if !selectedDiagnoses.isEmpty && !(selectedDiagnoses.count == 1 && selectedDiagnoses.contains(.preferNotToSpecify)) {
                     return DiagnosisInfo(
-                        primaryDiagnosis: selectedDiagnosis,
-                        additionalDiagnoses: additionalDiagnoses,
+                        diagnoses: Array(selectedDiagnoses),
                         notes: diagnosisNotes.isEmpty ? nil : diagnosisNotes,
-                        professionallyDiagnosed: professionallyDiagnosed
+                        professionallyDiagnosed: professionallyDiagnosed,
+                        diagnosisReportData: diagnosisReportData,
+                        reportAnalysis: reportAnalysis
                     )
                 }
                 return nil
@@ -206,6 +220,7 @@ class ProfileCreationViewModel: ObservableObject {
                     age: age,
                     pronouns: pronouns.isEmpty ? nil : pronouns,
                     photoData: photoData,
+                    profileEmoji: profileEmoji.isEmpty ? nil : profileEmoji,
                     diagnosisInfo: diagnosisInfo,
                     profileColor: profileColor
                 )
@@ -218,6 +233,7 @@ class ProfileCreationViewModel: ObservableObject {
                     age: age,
                     pronouns: pronouns.isEmpty ? nil : pronouns,
                     photoData: photoData,
+                    profileEmoji: profileEmoji.isEmpty ? nil : profileEmoji,
                     diagnosisInfo: diagnosisInfo,
                     profileColor: profileColor
                 )
@@ -240,6 +256,9 @@ class ProfileCreationViewModel: ObservableObject {
             profile.triggers = triggers
             profile.soothingStrategies = strategies
 
+            // Add co-regulation assessment
+            profile.coRegulationAssessment = coRegulationAssessment
+
             // Save profile (create or update)
             if isEditingExistingProfile {
                 try await profileManager.updateProfile(profile: profile)
@@ -256,6 +275,42 @@ class ProfileCreationViewModel: ObservableObject {
         }
     }
 
+    // MARK: - Diagnosis Report Management
+
+    /// Analyze diagnosis report using LLM
+    func analyzeReport(reportData: Data) async {
+        isAnalyzingReport = true
+        defer { isAnalyzingReport = false }
+
+        do {
+            // TODO: Implement actual LLM analysis
+            // For now, we'll create a placeholder
+            let analysis = """
+            Report appears to be a diagnosis document.
+
+            Key observations:
+            - Document contains medical/clinical information
+            - Appears to be related to neurodevelopmental assessment
+
+            Recommendations:
+            - Review with healthcare provider
+            - Consider discussed strategies in care plan
+            """
+
+            reportAnalysis = analysis
+        } catch {
+            print("Error analyzing report: \(error.localizedDescription)")
+            reportAnalysis = nil
+        }
+    }
+
+    /// Check if document appears to be a diagnosis report
+    func isDiagnosisReport(_ data: Data) -> Bool {
+        // Basic check - in production, you'd use proper document analysis
+        // For now, just check if it's a reasonable size
+        return data.count > 1000 && data.count < 10_000_000  // Between 1KB and 10MB
+    }
+
     // MARK: - Photo Management
 
     func setPhoto(_ data: Data?) {
@@ -263,18 +318,7 @@ class ProfileCreationViewModel: ObservableObject {
     }
 
     // MARK: - Diagnosis Management
-
-    func toggleAdditionalDiagnosis(_ diagnosis: NeurodivergentDiagnosis) {
-        if let index = additionalDiagnoses.firstIndex(of: diagnosis) {
-            additionalDiagnoses.remove(at: index)
-        } else {
-            additionalDiagnoses.append(diagnosis)
-        }
-    }
-
-    func isAdditionalDiagnosisSelected(_ diagnosis: NeurodivergentDiagnosis) -> Bool {
-        return additionalDiagnoses.contains(diagnosis)
-    }
+    // Note: Diagnosis selection is now handled directly via the Set in DiagnosisStepView
 
     // MARK: - Trigger Management
 
@@ -302,10 +346,11 @@ class ProfileCreationViewModel: ObservableObject {
 enum ProfileCreationStep: Int, CaseIterable {
     case basicInfo = 0
     case diagnosis = 1
-    case sensoryPreferences = 2
-    case communication = 3
-    case triggers = 4
-    case calibration = 5
+    case communication = 2
+    case triggers = 3
+    case coRegulation = 4
+    case sensoryPreferences = 5
+    case calibration = 6
 
     var title: String {
         switch self {
@@ -314,6 +359,7 @@ enum ProfileCreationStep: Int, CaseIterable {
         case .sensoryPreferences: return "Sensory Preferences"
         case .communication: return "Communication"
         case .triggers: return "Triggers & Strategies"
+        case .coRegulation: return "Co-Regulation Assessment"
         case .calibration: return "Baseline Calibration"
         }
     }
@@ -330,6 +376,8 @@ enum ProfileCreationStep: Int, CaseIterable {
             return "How does your child communicate?"
         case .triggers:
             return "What triggers dysregulation?"
+        case .coRegulation:
+            return "Help us understand what works best for you and your child"
         case .calibration:
             return "Let's capture a calm baseline (optional)"
         }

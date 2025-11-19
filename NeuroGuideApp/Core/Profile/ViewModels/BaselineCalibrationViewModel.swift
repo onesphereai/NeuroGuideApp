@@ -31,6 +31,7 @@ class BaselineCalibrationViewModel: ObservableObject {
 
     private let calibrationService: BaselineCalibrationService
     private let profileService: ChildProfileService
+    private let settingsManager: SettingsManager
     private var cancellables = Set<AnyCancellable>()
 
     private var childProfile: ChildProfile?
@@ -38,10 +39,12 @@ class BaselineCalibrationViewModel: ObservableObject {
     // MARK: - Initialization
 
     nonisolated init(
-        calibrationService: BaselineCalibrationService = BaselineCalibrationService(),
+        settingsManager: SettingsManager = SettingsManager(),
         profileService: ChildProfileService = ChildProfileManager.shared
     ) {
-        self.calibrationService = calibrationService
+        self.settingsManager = settingsManager
+        let duration = settingsManager.baselineCalibrationDuration.seconds
+        self.calibrationService = BaselineCalibrationService(recordingDuration: duration)
         self.profileService = profileService
     }
 

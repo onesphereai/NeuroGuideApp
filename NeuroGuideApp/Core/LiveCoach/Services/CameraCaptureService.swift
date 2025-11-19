@@ -54,6 +54,14 @@ class CameraCaptureService: NSObject, ObservableObject {
         captureSession.beginConfiguration()
         captureSession.sessionPreset = .medium  // 480p for balance of quality and performance
 
+        // Remove existing inputs/outputs to avoid conflicts on second setup
+        for input in captureSession.inputs {
+            captureSession.removeInput(input)
+        }
+        for output in captureSession.outputs {
+            captureSession.removeOutput(output)
+        }
+
         // Add video input
         guard let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: position) else {
             throw CameraCaptureError.deviceNotFound

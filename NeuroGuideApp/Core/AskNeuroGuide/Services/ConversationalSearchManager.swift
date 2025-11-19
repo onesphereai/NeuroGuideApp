@@ -44,15 +44,16 @@ class ConversationalSearchManager: ConversationalSearchService, ObservableObject
     // MARK: - ConversationalSearchService
 
     /// Search for content based on question
-    func search(query: Question, context: ConversationContext?) async throws -> SearchResult {
+    func search(query: Question, context: ConversationContext?, profile: ChildProfile? = nil) async throws -> SearchResult {
         var allAnswers: [ContentAnswer] = []
 
-        // 1. Generate LLM-powered answer (primary answer)
+        // 1. Generate LLM-powered answer (primary answer) with profile context
         print("🤖 Generating LLM response for: \(query.text)")
         do {
             let llmAnswer = try await llmGenerator.generateAnswer(
                 for: query.text,
-                context: context
+                context: context,
+                profile: profile
             )
             allAnswers.append(llmAnswer)
             print("✅ LLM answer generated successfully")

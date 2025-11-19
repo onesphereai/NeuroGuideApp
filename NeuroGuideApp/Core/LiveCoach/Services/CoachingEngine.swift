@@ -30,7 +30,8 @@ class CoachingEngine {
         arousalBand: ArousalBand,
         behaviors: [ChildBehavior],
         environmentContext: EnvironmentContext,
-        parentStress: StressLevel
+        parentStress: StressLevel,
+        sessionContext: SessionContext? = nil
     ) async -> [CoachingSuggestion] {
         // Try LLM-powered suggestions first (if enabled and available)
         if useLLM, #available(iOS 18.0, *) {
@@ -38,7 +39,8 @@ class CoachingEngine {
                 arousalBand: arousalBand,
                 behaviors: behaviors,
                 environmentContext: environmentContext,
-                parentStress: parentStress
+                parentStress: parentStress,
+                sessionContext: sessionContext
             )
 
             if !llmSuggestions.isEmpty {
@@ -62,7 +64,8 @@ class CoachingEngine {
         arousalBand: ArousalBand,
         behaviors: [ChildBehavior],
         environmentContext: EnvironmentContext,
-        parentStress: StressLevel
+        parentStress: StressLevel,
+        sessionContext: SessionContext?
     ) async -> [CoachingSuggestion] {
         let llmService = LLMCoachingService.shared
 
@@ -71,7 +74,8 @@ class CoachingEngine {
             behaviors: behaviors,
             environmentContext: environmentContext,
             parentStress: parentStress,
-            childName: childName
+            childName: childName,
+            sessionContext: sessionContext
         )
 
         // Convert text suggestions to CoachingSuggestion objects

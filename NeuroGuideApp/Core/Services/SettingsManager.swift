@@ -92,6 +92,42 @@ class SettingsManager: ObservableObject {
         }
     }
 
+    /// Claude API key for LLM-based arousal detection (Personalized Mode)
+    @Published var claudeAPIKey: String? {
+        didSet {
+            if let key = claudeAPIKey, !key.isEmpty {
+                KeychainHelper.save(key, forKey: SettingsKeys.claudeAPIKey)
+            } else {
+                KeychainHelper.delete(forKey: SettingsKeys.claudeAPIKey)
+            }
+        }
+    }
+
+    /// Groq API key (legacy support)
+    @Published var groqAPIKey: String? {
+        didSet {
+            if let key = groqAPIKey, !key.isEmpty {
+                KeychainHelper.save(key, forKey: SettingsKeys.groqAPIKey)
+            } else {
+                KeychainHelper.delete(forKey: SettingsKeys.groqAPIKey)
+            }
+        }
+    }
+
+    /// Arousal band analysis duration
+    @Published var arousalBandDuration: ArousalBandDuration {
+        didSet {
+            UserDefaults.standard.set(arousalBandDuration.rawValue, forKey: SettingsKeys.arousalBandDuration)
+        }
+    }
+
+    /// Baseline calibration duration
+    @Published var baselineCalibrationDuration: BaselineCalibrationDuration {
+        didSet {
+            UserDefaults.standard.set(baselineCalibrationDuration.rawValue, forKey: SettingsKeys.baselineCalibrationDuration)
+        }
+    }
+
     // MARK: - Initialization
 
     init() {
@@ -114,8 +150,18 @@ class SettingsManager: ObservableObject {
         self.offlineModeEnabled = UserDefaults.standard.object(forKey: SettingsKeys.offlineMode) as? Bool ?? true
         self.autoDownloadUpdates = UserDefaults.standard.object(forKey: SettingsKeys.autoDownload) as? Bool ?? true
 
-        let modeRaw = UserDefaults.standard.string(forKey: SettingsKeys.liveCoachMode) ?? LiveCoachMode.recordFirst.rawValue
-        self.liveCoachMode = LiveCoachMode(rawValue: modeRaw) ?? .recordFirst
+        let modeRaw = UserDefaults.standard.string(forKey: SettingsKeys.liveCoachMode) ?? LiveCoachMode.standard.rawValue
+        self.liveCoachMode = LiveCoachMode(rawValue: modeRaw) ?? .standard
+
+        let arousalDurationRaw = UserDefaults.standard.string(forKey: SettingsKeys.arousalBandDuration) ?? ArousalBandDuration.twentySeconds.rawValue
+        self.arousalBandDuration = ArousalBandDuration(rawValue: arousalDurationRaw) ?? .twentySeconds
+
+        let baselineDurationRaw = UserDefaults.standard.string(forKey: SettingsKeys.baselineCalibrationDuration) ?? BaselineCalibrationDuration.tenSeconds.rawValue
+        self.baselineCalibrationDuration = BaselineCalibrationDuration(rawValue: baselineDurationRaw) ?? .tenSeconds
+
+        // Load API keys from Keychain
+        self.claudeAPIKey = KeychainHelper.load(forKey: SettingsKeys.claudeAPIKey)
+        self.groqAPIKey = KeychainHelper.load(forKey: SettingsKeys.groqAPIKey)
     }
 
     // MARK: - Public Methods
@@ -133,7 +179,9 @@ class SettingsManager: ObservableObject {
         autoDeleteOldSessions = false
         offlineModeEnabled = true
         autoDownloadUpdates = true
-        liveCoachMode = .recordFirst
+        liveCoachMode = .standard
+        arousalBandDuration = .twentySeconds
+        baselineCalibrationDuration = .tenSeconds
     }
 
     /// Export settings as dictionary (for backup/restore)
@@ -150,7 +198,9 @@ class SettingsManager: ObservableObject {
             SettingsKeys.autoDelete: autoDeleteOldSessions,
             SettingsKeys.offlineMode: offlineModeEnabled,
             SettingsKeys.autoDownload: autoDownloadUpdates,
-            SettingsKeys.liveCoachMode: liveCoachMode.rawValue
+            SettingsKeys.liveCoachMode: liveCoachMode.rawValue,
+            SettingsKeys.arousalBandDuration: arousalBandDuration.rawValue,
+            SettingsKeys.baselineCalibrationDuration: baselineCalibrationDuration.rawValue
         ]
     }
 
@@ -194,39 +244,88 @@ class SettingsManager: ObservableObject {
            let mode = LiveCoachMode(rawValue: value) {
             liveCoachMode = mode
         }
+        if let value = settings[SettingsKeys.arousalBandDuration] as? String,
+           let duration = ArousalBandDuration(rawValue: value) {
+            arousalBandDuration = duration
+        }
+        if let value = settings[SettingsKeys.baselineCalibrationDuration] as? String,
+           let duration = BaselineCalibrationDuration(rawValue: value) {
+            baselineCalibrationDuration = duration
+        }
     }
 }
 
 // MARK: - Live Coach Mode
 
 enum LiveCoachMode: String, CaseIterable {
-    case realTime = "realTime"
-    case recordFirst = "recordFirst"
+    case standard = "standard"
+    case personalized = "personalized"
 
     var displayName: String {
         switch self {
-        case .realTime:
-            return "Real-Time"
-        case .recordFirst:
-            return "Record-First"
+        case .standard:
+            return "Standard Mode"
+        case .personalized:
+            return "Personalized Mode (LLM)"
         }
     }
 
     var description: String {
         switch self {
-        case .realTime:
-            return "Get instant coaching suggestions as you interact with your child. Requires continuous camera and processing."
-        case .recordFirst:
-            return "Record a session first, then receive detailed analysis and coaching suggestions. More privacy-friendly and comprehensive."
+        case .standard:
+            return "Uses rule-based ML models with child profile. Works immediately without additional setup."
+        case .personalized:
+            return "Uses Claude Sonnet 4.5 AI with complete child profile for holistic, context-aware detection. Requires Claude API key."
+        }
+    }
+
+    var detailedDescription: String {
+        switch self {
+        case .standard:
+            return """
+            Standard Mode provides arousal detection using:
+            • Rule-based weighted fusion (Pose 50%, Facial 40%, Vocal 10%)
+            • Generic pose detection (Vision framework)
+            • Facial expression analysis
+            • Basic audio analysis
+            • Profile-based personalization (baseline calibration)
+            • Diagnosis-aware threshold adjustments
+
+            Best for: Getting started immediately, offline use, or when LLM setup isn't feasible.
+            """
+        case .personalized:
+            return """
+            Personalized Mode (Claude AI) enhances detection with:
+            • Advanced AI reasoning from Claude Sonnet 4.5
+            • Holistic analysis of ALL child profile data
+            • Context-aware decision making (behaviors, environment, session history)
+            • Neurodiversity-affirming understanding
+            • Explainable results with detailed reasoning
+            • All Standard Mode features PLUS Claude's intelligence
+
+            Requirements: Claude API key (get at console.anthropic.com)
+            Best for: Maximum accuracy and quality when internet available.
+
+            Note: Falls back to Standard Mode automatically if LLM fails.
+            """
         }
     }
 
     var icon: String {
         switch self {
-        case .realTime:
-            return "bolt.circle.fill"
-        case .recordFirst:
-            return "video.circle.fill"
+        case .standard:
+            return "person.circle.fill"
+        case .personalized:
+            return "brain.head.profile"
+        }
+    }
+
+    var requiresAPIKey: Bool {
+        switch self {
+        case .standard:
+            return false
+        case .personalized:
+            return true
         }
     }
 }
@@ -268,4 +367,90 @@ private enum SettingsKeys {
     static let offlineMode = "com.neuroguide.settings.offlineMode"
     static let autoDownload = "com.neuroguide.settings.autoDownload"
     static let liveCoachMode = "com.neuroguide.settings.liveCoachMode"
+    static let arousalBandDuration = "com.neuroguide.settings.arousalBandDuration"
+    static let baselineCalibrationDuration = "com.neuroguide.settings.baselineCalibrationDuration"
+    static let claudeAPIKey = "com.neuroguide.settings.claudeAPIKey"
+    static let groqAPIKey = "com.neuroguide.settings.groqAPIKey"
+}
+
+// MARK: - Arousal Band Duration
+
+enum ArousalBandDuration: String, CaseIterable {
+    case tenSeconds = "10"
+    case fifteenSeconds = "15"
+    case twentySeconds = "20"
+
+    var displayName: String {
+        switch self {
+        case .tenSeconds:
+            return "10 seconds"
+        case .fifteenSeconds:
+            return "15 seconds"
+        case .twentySeconds:
+            return "20 seconds"
+        }
+    }
+
+    var seconds: TimeInterval {
+        switch self {
+        case .tenSeconds:
+            return 10.0
+        case .fifteenSeconds:
+            return 15.0
+        case .twentySeconds:
+            return 20.0
+        }
+    }
+
+    var description: String {
+        switch self {
+        case .tenSeconds:
+            return "Faster response, less stable"
+        case .fifteenSeconds:
+            return "Balanced response and stability"
+        case .twentySeconds:
+            return "More stable, slower response"
+        }
+    }
+}
+
+// MARK: - Baseline Calibration Duration
+
+enum BaselineCalibrationDuration: String, CaseIterable {
+    case tenSeconds = "10"
+    case fifteenSeconds = "15"
+    case twentySeconds = "20"
+
+    var displayName: String {
+        switch self {
+        case .tenSeconds:
+            return "10 seconds"
+        case .fifteenSeconds:
+            return "15 seconds"
+        case .twentySeconds:
+            return "20 seconds"
+        }
+    }
+
+    var seconds: TimeInterval {
+        switch self {
+        case .tenSeconds:
+            return 10.0
+        case .fifteenSeconds:
+            return 15.0
+        case .twentySeconds:
+            return 20.0
+        }
+    }
+
+    var description: String {
+        switch self {
+        case .tenSeconds:
+            return "Quick baseline, may be less precise"
+        case .fifteenSeconds:
+            return "Balanced speed and precision"
+        case .twentySeconds:
+            return "Most precise baseline"
+        }
+    }
 }

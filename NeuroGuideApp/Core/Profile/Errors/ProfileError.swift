@@ -26,7 +26,7 @@ enum ProfileError: LocalizedError {
         case .profileNotFound:
             return "Profile not found"
         case .invalidAge(let age):
-            return "Age must be between 2 and 8 (got \(age))"
+            return "Age must be between 2 and 18 (got \(age))"
         case .invalidName:
             return "Please enter your child's name"
         case .saveFailed(let error):
@@ -51,7 +51,7 @@ enum ProfileError: LocalizedError {
         case .profileNotFound:
             return "Please create a new profile to get started."
         case .invalidAge:
-            return "NeuroGuide is designed for children ages 2-8."
+            return "attune is designed for children ages 2-18."
         case .invalidName:
             return "Your child's name helps personalize the experience."
         case .saveFailed, .loadFailed, .deleteFailed:

@@ -7,10 +7,12 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
-/// Diagnosis selection step of profile creation
+/// Diagnosis selection step of profile creation - Simplified multi-select version
 struct DiagnosisStepView: View {
     @ObservedObject var viewModel: ProfileCreationViewModel
+    @State private var showingDocumentPicker = false
 
     var body: some View {
         ScrollView {
@@ -19,24 +21,28 @@ struct DiagnosisStepView: View {
                 InfoCard(
                     icon: "heart.text.square.fill",
                     title: "Personalized Support",
-                    message: "Sharing a diagnosis helps us personalize arousal detection and recommendations. This is completely optional and kept private on your device."
+                    message: "Sharing a diagnosis helps us personalize recommendations. This is completely optional and kept private on your device."
                 )
                 .padding(.top)
 
-                // Primary diagnosis selection
+                // Multi-select diagnosis section
                 VStack(alignment: .leading, spacing: 16) {
-                    Text("Primary Diagnosis")
+                    Text("Diagnoses (Select all that apply)")
                         .font(.headline)
                         .accessibilityAddTraits(.isHeader)
 
                     VStack(spacing: 12) {
-                        ForEach(NeurodivergentDiagnosis.allCases) { diagnosis in
-                            DiagnosisSelectionCard(
+                        ForEach(NeurodivergentDiagnosis.allCases.filter { $0 != .multiple }) { diagnosis in
+                            MultiSelectDiagnosisCard(
                                 diagnosis: diagnosis,
-                                isSelected: viewModel.selectedDiagnosis == diagnosis,
+                                isSelected: viewModel.selectedDiagnoses.contains(diagnosis),
                                 action: {
                                     withAnimation {
-                                        viewModel.selectedDiagnosis = diagnosis
+                                        if viewModel.selectedDiagnoses.contains(diagnosis) {
+                                            viewModel.selectedDiagnoses.remove(diagnosis)
+                                        } else {
+                                            viewModel.selectedDiagnoses.insert(diagnosis)
+                                        }
                                     }
                                 }
                             )
@@ -44,40 +50,8 @@ struct DiagnosisStepView: View {
                     }
                 }
 
-                // Additional diagnoses section (only show if not "prefer not to specify")
-                if viewModel.selectedDiagnosis != .preferNotToSpecify {
-                    VStack(alignment: .leading, spacing: 16) {
-                        HStack {
-                            Text("Additional Diagnoses")
-                                .font(.headline)
-                            Text("(Optional)")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                        .accessibilityElement(children: .combine)
-
-                        Text("Select any additional diagnoses if applicable")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-
-                        VStack(spacing: 8) {
-                            ForEach(availableAdditionalDiagnoses) { diagnosis in
-                                AdditionalDiagnosisToggle(
-                                    diagnosis: diagnosis,
-                                    isSelected: viewModel.isAdditionalDiagnosisSelected(diagnosis),
-                                    action: {
-                                        withAnimation {
-                                            viewModel.toggleAdditionalDiagnosis(diagnosis)
-                                        }
-                                    }
-                                )
-                            }
-                        }
-                    }
-                }
-
                 // Professionally diagnosed toggle
-                if viewModel.selectedDiagnosis != .preferNotToSpecify {
+                if !viewModel.selectedDiagnoses.isEmpty && !viewModel.selectedDiagnoses.contains(.preferNotToSpecify) {
                     Toggle(isOn: $viewModel.professionallyDiagnosed) {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Professionally diagnosed")
@@ -92,10 +66,121 @@ struct DiagnosisStepView: View {
                         RoundedRectangle(cornerRadius: 12)
                             .fill(Color(.systemGray6))
                     )
+
+                    // Report upload section (only if professionally diagnosed)
+                    if viewModel.professionallyDiagnosed {
+                        VStack(alignment: .leading, spacing: 12) {
+                            HStack {
+                                Text("Diagnosis Report")
+                                    .font(.headline)
+                                Text("(Optional)")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+
+                            if let reportData = viewModel.diagnosisReportData {
+                                // Report uploaded
+                                HStack(spacing: 12) {
+                                    Image(systemName: "doc.fill")
+                                        .font(.title2)
+                                        .foregroundColor(.blue)
+
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text("Report attached")
+                                            .font(.subheadline)
+                                            .fontWeight(.medium)
+
+                                        Text("\(reportData.count / 1024) KB")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                    }
+
+                                    Spacer()
+
+                                    Button(action: {
+                                        viewModel.diagnosisReportData = nil
+                                        viewModel.reportAnalysis = nil
+                                    }) {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .foregroundColor(.gray)
+                                    }
+                                }
+                                .padding()
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(Color.blue.opacity(0.1))
+                                )
+
+                                // Show analysis if available
+                                if viewModel.isAnalyzingReport {
+                                    HStack(spacing: 8) {
+                                        ProgressView()
+                                            .scaleEffect(0.8)
+                                        Text("Analyzing report...")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                    }
+                                    .padding()
+                                } else if let analysis = viewModel.reportAnalysis {
+                                    VStack(alignment: .leading, spacing: 8) {
+                                        HStack {
+                                            Image(systemName: "lightbulb.fill")
+                                                .foregroundColor(.orange)
+                                            Text("Report Analysis")
+                                                .font(.subheadline)
+                                                .fontWeight(.semibold)
+                                        }
+
+                                        Text(analysis)
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                            .fixedSize(horizontal: false, vertical: true)
+                                    }
+                                    .padding()
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(Color.orange.opacity(0.1))
+                                    )
+                                }
+                            } else {
+                                // Upload button
+                                Button(action: {
+                                    showingDocumentPicker = true
+                                }) {
+                                    HStack(spacing: 12) {
+                                        Image(systemName: "doc.badge.plus")
+                                            .font(.title2)
+
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            Text("Upload diagnosis report")
+                                                .font(.subheadline)
+                                                .fontWeight(.medium)
+
+                                            Text("PDF or image (max 10MB)")
+                                                .font(.caption)
+                                                .foregroundColor(.secondary)
+                                        }
+
+                                        Spacer()
+
+                                        Image(systemName: "chevron.right")
+                                            .font(.caption)
+                                            .foregroundColor(.gray)
+                                    }
+                                    .padding()
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(Color(.systemGray6))
+                                    )
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+                    }
                 }
 
                 // Notes field
-                if viewModel.selectedDiagnosis != .preferNotToSpecify {
+                if !viewModel.selectedDiagnoses.isEmpty && !viewModel.selectedDiagnoses.contains(.preferNotToSpecify) {
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
                             Text("Additional Notes")
@@ -104,7 +189,10 @@ struct DiagnosisStepView: View {
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
-                        .accessibilityElement(children: .combine)
+
+                        Text("Any additional context to help personalize support")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
 
                         TextEditor(text: $viewModel.diagnosisNotes)
                             .frame(minHeight: 100)
@@ -125,20 +213,26 @@ struct DiagnosisStepView: View {
             }
             .padding()
         }
-    }
-
-    /// Get available additional diagnoses (excluding primary and skip option)
-    private var availableAdditionalDiagnoses: [NeurodivergentDiagnosis] {
-        NeurodivergentDiagnosis.allCases.filter { diagnosis in
-            diagnosis != viewModel.selectedDiagnosis &&
-            diagnosis != .preferNotToSpecify
+        .sheet(isPresented: $showingDocumentPicker) {
+            DocumentPicker { result in
+                switch result {
+                case .success(let data):
+                    viewModel.diagnosisReportData = data
+                    // Analyze the report
+                    Task {
+                        await viewModel.analyzeReport(reportData: data)
+                    }
+                case .failure(let error):
+                    print("Error picking document: \(error.localizedDescription)")
+                }
+            }
         }
     }
 }
 
-// MARK: - Diagnosis Selection Card
+// MARK: - Multi-Select Diagnosis Card
 
-struct DiagnosisSelectionCard: View {
+struct MultiSelectDiagnosisCard: View {
     let diagnosis: NeurodivergentDiagnosis
     let isSelected: Bool
     let action: () -> Void
@@ -146,6 +240,11 @@ struct DiagnosisSelectionCard: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: 12) {
+                // Selection indicator (checkbox)
+                Image(systemName: isSelected ? "checkmark.square.fill" : "square")
+                    .font(.title3)
+                    .foregroundColor(isSelected ? .blue : .gray)
+
                 // Icon
                 Text(diagnosis.icon)
                     .font(.title2)
@@ -162,15 +261,10 @@ struct DiagnosisSelectionCard: View {
                         .font(.caption)
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.leading)
+                        .lineLimit(2)
                 }
 
                 Spacer()
-
-                // Selection indicator
-                Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                    .font(.title3)
-                    .foregroundColor(isSelected ? .blue : .gray)
-                    .accessibilityLabel(isSelected ? "Selected" : "Not selected")
             }
             .padding()
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -186,45 +280,50 @@ struct DiagnosisSelectionCard: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isButton)
-        .accessibilityHint("Double tap to select this diagnosis")
+        .accessibilityLabel("\(diagnosis.displayName). \(isSelected ? "Selected" : "Not selected")")
+        .accessibilityHint("Double tap to toggle selection")
     }
 }
 
-// MARK: - Additional Diagnosis Toggle
+// MARK: - Document Picker
 
-struct AdditionalDiagnosisToggle: View {
-    let diagnosis: NeurodivergentDiagnosis
-    let isSelected: Bool
-    let action: () -> Void
+struct DocumentPicker: UIViewControllerRepresentable {
+    let completion: (Result<Data, Error>) -> Void
 
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: 12) {
-                Image(systemName: isSelected ? "checkmark.square.fill" : "square")
-                    .font(.title3)
-                    .foregroundColor(isSelected ? .blue : .gray)
-                    .accessibilityLabel(isSelected ? "Selected" : "Not selected")
+    func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
+        let picker = UIDocumentPickerViewController(forOpeningContentTypes: [.pdf, .image], asCopy: true)
+        picker.delegate = context.coordinator
+        picker.allowsMultipleSelection = false
+        return picker
+    }
 
-                Text(diagnosis.icon)
-                    .font(.body)
-                    .accessibilityHidden(true)
+    func updateUIViewController(_ uiViewController: UIDocumentPickerViewController, context: Context) {}
 
-                Text(diagnosis.displayName)
-                    .font(.subheadline)
-                    .foregroundColor(.primary)
+    func makeCoordinator() -> Coordinator {
+        Coordinator(completion: completion)
+    }
 
-                Spacer()
-            }
-            .padding()
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(isSelected ? Color.blue.opacity(0.1) : Color(.systemGray6))
-            )
+    class Coordinator: NSObject, UIDocumentPickerDelegate {
+        let completion: (Result<Data, Error>) -> Void
+
+        init(completion: @escaping (Result<Data, Error>) -> Void) {
+            self.completion = completion
         }
-        .buttonStyle(.plain)
-        .accessibilityElement(children: .combine)
-        .accessibilityAddTraits(.isButton)
-        .accessibilityHint("Double tap to toggle this additional diagnosis")
+
+        func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+            guard let url = urls.first else { return }
+
+            do {
+                let data = try Data(contentsOf: url)
+                completion(.success(data))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+
+        func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+            // User cancelled
+        }
     }
 }
 

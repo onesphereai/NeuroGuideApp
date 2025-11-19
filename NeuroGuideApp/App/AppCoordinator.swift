@@ -202,6 +202,10 @@ class AppCoordinator: ObservableObject {
             // Navigate to Session History screen
             navigate(to: .sessionHistory)
             AccessibilityHelper.announce("Opening Session History")
+        case "model_training":
+            // Navigate to Model Training screen
+            navigate(to: .trainingLibrary)
+            AccessibilityHelper.announce("Opening Model Training")
         default:
             break
         }
@@ -216,6 +220,12 @@ class AppCoordinator: ObservableObject {
     func navigateToProfileSelection() {
         navigate(to: .profileSelection)
         AccessibilityHelper.announce("Profile selection")
+    }
+
+    /// Navigate to profile creation
+    func navigateToProfileCreation() {
+        presentModal(.profileCreation)
+        AccessibilityHelper.announce("Create new profile")
     }
 
     /// Handle emergency access button tap
@@ -296,11 +306,21 @@ struct FeatureCard: Identifiable {
         isAvailable: true
     )
 
+    static let modelTraining = FeatureCard(
+        id: "model_training",
+        title: "Model Training",
+        description: "Train personalized AI models",
+        iconName: "sparkles.rectangle.stack.fill",
+        color: "Secondary",
+        isAvailable: true
+    )
+
     static let allFeatures: [FeatureCard] = [
         .liveCoach,
-        .emotionCheck,
+        // .emotionCheck,  // Hidden per user request
         .askQuestion,
-        .profile,
+        // .profile,  // Hidden per user request
         .sessionHistory
+        // .modelTraining  // Hidden per user request
     ]
 }

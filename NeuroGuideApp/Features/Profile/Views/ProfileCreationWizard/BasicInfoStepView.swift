@@ -15,9 +15,19 @@ struct BasicInfoStepView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                // Photo section
-                ProfilePhotoPickerView(photoData: $viewModel.photoData)
-                    .padding(.top)
+                // Emoji/Photo section
+                VStack(spacing: 16) {
+                    // Emoji Picker
+                    ProfileEmojiPickerView(selectedEmoji: $viewModel.profileEmoji)
+
+                    Text("OR")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+
+                    // Photo section
+                    ProfilePhotoPickerView(photoData: $viewModel.photoData)
+                }
+                .padding(.top)
 
                 // Name field
                 VStack(alignment: .leading, spacing: 8) {
@@ -39,9 +49,9 @@ struct BasicInfoStepView: View {
                         .accessibilityAddTraits(.isHeader)
 
                     Picker("Age", selection: $viewModel.age) {
-                        // Age range: 1-50 years
-                        ForEach(1...50, id: \.self) { years in
-                            Text("\(years) year\(years == 1 ? "" : "s") old")
+                        // Age range: 2-18 years
+                        ForEach(2...18, id: \.self) { years in
+                            Text("\(years) years old")
                                 .tag(years)
                         }
                     }
@@ -117,6 +127,78 @@ struct InfoCard: View {
                 .fill(Color.blue.opacity(0.1))
         )
         .accessibilityElement(children: .combine)
+    }
+}
+
+// MARK: - Profile Emoji Picker
+
+struct ProfileEmojiPickerView: View {
+    @Binding var selectedEmoji: String
+
+    // Curated list of child/person emojis with diverse skin tones
+    let availableEmojis = [
+        // Girls with different skin tones
+        "👧🏻", "👧🏼", "👧🏽", "👧🏾", "👧🏿",
+        // Boys with different skin tones
+        "👦🏻", "👦🏼", "👦🏽", "👦🏾", "👦🏿",
+        // Gender neutral children
+        "🧒🏻", "🧒🏼", "🧒🏽", "🧒🏾", "🧒🏿",
+        // Babies
+        "👶🏻", "👶🏼", "👶🏽", "👶🏾", "👶🏿",
+        // Fun characters
+        "😊", "😁", "🥰", "😎", "🤓", "😇", "🤗",
+        "🦖", "🦕", "🐶", "🐱", "🐻", "🐼", "🦊",
+        "🦁", "🐯", "🐨", "🐸", "🐙", "🦄", "🌟"
+    ]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Choose Profile Emoji")
+                .font(.headline)
+                .accessibilityAddTraits(.isHeader)
+
+            // Selected emoji preview
+            ZStack {
+                Circle()
+                    .fill(.white)
+                    .frame(width: 100, height: 100)
+                    .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
+
+                Text(selectedEmoji)
+                    .font(.system(size: 60))
+            }
+            .frame(maxWidth: .infinity)
+
+            // Emoji grid
+            ScrollView {
+                LazyVGrid(columns: [
+                    GridItem(.adaptive(minimum: 50), spacing: 12)
+                ], spacing: 12) {
+                    ForEach(availableEmojis, id: \.self) { emoji in
+                        Button(action: {
+                            selectedEmoji = emoji
+                            AccessibilityHelper.shared.selection()
+                        }) {
+                            Text(emoji)
+                                .font(.system(size: 32))
+                                .frame(width: 50, height: 50)
+                                .background(
+                                    Circle()
+                                        .fill(selectedEmoji == emoji ? Color.blue.opacity(0.2) : Color.clear)
+                                )
+                                .overlay(
+                                    Circle()
+                                        .stroke(selectedEmoji == emoji ? Color.blue : Color.clear, lineWidth: 2)
+                                )
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("Emoji: \(emoji)")
+                        .accessibilityAddTraits(selectedEmoji == emoji ? [.isSelected] : [])
+                    }
+                }
+            }
+            .frame(maxHeight: 200)
+        }
     }
 }
 

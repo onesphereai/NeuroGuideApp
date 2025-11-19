@@ -23,18 +23,32 @@ struct AskNeuroGuideView: View {
 
     var body: some View {
         NavigationView {
-            VStack(spacing: 0) {
-                // Conversation history
-                if viewModel.conversationTurns.isEmpty {
-                    emptyState
-                } else {
-                    conversationList
+            ZStack {
+                // Purple gradient background
+                LinearGradient(
+                    colors: [
+                        Color.ngBackgroundGradientTop,
+                        Color.ngBackgroundGradientBottom
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .ignoresSafeArea()
+
+                VStack(spacing: 0) {
+                    // Conversation history
+                    if viewModel.conversationTurns.isEmpty {
+                        emptyState
+                    } else {
+                        conversationList
+                    }
+
+                    Divider()
+                        .background(.white.opacity(0.3))
+
+                    // Input area
+                    questionInputArea
                 }
-
-                Divider()
-
-                // Input area
-                questionInputArea
             }
             .navigationTitle("Ask attune")
             .navigationBarTitleDisplayMode(.large)
@@ -47,6 +61,7 @@ struct AskNeuroGuideView: View {
                         }) {
                             Image(systemName: "house")
                                 .font(.body)
+                                .foregroundColor(.white)
                         }
                         .accessibilityLabel("Go to home")
 
@@ -54,6 +69,7 @@ struct AskNeuroGuideView: View {
                         Button(action: { showHistory = true }) {
                             Image(systemName: "clock")
                                 .font(.body)
+                                .foregroundColor(.white)
                         }
                         .accessibilityLabel("View search history")
                     }
@@ -64,6 +80,7 @@ struct AskNeuroGuideView: View {
                         ZStack(alignment: .topTrailing) {
                             Image(systemName: "bookmark")
                                 .font(.body)
+                                .foregroundColor(.white)
 
                             // Badge showing bookmark count
                             if bookmarkManager.bookmarks.count > 0 {
@@ -80,6 +97,7 @@ struct AskNeuroGuideView: View {
                     .accessibilityLabel("View bookmarks")
                 }
             }
+            .toolbarColorScheme(.dark, for: .navigationBar)
             .alert(errorAlertTitle, isPresented: $showErrorAlert) {
                 if errorAlertTitle == "Permission Required" {
                     Button("Settings", action: openSettings)
@@ -111,18 +129,25 @@ struct AskNeuroGuideView: View {
                 Spacer()
                     .frame(height: 40)
 
-                Image(systemName: "bubble.left.and.bubble.right.fill")
-                    .font(.system(size: 64))
-                    .foregroundColor(.blue)
+                ZStack {
+                    Circle()
+                        .fill(.white.opacity(0.3))
+                        .frame(width: 120, height: 120)
+
+                    Image(systemName: "bubble.left.and.bubble.right.fill")
+                        .font(.system(size: 64))
+                        .foregroundColor(.white)
+                }
 
                 VStack(spacing: 12) {
                     Text("Ask attune")
                         .font(.title2)
                         .fontWeight(.bold)
+                        .foregroundColor(.white)
 
                     Text("Get expert guidance on neurodiversity-affirming parenting")
                         .font(.body)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.white.opacity(0.9))
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 32)
                 }
@@ -157,15 +182,18 @@ struct AskNeuroGuideView: View {
     private func exampleQuestion(icon: String, text: String) -> some View {
         HStack(spacing: 12) {
             Image(systemName: icon)
-                .foregroundColor(.blue)
+                .foregroundColor(.white)
                 .frame(width: 24)
 
             Text(text)
                 .font(.subheadline)
-                .foregroundColor(.secondary)
+                .foregroundColor(.white.opacity(0.9))
 
             Spacer()
         }
+        .padding()
+        .background(.white.opacity(0.2))
+        .cornerRadius(12)
     }
 
     // MARK: - Conversation List
@@ -231,7 +259,7 @@ struct AskNeuroGuideView: View {
                 }) {
                     Image(systemName: "arrow.up.circle.fill")
                         .font(.title2)
-                        .foregroundColor(viewModel.textInput.isEmpty ? .gray : .blue)
+                        .foregroundColor(viewModel.textInput.isEmpty ? .gray : .ngIconForeground)
                 }
                 .disabled(viewModel.textInput.isEmpty || viewModel.isProcessing)
             }
@@ -245,25 +273,28 @@ struct AskNeuroGuideView: View {
                 HStack(spacing: 12) {
                     Image(systemName: viewModel.isRecording ? "stop.circle.fill" : "mic.circle.fill")
                         .font(.title2)
+                        .foregroundColor(.white)
 
                     if viewModel.isRecording {
                         Text("Tap to stop recording")
                             .font(.subheadline)
+                            .foregroundColor(.white)
 
                         // Animated recording indicator
                         Circle()
-                            .fill(Color.red)
+                            .fill(Color.white)
                             .frame(width: 8, height: 8)
                             .opacity(viewModel.recordingPulseAnimation ? 1.0 : 0.3)
                     } else {
                         Text("Ask by voice")
                             .font(.subheadline)
+                            .foregroundColor(.white)
                     }
 
                     Spacer()
                 }
                 .padding()
-                .background(viewModel.isRecording ? Color.red.opacity(0.1) : Color.blue.opacity(0.1))
+                .background(viewModel.isRecording ? Color.red.opacity(0.5) : Color.white.opacity(0.2))
                 .cornerRadius(12)
             }
             .disabled(viewModel.isProcessing && !viewModel.isRecording)
@@ -273,7 +304,7 @@ struct AskNeuroGuideView: View {
                 HStack {
                     Text(viewModel.recognizedText)
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.white.opacity(0.9))
                         .lineLimit(2)
 
                     Spacer()
@@ -286,10 +317,11 @@ struct AskNeuroGuideView: View {
                 HStack(spacing: 8) {
                     ProgressView()
                         .scaleEffect(0.8)
+                        .tint(.white)
 
                     Text("Searching...")
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.white.opacity(0.9))
                 }
             }
 
@@ -303,13 +335,13 @@ struct AskNeuroGuideView: View {
                         Text("Clear conversation")
                     }
                     .font(.caption)
-                    .foregroundColor(.red)
+                    .foregroundColor(.white)
                 }
                 .padding(.top, 8)
             }
         }
         .padding()
-        .background(Color(uiColor: .systemBackground))
+        .background(.ultraThinMaterial)
     }
 
     // MARK: - Actions
@@ -387,13 +419,11 @@ struct ConversationTurnView: View {
             .background(Color.blue.opacity(0.1))
             .cornerRadius(16)
 
-            // Answers
+            // Answer (show only the most relevant one)
             if turn.result.answers.isEmpty {
                 noResultsView
-            } else {
-                ForEach(turn.result.answers) { answer in
-                    AnswerCardView(answer: answer, question: turn.question.text)
-                }
+            } else if let bestAnswer = turn.result.answers.first {
+                AnswerCardView(answer: bestAnswer, question: turn.question.text)
             }
         }
     }
@@ -427,64 +457,67 @@ struct AnswerCardView: View {
     @StateObject private var bookmarkManager = BookmarkManager.shared
     @State private var isExpanded = true
     @State private var showSourceDetails = false
+    @State private var showAnimation = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            // Source header with credibility badge
-            HStack(spacing: 8) {
-                CredibilityBadge(level: answer.source.credibilityLevel, compact: true)
+        VStack(alignment: .leading, spacing: 16) {
+            // Attune AI Badge (more prominent)
+            HStack(spacing: 10) {
+                // AI icon with gradient
+                ZStack {
+                    Circle()
+                        .fill(
+                            LinearGradient(
+                                colors: [Color.blue, Color.purple],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .frame(width: 32, height: 32)
 
-                Text(answer.source.displayName)
-                    .font(.caption)
-                    .fontWeight(.medium)
-                    .foregroundColor(.secondary)
+                    Image(systemName: "sparkles")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(.white)
+                }
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(answer.source.displayName)
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.primary)
+
+                    if let author = answer.source.author {
+                        Text(author)
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                    }
+                }
 
                 Spacer()
 
-                // Relevance score
-                Text("\(answer.relevancePercentage)% match")
-                    .font(.caption2)
-                    .foregroundColor(.secondary)
+                // Actions
+                HStack(spacing: 12) {
+                    // Share button
+                    ShareButton(answer: answer, question: question, format: .both)
 
-                // Share button
-                ShareButton(answer: answer, question: question, format: .both)
-
-                // Bookmark button
-                Button(action: {
-                    bookmarkManager.toggleBookmark(answer: answer, question: question)
-                }) {
-                    Image(systemName: bookmarkManager.isBookmarked(answerId: answer.id) ? "bookmark.fill" : "bookmark")
-                        .font(.caption)
-                        .foregroundColor(bookmarkManager.isBookmarked(answerId: answer.id) ? .orange : .gray)
-                }
-
-                // Info button to show source details
-                Button(action: {
-                    showSourceDetails = true
-                }) {
-                    Image(systemName: "info.circle")
-                        .font(.caption)
-                        .foregroundColor(.blue)
+                    // Bookmark button
+                    Button(action: {
+                        bookmarkManager.toggleBookmark(answer: answer, question: question)
+                    }) {
+                        Image(systemName: bookmarkManager.isBookmarked(answerId: answer.id) ? "bookmark.fill" : "bookmark")
+                            .font(.system(size: 18))
+                            .foregroundColor(bookmarkManager.isBookmarked(answerId: answer.id) ? .orange : .gray)
+                    }
                 }
             }
 
-            // Author information if available
-            if let author = answer.source.author {
-                HStack(spacing: 6) {
-                    Image(systemName: "person.circle")
-                        .font(.caption2)
-                        .foregroundColor(.secondary)
-
-                    Text(author)
-                        .font(.caption2)
-                        .foregroundColor(.secondary)
-                }
-            }
+            Divider()
 
             if isExpanded {
-                // Content
+                // Content with better typography
                 Text(answer.content)
-                    .font(.subheadline)
+                    .font(.body)
+                    .lineSpacing(6)
                     .fixedSize(horizontal: false, vertical: true)
 
                 // Strategies (if any)
@@ -512,45 +545,75 @@ struct AnswerCardView: View {
 
                 // Resource Citations (from LLM responses)
                 if let citations = answer.resourceCitations, !citations.isEmpty {
-                    Divider()
+                    let validCitations = citations.filter { isValidURL($0.url) }
 
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Learn More")
-                            .font(.caption)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.secondary)
+                    if !validCitations.isEmpty {
+                        Divider()
 
-                        ForEach(citations) { citation in
-                            if let url = URL(string: citation.url) {
-                                Link(destination: url) {
-                                    HStack(spacing: 8) {
-                                        Image(systemName: "book.fill")
-                                            .font(.caption)
-                                            .foregroundColor(.blue)
+                        VStack(alignment: .leading, spacing: 12) {
+                            HStack(spacing: 6) {
+                                Image(systemName: "link.circle.fill")
+                                    .font(.system(size: 16))
+                                    .foregroundColor(.blue)
 
-                                        VStack(alignment: .leading, spacing: 2) {
-                                            Text(citation.title)
-                                                .font(.caption)
-                                                .fontWeight(.medium)
-                                                .foregroundColor(.primary)
+                                Text("Learn More")
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.primary)
+                            }
 
-                                            if let description = citation.description {
-                                                Text(description)
-                                                    .font(.caption2)
-                                                    .foregroundColor(.secondary)
-                                                    .lineLimit(2)
+                            ForEach(validCitations) { citation in
+                                if let url = URL(string: citation.url) {
+                                    Link(destination: url) {
+                                        HStack(spacing: 12) {
+                                            // Icon based on domain
+                                            ZStack {
+                                                RoundedRectangle(cornerRadius: 8)
+                                                    .fill(Color.blue.opacity(0.1))
+                                                    .frame(width: 40, height: 40)
+
+                                                Image(systemName: getIconForURL(citation.url))
+                                                    .font(.system(size: 18))
+                                                    .foregroundColor(.blue)
                                             }
+
+                                            VStack(alignment: .leading, spacing: 4) {
+                                                Text(citation.title)
+                                                    .font(.subheadline)
+                                                    .fontWeight(.medium)
+                                                    .foregroundColor(.primary)
+
+                                                if let description = citation.description {
+                                                    Text(description)
+                                                        .font(.caption)
+                                                        .foregroundColor(.secondary)
+                                                        .lineLimit(2)
+                                                }
+
+                                                // Show domain
+                                                if let domain = extractDomain(from: citation.url) {
+                                                    Text(domain)
+                                                        .font(.caption2)
+                                                        .foregroundColor(.blue)
+                                                }
+                                            }
+
+                                            Spacer()
+
+                                            Image(systemName: "arrow.up.right.circle.fill")
+                                                .font(.system(size: 20))
+                                                .foregroundColor(.blue)
                                         }
-
-                                        Spacer()
-
-                                        Image(systemName: "arrow.up.right")
-                                            .font(.caption2)
-                                            .foregroundColor(.blue)
+                                        .padding(12)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .fill(Color(uiColor: .tertiarySystemBackground))
+                                        )
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .stroke(Color.blue.opacity(0.2), lineWidth: 1)
+                                        )
                                     }
-                                    .padding(10)
-                                    .background(Color.blue.opacity(0.05))
-                                    .cornerRadius(8)
                                 }
                             }
                         }
@@ -576,11 +639,70 @@ struct AnswerCardView: View {
                 }
             }
         }
-        .padding()
-        .background(Color(uiColor: .secondarySystemBackground))
-        .cornerRadius(12)
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color(uiColor: .secondarySystemBackground))
+                .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
+        )
         .sheet(isPresented: $showSourceDetails) {
             SourceDetailsSheet(source: answer.source)
+        }
+        .onAppear {
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.7)) {
+                showAnimation = true
+            }
+        }
+    }
+
+    // MARK: - Helper Functions
+
+    private func isValidURL(_ urlString: String) -> Bool {
+        // Check if URL is valid and has http/https scheme
+        guard let url = URL(string: urlString),
+              let scheme = url.scheme?.lowercased(),
+              scheme == "http" || scheme == "https" else {
+            return false
+        }
+
+        // Check if it has a valid host
+        guard let host = url.host, !host.isEmpty else {
+            return false
+        }
+
+        // Validate against trusted domains (matches LLM prompt)
+        let trustedDomains = [
+            "autism.org.uk",
+            "autismspeaks.org",
+            "autisticadvocacy.org",
+            "reframingautism.org.au"
+        ]
+
+        // Check if the host ends with any trusted domain
+        return trustedDomains.contains { host.hasSuffix($0) }
+    }
+
+    private func extractDomain(from urlString: String) -> String? {
+        guard let url = URL(string: urlString),
+              let host = url.host else {
+            return nil
+        }
+        return host
+    }
+
+    private func getIconForURL(_ urlString: String) -> String {
+        guard let host = URL(string: urlString)?.host else {
+            return "link"
+        }
+
+        if host.contains("autism.org") {
+            return "heart.text.square.fill"
+        } else if host.contains("asan.org") {
+            return "person.3.fill"
+        } else if host.contains("reframingautism") {
+            return "brain.head.profile"
+        } else {
+            return "book.fill"
         }
     }
 }

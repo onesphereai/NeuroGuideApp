@@ -42,42 +42,6 @@ struct SensoryPreferencesStepView: View {
                     }
                 }
 
-                // Specific triggers section
-                VStack(alignment: .leading, spacing: 12) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        HStack {
-                            Text("Specific Triggers")
-                                .font(.headline)
-                            Text("(Optional)")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-
-                        Text("List any specific sensory triggers we should know about")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-
-                    TextEditor(text: $viewModel.specificSensoryTriggers)
-                        .frame(height: 100)
-                        .padding(8)
-                        .background(
-                            RoundedRectangle(cornerRadius: 8)
-                                .fill(Color(.tertiarySystemBackground))
-                        )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color(.separator), lineWidth: 1)
-                        )
-                        .accessibilityLabel("Specific sensory triggers")
-                        .accessibilityHint("Optional. Enter any specific sensory triggers, like 'sudden loud noises' or 'scratchy fabrics'")
-                }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color(.secondarySystemBackground))
-                )
-
                 // Privacy note
                 InfoCard(
                     icon: "lock.fill",

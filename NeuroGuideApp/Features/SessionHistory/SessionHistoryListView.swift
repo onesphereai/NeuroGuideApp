@@ -12,13 +12,32 @@ import SwiftUI
 
 struct SessionHistoryListView: View {
     @ObservedObject private var historyManager = SessionHistoryManager.shared
+    @ObservedObject private var profileManager = ChildProfileManager.shared
     @EnvironmentObject var navigationState: NavigationState
     @State private var selectedSession: SessionAnalysisResult?
+
+    private var filteredSessions: [SessionAnalysisResult] {
+        guard let currentProfile = profileManager.currentProfile else {
+            return historyManager.getAllSessions()
+        }
+        return historyManager.getSessions(for: currentProfile.id)
+    }
 
     var body: some View {
         NavigationView {
             ZStack {
-                if historyManager.sessions.isEmpty {
+                // Consistent purple gradient background
+                LinearGradient(
+                    colors: [
+                        Color.ngBackgroundGradientTop,
+                        Color.ngBackgroundGradientBottom
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .ignoresSafeArea()
+
+                if filteredSessions.isEmpty {
                     emptyState
                 } else {
                     sessionList
@@ -31,6 +50,7 @@ struct SessionHistoryListView: View {
                     Button("Back") {
                         navigationState.currentScreen = .home
                     }
+                    .foregroundColor(.white)
                 }
             }
             .sheet(item: $selectedSession) { session in
@@ -43,7 +63,7 @@ struct SessionHistoryListView: View {
 
     private var sessionList: some View {
         List {
-            ForEach(historyManager.getAllSessions()) { session in
+            ForEach(filteredSessions) { session in
                 SessionRowView(session: session)
                     .contentShape(Rectangle())
                     .onTapGesture {
@@ -60,15 +80,15 @@ struct SessionHistoryListView: View {
         VStack(spacing: 16) {
             Image(systemName: "clock.arrow.circlepath")
                 .font(.system(size: 64))
-                .foregroundColor(.secondary.opacity(0.3))
+                .foregroundColor(.white.opacity(0.5))
 
             Text("No Sessions Yet")
                 .font(.title2.bold())
-                .foregroundColor(.primary)
+                .foregroundColor(.white)
 
             Text("Complete a Live Coach session to see it here.")
                 .font(.body)
-                .foregroundColor(.secondary)
+                .foregroundColor(.white.opacity(0.9))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
 
@@ -80,14 +100,13 @@ struct SessionHistoryListView: View {
                     Text("Start Live Coach")
                 }
                 .padding()
-                .background(Color.blue)
-                .foregroundColor(.white)
+                .background(Color.white)
+                .foregroundColor(.ngIconForeground)
                 .cornerRadius(12)
             }
             .padding(.top, 8)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.systemGroupedBackground))
     }
 }
 

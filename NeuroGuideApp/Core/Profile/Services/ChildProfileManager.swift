@@ -43,7 +43,7 @@ class ChildProfileManager: ChildProfileService, ObservableObject {
             throw ProfileError.invalidName
         }
 
-        guard profile.age >= 2 && profile.age <= 8 else {
+        guard profile.age >= 2 && profile.age <= 18 else {
             throw ProfileError.invalidAge(age: profile.age)
         }
 

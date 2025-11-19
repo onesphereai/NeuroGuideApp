@@ -27,7 +27,7 @@ protocol QuestionInputService: AnyObject {
 /// Searches content library and handles conversational follow-ups
 @MainActor
 protocol ConversationalSearchService: AnyObject {
-    func search(query: Question, context: ConversationContext?) async throws -> SearchResult
+    func search(query: Question, context: ConversationContext?, profile: ChildProfile?) async throws -> SearchResult
     func addFollowUp(query: Question, context: ConversationContext) async throws -> SearchResult
     func getConversationHistory() -> [ConversationTurn]
     func clearConversation()

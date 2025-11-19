@@ -48,14 +48,17 @@ struct ProfileCreationWizardView: View {
                     DiagnosisStepView(viewModel: viewModel)
                         .tag(ProfileCreationStep.diagnosis)
 
-                    SensoryPreferencesStepView(viewModel: viewModel)
-                        .tag(ProfileCreationStep.sensoryPreferences)
-
                     CommunicationStepView(viewModel: viewModel)
                         .tag(ProfileCreationStep.communication)
 
                     TriggersStepView(viewModel: viewModel)
                         .tag(ProfileCreationStep.triggers)
+
+                    CoRegulationStepView(viewModel: viewModel)
+                        .tag(ProfileCreationStep.coRegulation)
+
+                    SensoryPreferencesStepView(viewModel: viewModel)
+                        .tag(ProfileCreationStep.sensoryPreferences)
 
                     CalibrationStepView(viewModel: viewModel)
                         .tag(ProfileCreationStep.calibration)

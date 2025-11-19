@@ -158,10 +158,15 @@ class SessionHistoryManager: ObservableObject {
         do {
             let data = try Data(contentsOf: url)
             let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .secondsSince1970
             sessions = try decoder.decode([SessionAnalysisResult].self, from: data)
             print("📂 Loaded \(sessions.count) sessions from disk")
         } catch {
             print("❌ Failed to load session history: \(error)")
+            print("   Clearing corrupted session data...")
+            // Clear corrupted data
+            sessions = []
+            try? FileManager.default.removeItem(at: url)
         }
     }
 
@@ -171,7 +176,7 @@ class SessionHistoryManager: ObservableObject {
         }
 
         let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .iso8601
+        encoder.dateEncodingStrategy = .secondsSince1970
 
         let data = try encoder.encode(sessions)
         try data.write(to: url, options: [.atomic, .completeFileProtection])

@@ -23,6 +23,26 @@ extension Color {
     /// Light: #E67E22, Dark: #F08D3D
     static let ngAccentOrange = Color("AccentOrange")
 
+    // MARK: - New UI Theme Colors
+
+    /// Light periwinkle blue for gradient background (top)
+    static let ngBackgroundGradientTop = Color(red: 0.67, green: 0.71, blue: 0.88)
+
+    /// Light lavender purple for gradient background (bottom)
+    static let ngBackgroundGradientBottom = Color(red: 0.75, green: 0.73, blue: 0.91)
+
+    /// Light icon background color
+    static let ngIconBackgroundLight = Color(red: 0.85, green: 0.87, blue: 0.95)
+
+    /// Icon foreground color (darker purple/blue)
+    static let ngIconForeground = Color(red: 0.5, green: 0.6, blue: 0.85)
+
+    /// Text color for cards (dark gray/blue)
+    static let ngCardTextPrimary = Color(red: 0.2, green: 0.2, blue: 0.3)
+
+    /// Secondary text color for cards
+    static let ngCardTextSecondary = Color(red: 0.4, green: 0.4, blue: 0.5)
+
     // MARK: - Semantic Colors
 
     /// Success green - Positive feedback, confirmations

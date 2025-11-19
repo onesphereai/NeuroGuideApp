@@ -32,8 +32,11 @@ class AskNeuroGuideViewModel: ObservableObject {
     private let followUpGenerator: FollowUpQuestionGenerator
     private let relatedQuestionEngine: RelatedQuestionEngine
     private let historyManager: SearchHistoryManager
+    private let profileManager: ChildProfileService
     private var cancellables = Set<AnyCancellable>()
     nonisolated(unsafe) private var pulseTimer: Timer?
+
+    private var currentProfile: ChildProfile?
 
     // MARK: - Initialization
 
@@ -42,13 +45,20 @@ class AskNeuroGuideViewModel: ObservableObject {
         searchManager: ConversationalSearchManager = .shared,
         followUpGenerator: FollowUpQuestionGenerator = FollowUpQuestionGenerator(),
         relatedQuestionEngine: RelatedQuestionEngine = RelatedQuestionEngine(),
-        historyManager: SearchHistoryManager = .shared
+        historyManager: SearchHistoryManager = .shared,
+        profileManager: ChildProfileService = ChildProfileManager.shared
     ) {
         self.questionInputManager = questionInputManager
         self.searchManager = searchManager
         self.followUpGenerator = followUpGenerator
         self.relatedQuestionEngine = relatedQuestionEngine
         self.historyManager = historyManager
+        self.profileManager = profileManager
+
+        // Load current profile
+        Task {
+            await loadCurrentProfile()
+        }
 
         // Observe recording state
         questionInputManager.$isRecording
@@ -107,13 +117,13 @@ class AskNeuroGuideViewModel: ObservableObject {
         do {
             let question = try await questionInputManager.submitTextQuestion(
                 text: textInput,
-                childID: nil // TODO: Get from current profile
+                childID: currentProfile?.id
             )
 
             // Clear input
             textInput = ""
 
-            // Search for answer
+            // Search for answer with profile context
             await performSearch(for: question)
         } catch {
             print("❌ Failed to submit text question: \(error)")
@@ -125,10 +135,11 @@ class AskNeuroGuideViewModel: ObservableObject {
     /// Perform search for question
     private func performSearch(for question: Question) async {
         do {
-            // Use real search service
+            // Use real search service with profile context
             let result = try await searchManager.search(
                 query: question,
-                context: currentContext
+                context: currentContext,
+                profile: currentProfile
             )
 
             // Create conversation turn
@@ -237,6 +248,20 @@ class AskNeuroGuideViewModel: ObservableObject {
 
     nonisolated private func cleanup() {
         pulseTimer?.invalidate()
+    }
+
+    // MARK: - Profile Management
+
+    /// Load current child profile
+    private func loadCurrentProfile() async {
+        do {
+            currentProfile = try await profileManager.getProfile()
+            if let profile = currentProfile {
+                print("✅ Loaded profile for Ask Attune: \(profile.name)")
+            }
+        } catch {
+            print("❌ Failed to load profile: \(error)")
+        }
     }
 
     deinit {

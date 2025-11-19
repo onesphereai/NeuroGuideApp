@@ -18,8 +18,16 @@ struct ProfileSelectionView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color(.systemGroupedBackground)
-                    .ignoresSafeArea()
+                // Consistent purple gradient background
+                LinearGradient(
+                    colors: [
+                        Color.ngBackgroundGradientTop,
+                        Color.ngBackgroundGradientBottom
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .ignoresSafeArea()
 
                 if viewModel.profiles.isEmpty {
                     emptyState
@@ -34,8 +42,15 @@ struct ProfileSelectionView: View {
                     Button {
                         viewModel.showingCreateProfile = true
                     } label: {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.title3)
+                        ZStack {
+                            Circle()
+                                .fill(.white.opacity(0.3))
+                                .frame(width: 36, height: 36)
+
+                            Image(systemName: "plus")
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundColor(.white)
+                        }
                     }
                     .accessibilityLabel("Create new profile")
                 }
@@ -63,62 +78,108 @@ struct ProfileSelectionView: View {
     // MARK: - Empty State
 
     private var emptyState: some View {
-        VStack(spacing: 24) {
-            Image(systemName: "person.3.fill")
-                .font(.system(size: 80))
-                .foregroundColor(.blue.opacity(0.3))
+        VStack(spacing: 32) {
+            // Icon with gradient background
+            ZStack {
+                Circle()
+                    .fill(
+                        LinearGradient(
+                            colors: [Color.blue.opacity(0.2), Color.purple.opacity(0.2)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .frame(width: 120, height: 120)
 
-            Text("No Profiles Yet")
-                .font(.title.bold())
+                Image(systemName: "person.3.fill")
+                    .font(.system(size: 50))
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [.blue, .purple],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+            }
 
-            Text("Create a profile to get started with personalized support for your child.")
-                .font(.body)
-                .foregroundColor(.secondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 40)
+            VStack(spacing: 12) {
+                Text("No Profiles Yet")
+                    .font(.system(size: 28, weight: .bold))
+
+                Text("Create a profile to get started with personalized support for your child.")
+                    .font(.system(size: 16))
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 40)
+            }
 
             Button {
                 viewModel.showingCreateProfile = true
             } label: {
-                HStack {
+                HStack(spacing: 12) {
                     Image(systemName: "plus.circle.fill")
+                        .font(.system(size: 20))
                     Text("Create First Profile")
+                        .font(.system(size: 17, weight: .semibold))
                 }
-                .font(.headline)
                 .foregroundColor(.white)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color.blue)
-                .cornerRadius(12)
+                .padding(.horizontal, 32)
+                .padding(.vertical, 16)
+                .background(
+                    LinearGradient(
+                        colors: [.blue, .purple],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+                .cornerRadius(16)
+                .shadow(color: .blue.opacity(0.3), radius: 12, x: 0, y: 6)
             }
-            .padding(.horizontal, 40)
             .padding(.top, 8)
         }
+        .padding()
     }
 
     // MARK: - Profile Grid
 
     private var profileGrid: some View {
         ScrollView {
-            VStack(spacing: 20) {
-                // Header
-                VStack(spacing: 8) {
+            VStack(spacing: 32) {
+                // Modern Header
+                VStack(spacing: 12) {
                     Text("Who are we supporting today?")
-                        .font(.title2.bold())
+                        .font(.system(size: 26, weight: .bold))
                         .multilineTextAlignment(.center)
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [.primary, .primary.opacity(0.7)],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
 
-                    Text("\(viewModel.profiles.count) \(viewModel.profiles.count == 1 ? "profile" : "profiles")")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
+                    HStack(spacing: 6) {
+                        Image(systemName: "person.2.fill")
+                            .font(.system(size: 12, weight: .medium))
+                        Text("\(viewModel.profiles.count) \(viewModel.profiles.count == 1 ? "profile" : "profiles")")
+                            .font(.system(size: 14, weight: .medium))
+                    }
+                    .foregroundColor(.secondary)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .background(
+                        Capsule()
+                            .fill(.ultraThinMaterial)
+                    )
                 }
-                .padding(.top, 20)
+                .padding(.top, 8)
                 .padding(.horizontal)
 
-                // Profile cards grid
+                // Modern Profile Cards Grid
                 LazyVGrid(columns: [
-                    GridItem(.flexible(), spacing: 16),
-                    GridItem(.flexible(), spacing: 16)
-                ], spacing: 16) {
+                    GridItem(.flexible(), spacing: 20),
+                    GridItem(.flexible(), spacing: 20)
+                ], spacing: 20) {
                     ForEach(viewModel.profiles) { profile in
                         ProfileCard(
                             profile: profile,
@@ -131,9 +192,9 @@ struct ProfileSelectionView: View {
                         )
                     }
                 }
-                .padding(.horizontal)
+                .padding(.horizontal, 20)
 
-                Spacer(minLength: 20)
+                Spacer(minLength: 40)
             }
         }
     }
@@ -147,78 +208,129 @@ struct ProfileCard: View {
     let onDelete: () -> Void
 
     @State private var showingOptions = false
+    @State private var isPressed = false
 
     var body: some View {
         Button(action: onSelect) {
-            VStack(spacing: 12) {
-                // Profile photo or placeholder
-                ZStack {
-                    Circle()
-                        .fill(Color(hex: profile.profileColor) ?? .blue)
-                        .frame(width: 80, height: 80)
+            VStack(spacing: 16) {
+                // Profile photo with modern styling
+                ZStack(alignment: .topTrailing) {
+                    // Photo/Initial circle
+                    ZStack {
+                        Circle()
+                            .fill(
+                                LinearGradient(
+                                    colors: [
+                                        Color(hex: profile.profileColor) ?? .blue,
+                                        (Color(hex: profile.profileColor) ?? .blue).opacity(0.7)
+                                    ],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .frame(width: 90, height: 90)
 
-                    if let photoData = profile.photoData,
-                       let uiImage = UIImage(data: photoData) {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 80, height: 80)
-                            .clipShape(Circle())
-                    } else {
-                        Text(profile.name.prefix(1).uppercased())
-                            .font(.system(size: 36, weight: .bold))
-                            .foregroundColor(.white)
-                    }
-
-                    // Options button
-                    VStack {
-                        HStack {
-                            Spacer()
-                            Button {
-                                showingOptions = true
-                            } label: {
-                                Image(systemName: "ellipsis.circle.fill")
-                                    .font(.title3)
-                                    .foregroundColor(.white)
-                                    .shadow(radius: 2)
-                            }
-                            .padding(4)
+                        if let photoData = profile.photoData,
+                           let uiImage = UIImage(data: photoData) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 90, height: 90)
+                                .clipShape(Circle())
+                                .overlay(
+                                    Circle()
+                                        .strokeBorder(
+                                            LinearGradient(
+                                                colors: [Color.white.opacity(0.3), Color.white.opacity(0.1)],
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing
+                                            ),
+                                            lineWidth: 2
+                                        )
+                                )
+                        } else {
+                            Text(profile.name.prefix(1).uppercased())
+                                .font(.system(size: 40, weight: .bold))
+                                .foregroundColor(.white)
                         }
-                        Spacer()
                     }
+
+                    // Modern options button
+                    Button {
+                        showingOptions = true
+                    } label: {
+                        ZStack {
+                            Circle()
+                                .fill(.ultraThinMaterial)
+                                .frame(width: 28, height: 28)
+                                .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+
+                            Image(systemName: "ellipsis")
+                                .font(.system(size: 12, weight: .semibold))
+                                .foregroundColor(.primary)
+                        }
+                    }
+                    .offset(x: -4, y: 4)
                 }
 
-                // Profile info
-                VStack(spacing: 4) {
+                // Profile info with modern typography
+                VStack(spacing: 8) {
                     Text(profile.name)
-                        .font(.headline)
+                        .font(.system(size: 18, weight: .bold))
                         .foregroundColor(.primary)
                         .lineLimit(1)
 
                     Text("\(profile.age) years old")
-                        .font(.caption)
+                        .font(.system(size: 13, weight: .medium))
                         .foregroundColor(.secondary)
 
-                    // Diagnosis badge if present
-                    if let diagnosis = profile.diagnosisInfo?.primaryDiagnosis,
-                       diagnosis != .preferNotToSpecify {
-                        Text(diagnosis.displayName)
-                            .font(.caption2)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 2)
-                            .background(Color(hex: profile.profileColor)?.opacity(0.2) ?? Color.blue.opacity(0.2))
-                            .cornerRadius(8)
+                    // Modern diagnosis badge
+                    if let diagnosisInfo = profile.diagnosisInfo,
+                       !diagnosisInfo.diagnoses.isEmpty,
+                       let firstDiagnosis = diagnosisInfo.diagnoses.first,
+                       firstDiagnosis != .preferNotToSpecify {
+                        Text(firstDiagnosis.displayName)
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundColor(Color(hex: profile.profileColor) ?? .blue)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 4)
+                            .background(
+                                Capsule()
+                                    .fill((Color(hex: profile.profileColor) ?? .blue).opacity(0.15))
+                            )
                             .lineLimit(1)
                     }
                 }
             }
-            .padding()
+            .padding(20)
             .frame(maxWidth: .infinity)
-            .background(Color(.systemBackground))
-            .cornerRadius(16)
-            .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 2)
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(.ultraThickMaterial)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 20)
+                    .strokeBorder(
+                        LinearGradient(
+                            colors: [
+                                (Color(hex: profile.profileColor) ?? .blue).opacity(0.3),
+                                (Color(hex: profile.profileColor) ?? .blue).opacity(0.1)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        lineWidth: 1
+                    )
+            )
+            .shadow(color: Color.black.opacity(0.08), radius: 16, x: 0, y: 8)
+            .scaleEffect(isPressed ? 0.95 : 1.0)
         }
         .buttonStyle(.plain)
+        .onLongPressGesture(minimumDuration: 0.01, pressing: { pressing in
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                isPressed = pressing
+            }
+        }, perform: {})
         .confirmationDialog("Profile Options", isPresented: $showingOptions) {
             Button("View/Edit Profile") {
                 // Navigate to profile detail

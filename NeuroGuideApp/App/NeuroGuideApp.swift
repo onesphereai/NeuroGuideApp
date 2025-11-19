@@ -88,6 +88,8 @@ struct RootView: View {
                     AskNeuroGuideView()
                 case .sessionHistory:
                     SessionHistoryListView()
+                case .trainingLibrary:
+                    TrainingLibraryView()
                 case .emotionCheck, .profile:
                     // These screens will be implemented in future Bolts
                     // For now, show placeholder

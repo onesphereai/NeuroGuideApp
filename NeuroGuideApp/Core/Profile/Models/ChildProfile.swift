@@ -18,6 +18,7 @@ struct ChildProfile: Codable, Identifiable {
     var age: Int // 1-50 years
     var pronouns: String?
     var photoData: Data? // Optional photo stored locally
+    var profileEmoji: String? // Optional emoji/character for profile avatar
     var diagnosisInfo: DiagnosisInfo?  // Neurodivergent diagnosis (optional)
 
     // MARK: - Personalization Data
@@ -30,6 +31,7 @@ struct ChildProfile: Codable, Identifiable {
     var alexithymiaSettings: AlexithymiaSettings
     var baselineCalibration: BaselineCalibration?
     var coRegulationHistory: CoRegulationHistory
+    var coRegulationAssessment: CoRegulationAssessment
     var emotionExpressionProfile: EmotionExpressionProfile?  // Unit 6 - Emotion Interface
     var profileColor: String  // Hex color for spectrum visualization (Unit 5 - Live Coach)
 
@@ -46,6 +48,7 @@ struct ChildProfile: Codable, Identifiable {
         age: Int,
         pronouns: String? = nil,
         photoData: Data? = nil,
+        profileEmoji: String? = nil,
         diagnosisInfo: DiagnosisInfo? = nil,
         profileColor: String = "#4A90E2"  // Default blue
     ) {
@@ -54,6 +57,7 @@ struct ChildProfile: Codable, Identifiable {
         self.age = age
         self.pronouns = pronouns
         self.photoData = photoData
+        self.profileEmoji = profileEmoji
         self.diagnosisInfo = diagnosisInfo
         self.profileColor = profileColor
         self.sensoryPreferences = SensoryPreferences()
@@ -64,6 +68,7 @@ struct ChildProfile: Codable, Identifiable {
         self.alexithymiaSettings = AlexithymiaSettings()
         self.baselineCalibration = nil
         self.coRegulationHistory = CoRegulationHistory()
+        self.coRegulationAssessment = CoRegulationAssessment()
         self.createdAt = Date()
         self.updatedAt = Date()
     }
@@ -78,11 +83,9 @@ extension ChildProfile {
     }
 
     /// Check if baseline calibration is needed
+    /// Note: Baseline calibration is now optional and not required
     func needsCalibration() -> Bool {
-        if let baseline = baselineCalibration {
-            return baseline.isStale()
-        }
-        return true
+        return false
     }
 
     /// Update the timestamp
@@ -153,7 +156,7 @@ extension ChildProfile {
 
     /// Get diagnosis-specific baseline expectations
     func getDiagnosisBaselines() -> DiagnosisBaselines? {
-        guard let diagnosis = diagnosisInfo?.primaryDiagnosis else {
+        guard let diagnosis = diagnosisInfo?.diagnoses.first else {
             return nil
         }
         return DiagnosisBaselines.baselines(for: diagnosis)

@@ -24,6 +24,9 @@ struct SessionContext {
     /// Observed behavioral patterns
     var patterns: [String]
 
+    /// Voice observations from parent (transcribed context)
+    var voiceObservations: [VoiceObservationEntry]
+
     /// Child profile information
     var childProfile: ChildProfile?
 
@@ -103,6 +106,18 @@ struct SessionContext {
         return patterns.map { "• \($0)" }.joined(separator: "\n")
     }
 
+    /// Voice observations formatted for prompt
+    var voiceObservationsFormatted: String {
+        guard !voiceObservations.isEmpty else {
+            return "No voice observations recorded yet"
+        }
+
+        return voiceObservations.suffix(5).enumerated().map { index, observation in
+            let timeAgo = Int(Date().timeIntervalSince(observation.timestamp))
+            return "\(timeAgo)s ago: \"\(observation.transcription)\""
+        }.joined(separator: "\n")
+    }
+
     // MARK: - Pattern Detection
 
     private func isEscalating(_ states: ArraySlice<ArousalBand>) -> Bool {
@@ -144,6 +159,12 @@ struct ArousalTimelineEntry {
     let band: ArousalBand
 }
 
+/// Entry for voice observation (parent context)
+struct VoiceObservationEntry {
+    let timestamp: Date
+    let transcription: String
+}
+
 // MARK: - SessionContext Builder
 
 extension SessionContext {
@@ -155,6 +176,7 @@ extension SessionContext {
             recentSuggestions: [],
             coRegulationEvents: [],
             patterns: [],
+            voiceObservations: [],
             childProfile: childProfile
         )
     }
@@ -200,6 +222,20 @@ extension SessionContext {
     /// Update duration
     mutating func updateDuration(_ minutes: Int) {
         durationMinutes = minutes
+    }
+
+    /// Add voice observation
+    mutating func addVoiceObservation(transcription: String) {
+        let entry = VoiceObservationEntry(
+            timestamp: Date(),
+            transcription: transcription
+        )
+        voiceObservations.append(entry)
+
+        // Keep only last 10 voice observations
+        if voiceObservations.count > 10 {
+            voiceObservations.removeFirst(voiceObservations.count - 10)
+        }
     }
 
     /// Detect and update patterns

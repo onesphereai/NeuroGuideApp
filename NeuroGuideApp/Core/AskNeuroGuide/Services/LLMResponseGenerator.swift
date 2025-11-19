@@ -16,9 +16,10 @@ class LLMResponseGenerator {
 
     // MARK: - Properties
 
-    private var groqAPIKey: String?
-    private let groqAPIURL = "https://api.groq.com/openai/v1/chat/completions"
-    private let groqModel = "llama-3.1-8b-instant"
+    private var claudeAPIKey: String?
+    private let claudeAPIURL = "https://api.anthropic.com/v1/messages"
+    private let claudeModel = "claude-sonnet-4-20250514"  // Claude Sonnet 4.5
+    private let anthropicVersion = "2023-06-01"
 
     // Caching for performance
     private var responseCache: [String: CachedResponse] = [:]
@@ -32,39 +33,45 @@ class LLMResponseGenerator {
     private init() {
         loadAPIKey()
 
-        // Auto-configure API key (same as Live Coach)
-        if groqAPIKey == nil {
-            let apiKey = "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"
-            configureGroqAPI(apiKey: apiKey)
-        }
-
-        print("✅ LLM Response Generator initialized with Groq")
+        print("✅ LLM Response Generator initialized with Claude Sonnet 4.5")
     }
 
     // MARK: - Configuration
 
-    func configureGroqAPI(apiKey: String) {
-        self.groqAPIKey = apiKey
+    func configureClaudeAPI(apiKey: String) {
+        self.claudeAPIKey = apiKey
         saveAPIKey(apiKey)
     }
 
     private func loadAPIKey() {
-        if let data = try? KeychainManager.shared.load(key: "groq_api_key"),
+        // Try to load from SettingsManager first
+        let settings = SettingsManager()
+        if let key = settings.claudeAPIKey, !key.isEmpty {
+            self.claudeAPIKey = key
+            print("✅ Loaded Claude API key from SettingsManager")
+            return
+        }
+
+        // Fallback to KeychainManager
+        if let data = try? KeychainManager.shared.load(key: "claude_api_key"),
            let key = String(data: data, encoding: .utf8) {
-            self.groqAPIKey = key
+            self.claudeAPIKey = key
+            print("✅ Loaded Claude API key from Keychain")
+        } else {
+            print("⚠️ No Claude API key found")
         }
     }
 
     private func saveAPIKey(_ key: String) {
         if let data = key.data(using: .utf8) {
-            try? KeychainManager.shared.save(data: data, forKey: "groq_api_key", accessible: .whenUnlocked)
+            try? KeychainManager.shared.save(data: data, forKey: "claude_api_key", accessible: .whenUnlocked)
         }
     }
 
     // MARK: - Response Generation
 
     /// Generate AI-powered answer with citations
-    func generateAnswer(for question: String, context: ConversationContext?) async throws -> ContentAnswer {
+    func generateAnswer(for question: String, context: ConversationContext?, profile: ChildProfile? = nil) async throws -> ContentAnswer {
         // Check cache (10 minute expiry)
         if let cached = responseCache[question],
            Date().timeIntervalSince(cached.timestamp) < 600 {
@@ -73,22 +80,35 @@ class LLMResponseGenerator {
         }
 
         print("🤖 Generating LLM response for: \(question)")
+        if let profile = profile {
+            print("📋 Using child profile: \(profile.name), Age: \(profile.age)")
+        } else {
+            print("⚠️ No child profile provided")
+        }
 
         // GUARDRAIL: Check if question is neurodivergence-related
-        if !isNeurodivergenceRelated(question: question) {
+        let isRelated = isNeurodivergenceRelated(question: question)
+        print("🔍 Neurodivergence check: \(isRelated ? "PASS" : "FAIL") for question: \"\(question)\"")
+        if !isRelated {
             print("🚫 Question rejected - not neurodivergence related")
             return createOutOfScopeResponse()
         }
 
-        guard let apiKey = groqAPIKey else {
+        guard let apiKey = claudeAPIKey else {
+            print("❌ No Claude API key configured!")
             throw LLMResponseError.noAPIKey
         }
 
-        // Build prompt with citation requirements
-        let prompt = buildPrompt(question: question, context: context)
+        print("✅ Claude API key present: \(apiKey.prefix(10))...")
 
-        // Call Groq API
-        let (responseText, resourceCitations) = try await callGroqAPI(prompt: prompt, apiKey: apiKey)
+        // Build prompt with citation requirements and profile context
+        let prompt = buildPrompt(question: question, context: context, profile: profile)
+        print("📝 Built prompt with \(prompt.count) characters")
+
+        // Call Claude API
+        print("🚀 About to call Claude API...")
+        let (responseText, resourceCitations) = try await callClaudeAPI(prompt: prompt, apiKey: apiKey)
+        print("✅ Received response with \(responseText.count) characters and \(resourceCitations.count) citations")
 
         // Create ContentAnswer with citations
         let answer = ContentAnswer(
@@ -112,12 +132,46 @@ class LLMResponseGenerator {
 
     // MARK: - Prompt Building
 
-    private func buildPrompt(question: String, context: ConversationContext?) -> String {
+    private func buildPrompt(question: String, context: ConversationContext?, profile: ChildProfile?) -> String {
         var prompt = """
         You are attune, an evidence-based autism and neurodiversity expert assistant helping parents of autistic children.
 
         User Question: \(question)
         """
+
+        // Add child profile context
+        if let profile = profile {
+            prompt += "\n\nCHILD PROFILE:"
+            prompt += "\n- Name: \(profile.name)"
+            prompt += "\n- Age: \(profile.age) years old"
+
+            if let pronouns = profile.pronouns {
+                prompt += "\n- Pronouns: \(pronouns)"
+            }
+
+            // Add diagnosis information
+            if let diagnosisInfo = profile.diagnosisInfo {
+                prompt += "\n\n"
+                prompt += diagnosisInfo.llmContext
+            }
+
+            // Add communication mode
+            prompt += "\n- Communication mode: \(profile.communicationMode.description)"
+
+            // Add known triggers
+            if !profile.triggers.isEmpty {
+                let triggerDescriptions = profile.triggers.prefix(5).map { $0.description }
+                prompt += "\n- Known triggers: \(triggerDescriptions.joined(separator: ", "))"
+            }
+
+            // Add effective strategies
+            if !profile.soothingStrategies.isEmpty {
+                let strategyDescriptions = profile.soothingStrategies.prefix(5).map { $0.description }
+                prompt += "\n- Effective strategies: \(strategyDescriptions.joined(separator: ", "))"
+            }
+
+            prompt += "\n\nPlease tailor your response specifically to this child's profile, age, and needs."
+        }
 
         if let context = context {
             prompt += "\n\nConversation Context:"
@@ -155,16 +209,19 @@ class LLMResponseGenerator {
         ---
         Learn More:
         • [Resource Title] - [Brief description]
-          URL: [actual working URL to autism.org.uk, autismspeaks.org, or other reputable autism org]
+          URL: [complete valid URL starting with https://]
 
-        Use ONLY these verified resource domains:
-        - autism.org.uk (UK autism charity)
-        - autismspeaks.org (major autism advocacy org)
-        - asan.org (Autistic Self Advocacy Network)
-        - reframingautism.org.au (neurodiversity-focused Australian org)
-        - autistichoya.com (neurodiversity blog)
+        Use ONLY these verified resource domains with COMPLETE, VALID URLs:
+        - https://www.autism.org.uk/ (UK autism charity - use specific page URLs like https://www.autism.org.uk/advice-and-guidance)
+        - https://www.autismspeaks.org/ (major autism advocacy - use specific section URLs)
+        - https://autisticadvocacy.org/ (Autistic Self Advocacy Network)
+        - https://www.reframingautism.org.au/ (neurodiversity-focused Australian org)
 
-        Provide actual, working URLs that are relevant to the question.
+        CRITICAL:
+        - ALL URLs MUST start with https://
+        - ALL URLs MUST be complete and valid (not placeholders)
+        - ONLY include URLs from the domains listed above
+        - Use specific page URLs that relate to the question topic
 
         Response:
         """
@@ -174,47 +231,48 @@ class LLMResponseGenerator {
 
     // MARK: - API Call
 
-    private func callGroqAPI(prompt: String, apiKey: String) async throws -> (response: String, citations: [ResourceCitation]) {
-        guard let url = URL(string: groqAPIURL) else {
+    private func callClaudeAPI(prompt: String, apiKey: String) async throws -> (response: String, citations: [ResourceCitation]) {
+        guard let url = URL(string: claudeAPIURL) else {
             throw LLMResponseError.invalidURL
         }
 
-        print("📤 Calling Groq API...")
+        print("📤 Calling Claude API...")
 
-        // Build request
+        // Build system prompt
+        let systemPrompt = """
+        You are attune, an expert in autism support and neurodiversity-affirming practices. You provide evidence-based, compassionate guidance to parents of autistic children.
+
+        IMPORTANT GUARDRAILS:
+        - ONLY respond to questions about autism, neurodivergence, ADHD, sensory processing, developmental differences, and related parenting support
+        - If a question is about unrelated topics (sports, politics, general trivia, etc.), politely decline by saying: "I'm specifically designed to support parents of neurodivergent children. I can help with questions about autism, ADHD, sensory processing, and neurodiversity-affirming parenting. Could you rephrase your question to relate to these topics?"
+        - Do NOT answer questions that are clearly off-topic, even if they mention children or parenting in general
+        """
+
+        // Build Claude request body
         let requestBody: [String: Any] = [
-            "model": groqModel,
+            "model": claudeModel,
+            "max_tokens": 1024,
+            "temperature": 0.7,
+            "system": systemPrompt,
             "messages": [
-                [
-                    "role": "system",
-                    "content": """
-                    You are attune, an expert in autism support and neurodiversity-affirming practices. You provide evidence-based, compassionate guidance to parents of autistic children.
-
-                    IMPORTANT GUARDRAILS:
-                    - ONLY respond to questions about autism, neurodivergence, ADHD, sensory processing, developmental differences, and related parenting support
-                    - If a question is about unrelated topics (sports, politics, general trivia, etc.), politely decline by saying: "I'm specifically designed to support parents of neurodivergent children. I can help with questions about autism, ADHD, sensory processing, and neurodiversity-affirming parenting. Could you rephrase your question to relate to these topics?"
-                    - Do NOT answer questions that are clearly off-topic, even if they mention children or parenting in general
-                    """
-                ],
                 [
                     "role": "user",
                     "content": prompt
                 ]
-            ],
-            "max_tokens": 800,
-            "temperature": 0.7
+            ]
         ]
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
+        request.setValue(anthropicVersion, forHTTPHeaderField: "anthropic-version")
         request.httpBody = try JSONSerialization.data(withJSONObject: requestBody)
 
         // Make request
-        print("⏳ Waiting for Groq response...")
+        print("⏳ Waiting for Claude response...")
         let (data, response) = try await URLSession.shared.data(for: request)
-        print("📥 Received response from Groq")
+        print("📥 Received response from Claude")
 
         // Validate response
         guard let httpResponse = response as? HTTPURLResponse else {
@@ -223,16 +281,23 @@ class LLMResponseGenerator {
 
         guard httpResponse.statusCode == 200 else {
             let errorMessage = String(data: data, encoding: .utf8) ?? "Unknown error"
-            print("❌ Groq API error (\(httpResponse.statusCode)): \(errorMessage)")
+            print("❌ Claude API error (\(httpResponse.statusCode)): \(errorMessage)")
             throw LLMResponseError.apiError(httpResponse.statusCode, errorMessage)
         }
 
-        // Parse response
-        guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let choices = json["choices"] as? [[String: Any]],
-              let firstChoice = choices.first,
-              let message = firstChoice["message"] as? [String: Any],
-              let text = message["content"] as? String else {
+        // Parse Claude response
+        struct ClaudeResponse: Codable {
+            let content: [ContentBlock]
+
+            struct ContentBlock: Codable {
+                let text: String
+            }
+        }
+
+        let decoder = JSONDecoder()
+        let claudeResponse = try decoder.decode(ClaudeResponse.self, from: data)
+
+        guard let text = claudeResponse.content.first?.text else {
             throw LLMResponseError.parseError
         }
 

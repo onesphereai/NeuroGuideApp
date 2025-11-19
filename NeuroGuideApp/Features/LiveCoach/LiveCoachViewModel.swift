@@ -11,6 +11,7 @@ import AVFoundation
 import CoreImage
 import Combine
 import UIKit
+import Speech
 
 /// ViewModel for LiveCoachView
 /// Manages session state and user interactions
@@ -25,9 +26,14 @@ class LiveCoachViewModel: ObservableObject {
     @Published private(set) var currentArousalBand: ArousalBand?  // Tier 1: Real-time (3 Hz)
     @Published private(set) var stabilizedArousalBand: ArousalBand?  // Tier 2: Stabilized (15-30s)
     @Published private(set) var currentConfidence: Double?
+    @Published private(set) var currentFeatureVisualization: FeatureVisualization?
     @Published private(set) var suggestions: [String] = []
     @Published private(set) var suggestionsWithResources: [CoachingSuggestionWithResource] = []
     @Published private(set) var suggestionsCount = 0
+
+    // Dual suggestions (child + parent)
+    @Published private(set) var childSuggestion: CoachingSuggestionWithResource?
+    @Published private(set) var parentSuggestion: CoachingSuggestionWithResource?
     @Published private(set) var degradationMode: DegradationMode?
     @Published private(set) var cameraStatus: PermissionStatus = .notDetermined
     @Published private(set) var microphoneStatus: PermissionStatus = .notDetermined
@@ -43,19 +49,30 @@ class LiveCoachViewModel: ObservableObject {
     @Published private(set) var currentMovementEnergy: MovementEnergy?
     @Published private(set) var detectedBehaviors: [ChildBehavior] = []
 
+    // Voice Observations (Modern UI)
+    @Published var isRecordingVoice = false
+    @Published var voiceObservations: [VoiceObservation] = []
+
+    // Emotional States (Modern UI)
+    @Published private(set) var childEmotionalState: String?
+    @Published private(set) var parentEmotionalState: String?
+
+    // Live Coach Mode Status
+    @Published private(set) var activeMode: LiveCoachMode = .standard
+    @Published private(set) var hasCustomModelLoaded: Bool = false
+
     // Camera Stabilization Status
     @Published private(set) var isCameraStable: Bool = true
     @Published private(set) var cameraMotionDescription: String?
+    @Published private(set) var isPersonDetected: Bool = true  // Track if person is in frame
 
     // Unit 8: Co-Regulation Feedback
     @Published private(set) var latestCoRegulationEvent: CoRegulationEvent?
     @Published private(set) var coRegulationEventsCount: Int = 0
     @Published private(set) var showCoRegulationCelebration: Bool = false
 
-    // Unit 9: Baseline Staleness Check
-    @Published var showBaselineStaleAlert: Bool = false
-    @Published private(set) var baselineDaysOld: Int = 0
-    private var bypassStaleBaselineCheck: Bool = false
+    // Suggestion Generation Status
+    @Published private(set) var isGeneratingSuggestion: Bool = false
 
     // MARK: - Private Properties
 
@@ -72,17 +89,27 @@ class LiveCoachViewModel: ObservableObject {
     private lazy var emotionInterface: EmotionInterfaceManager = EmotionInterfaceManager.shared
     private lazy var validationManager: ValidationManager = ValidationManager.shared
     private lazy var settingsManager: SettingsManager = SettingsManager()
-    private lazy var recordingManager: SessionRecordingManager = SessionRecordingManager.shared
-    private lazy var bandStabilizer = StabilizedBandTracker(sustainThreshold: 20.0)  // Unit 7: Multi-tier display
+    private lazy var customModelManager: CustomModelManager = CustomModelManager.shared
+    private lazy var bandStabilizer: StabilizedBandTracker = {
+        let threshold = settingsManager.arousalBandDuration.seconds
+        return StabilizedBandTracker(sustainThreshold: threshold)
+    }()
     private var cancellables = Set<AnyCancellable>()
     private var durationTask: Task<Void, Never>?
     private var detectionTask: Task<Void, Never>?
     private var isProcessingFrame = false
     private var isProcessingParentFrame = false
 
+    // Session context for LLM
+    private var sessionContext: SessionContext?
+
+    // Voice recording
+    private var audioRecorder: AVAudioRecorder?
+    private var currentRecordingURL: URL?
+
     // Frame skipping for memory management (process every Nth frame)
     private var frameCounter: Int = 0
-    private let frameSkipInterval: Int = 10  // Process every 10th frame (~3fps instead of 30fps) - aggressive memory saving
+    private let frameSkipInterval: Int = 30  // Process every 30th frame (~1fps instead of 30fps) - aggressive memory saving
 
     // Audio buffer management
     private var latestAudioBuffer: AVAudioPCMBuffer?
@@ -92,10 +119,22 @@ class LiveCoachViewModel: ObservableObject {
     // Unit 9: Expose profile for navigation to recalibration
     private(set) var currentProfile: ChildProfile?
 
+    // Track last delivered suggestions to prevent duplicates
+    private var lastDeliveredChildSuggestion: String?
+    private var lastDeliveredParentSuggestion: String?
+
     // MARK: - Initialization
 
     init() {
         // Empty init - services are initialized lazily when first accessed
+    }
+
+    deinit {
+        // Ensure idle timer is re-enabled when view model is deallocated
+        Task { @MainActor in
+            UIApplication.shared.isIdleTimerDisabled = false
+            print("🔒 LiveCoachViewModel deallocated - idle timer re-enabled")
+        }
     }
 
     // Setup method to be called after view appears
@@ -119,24 +158,6 @@ class LiveCoachViewModel: ObservableObject {
             return
         }
 
-        // Unit 9: Check if baseline needs recalibration (blocking unless bypassed)
-        if !bypassStaleBaselineCheck && profile.needsCalibration() {
-            let daysOld = getDaysOld(profile.baselineCalibration?.calibratedAt)
-            baselineDaysOld = daysOld
-
-            if daysOld > 30 {
-                print("⚠️ Baseline is \(daysOld) days old - showing recalibration prompt")
-                showBaselineStaleAlert = true
-                // Block session start - wait for user decision
-                return
-            } else if profile.baselineCalibration == nil {
-                print("⚠️ No baseline calibration found - using defaults")
-            }
-        } else if bypassStaleBaselineCheck {
-            print("ℹ️ User chose to continue with stale baseline")
-            bypassStaleBaselineCheck = false // Reset for next time
-        }
-
         // Request permissions if not yet determined
         if cameraStatus == .notDetermined || microphoneStatus == .notDetermined {
             print("📱 Requesting camera and microphone permissions...")
@@ -145,11 +166,17 @@ class LiveCoachViewModel: ObservableObject {
             print("🎤 Microphone: \(micGranted ? "granted" : "denied")")
         }
 
+        // Request speech recognition permission
+        await requestSpeechRecognitionPermission()
+
         do {
             let session = try await sessionManager.startSession(childID: profile.id)
             isSessionActive = true
             degradationMode = session.degradedMode
             startDurationTimer()
+
+            // Initialize session context for LLM
+            sessionContext = SessionContext.initial(childProfile: profile)
 
             // Reset camera stabilization for new session
             mlIntegration.resetStabilization()
@@ -161,15 +188,38 @@ class LiveCoachViewModel: ObservableObject {
                 print("⚠️ Microphone permission not granted - audio analysis disabled")
             }
 
-            // Check Live Coach mode
-            let isRecordFirstMode = settingsManager.liveCoachMode == .recordFirst
+            // Check if custom model is available for personalized mode
+            let hasCustomModel = await customModelManager.hasCustomModel(for: profile.id)
+            let currentMode = settingsManager.liveCoachMode
+
+            // Determine active mode based on settings and model availability
+            if currentMode == .personalized && hasCustomModel {
+                // Load custom k-NN model for personalized detection
+                do {
+                    let knnModel = try await customModelManager.loadKNNModel(for: profile.id)
+                    // Configure arousal classifier to use the custom k-NN model
+                    ArousalBandClassifier.shared.setCustomKNNModel(knnModel)
+                    activeMode = .personalized
+                    hasCustomModelLoaded = true
+                    print("✨ Starting in Personalized Mode with custom k-NN model")
+                } catch {
+                    activeMode = .standard
+                    hasCustomModelLoaded = false
+                    print("⚠️ Error loading custom model: \(error) - using Standard mode")
+                }
+            } else if currentMode == .personalized && !hasCustomModel {
+                activeMode = .standard
+                hasCustomModelLoaded = false
+                print("⚠️ Personalized mode selected but no custom model found - using Standard mode")
+            } else {
+                activeMode = .standard
+                hasCustomModelLoaded = false
+                print("📊 Starting in Standard Mode with generic ML models")
+            }
 
             // Setup camera if permissions granted and not in simulator
             #if targetEnvironment(simulator)
             // Always use simulated detection in simulator (no camera available)
-            if isRecordFirstMode {
-                print("📱 Running in simulator - record-first mode not supported, using simulated detection")
-            }
             startSimulatedDetection()
             print("📱 Running in simulator - using simulated detection")
             #else
@@ -177,14 +227,8 @@ class LiveCoachViewModel: ObservableObject {
             if cameraStatus == .granted {
                 // Check if dual camera is supported
                 if DualCameraManager.supportsMultiCam() {
-                    print("📱 Device supports dual camera")
-                    if isRecordFirstMode {
-                        print("🎬 Starting in record-first mode")
-                        try await startDualCameraRecording()
-                    } else {
-                        print("⚡ Starting in real-time mode")
-                        try await startDualCameraDetection()
-                    }
+                    print("📱 Device supports dual camera - starting detection")
+                    try await startDualCameraDetection()
                 } else {
                     print("📱 Device does not support dual camera - using single camera")
                     try await startCameraDetection()
@@ -193,6 +237,10 @@ class LiveCoachViewModel: ObservableObject {
                 startSimulatedDetection()
             }
             #endif
+
+            // Disable idle timer to prevent screen lock during session
+            UIApplication.shared.isIdleTimerDisabled = true
+            print("🔓 Idle timer disabled - screen will stay awake during session")
 
             print("✅ Session started successfully for \(profile.name)")
         } catch {
@@ -206,6 +254,9 @@ class LiveCoachViewModel: ObservableObject {
             // Stop detection
             stopDetection()
 
+            // Clear LLM cache
+            mlIntegration.clearLLMCache()
+
             try await sessionManager.endSession(notes: notes)
             isSessionActive = false
             isPaused = false
@@ -213,10 +264,17 @@ class LiveCoachViewModel: ObservableObject {
             resetSessionData()
             errorMessage = nil
 
+            // Re-enable idle timer to allow screen lock
+            UIApplication.shared.isIdleTimerDisabled = false
+            print("🔒 Idle timer re-enabled - device can sleep normally")
+
             print("✅ Session ended successfully")
         } catch {
             errorMessage = "Failed to end session properly. Session data may not be saved."
             print("❌ Failed to end session: \(error)")
+
+            // Re-enable idle timer even on error
+            UIApplication.shared.isIdleTimerDisabled = false
         }
     }
 
@@ -250,6 +308,152 @@ class LiveCoachViewModel: ObservableObject {
         } catch {
             print("❌ Failed to add observation: \(error)")
         }
+    }
+
+    // MARK: - Voice Observations
+
+    private func requestSpeechRecognitionPermission() async {
+        let status = SFSpeechRecognizer.authorizationStatus()
+        print("🎙️ Speech recognition status: \(status.rawValue)")
+
+        if status == .notDetermined {
+            await withCheckedContinuation { continuation in
+                SFSpeechRecognizer.requestAuthorization { newStatus in
+                    print("🎙️ Speech recognition authorization: \(newStatus.rawValue)")
+                    continuation.resume()
+                }
+            }
+        }
+    }
+
+    func startVoiceObservation() {
+        isRecordingVoice = true
+        print("🎤 Started voice observation recording")
+
+        // Configure audio session
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker])
+            try audioSession.setActive(true)
+        } catch {
+            print("⚠️ Failed to configure audio session: \(error)")
+            return
+        }
+
+        // Create temporary file URL
+        let tempDir = FileManager.default.temporaryDirectory
+        let fileName = "voice_observation_\(UUID().uuidString).m4a"
+        let audioURL = tempDir.appendingPathComponent(fileName)
+        currentRecordingURL = audioURL
+
+        // Configure recording settings
+        let settings: [String: Any] = [
+            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+            AVSampleRateKey: 44100,
+            AVNumberOfChannelsKey: 1,
+            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+        ]
+
+        // Start recording
+        do {
+            audioRecorder = try AVAudioRecorder(url: audioURL, settings: settings)
+            audioRecorder?.record()
+            print("✅ Recording started at: \(audioURL)")
+        } catch {
+            print("⚠️ Failed to start recording: \(error)")
+            currentRecordingURL = nil
+        }
+    }
+
+    func stopVoiceObservation() async {
+        isRecordingVoice = false
+        print("🎤 Stopped voice observation recording")
+
+        // Stop recording
+        audioRecorder?.stop()
+        audioRecorder = nil
+
+        guard let audioURL = currentRecordingURL else {
+            print("⚠️ No audio URL available")
+            return
+        }
+
+        // Create observation with audio URL (transcription will be added later)
+        var observation = VoiceObservation(
+            timestamp: Date(),
+            audioURL: audioURL,
+            transcription: nil
+        )
+
+        voiceObservations.insert(observation, at: 0)  // Add to beginning
+        print("✅ Voice observation added: \(observation.id)")
+
+        // Transcribe audio
+        await transcribeAudio(url: audioURL, observationID: observation.id)
+
+        currentRecordingURL = nil
+    }
+
+    private func transcribeAudio(url: URL, observationID: UUID) async {
+        print("🎙️ Starting transcription for: \(url)")
+
+        // Check speech recognition availability
+        guard SFSpeechRecognizer.authorizationStatus() == .authorized else {
+            print("⚠️ Speech recognition not authorized")
+            updateObservationTranscription(id: observationID, text: "Speech recognition not authorized. Please enable in Settings.")
+            return
+        }
+
+        let recognizer = SFSpeechRecognizer()
+        guard recognizer?.isAvailable == true else {
+            print("⚠️ Speech recognizer not available")
+            updateObservationTranscription(id: observationID, text: "Speech recognition not available")
+            return
+        }
+
+        let request = SFSpeechURLRecognitionRequest(url: url)
+        request.shouldReportPartialResults = false
+
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            recognizer?.recognitionTask(with: request) { result, error in
+                if let error = error {
+                    print("⚠️ Transcription failed: \(error)")
+                    Task { @MainActor in
+                        self.updateObservationTranscription(id: observationID, text: "Transcription failed")
+                    }
+                    continuation.resume()
+                    return
+                }
+
+                if let result = result, result.isFinal {
+                    let transcription = result.bestTranscription.formattedString
+                    print("✅ Transcription complete: \(transcription)")
+                    Task { @MainActor in
+                        self.updateObservationTranscription(id: observationID, text: transcription)
+                        // TODO: Feed transcription to LLM for better context
+                    }
+                    continuation.resume()
+                }
+            }
+        }
+    }
+
+    private func updateObservationTranscription(id: UUID, text: String) {
+        if let index = voiceObservations.firstIndex(where: { $0.id == id }) {
+            voiceObservations[index].transcription = text
+            voiceObservations[index].sentToLLM = false  // Mark as not yet sent
+
+            // Add to session context
+            sessionContext?.addVoiceObservation(transcription: text)
+
+            print("✅ Updated transcription for observation \(id) and added to session context")
+        }
+    }
+
+    func recordSuggestionFeedback(helpful: Bool) async {
+        guard let suggestion = suggestionsWithResources.first else { return }
+        print("\(helpful ? "👍" : "👎") Suggestion feedback: \(helpful ? "Helpful" : "Not Helpful")")
+        // TODO: Record feedback in session history
     }
 
     // MARK: - Emotion Validation
@@ -304,6 +508,31 @@ class LiveCoachViewModel: ObservableObject {
             print("⚠️ Memory warning received - clearing caches")
             self?.handleMemoryWarning()
         }
+
+        // Observe app lifecycle for idle timer management
+        NotificationCenter.default.addObserver(
+            forName: UIApplication.willResignActiveNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            // Re-enable idle timer when app goes to background
+            if self?.isSessionActive == true {
+                UIApplication.shared.isIdleTimerDisabled = false
+                print("🔒 App backgrounded - idle timer re-enabled")
+            }
+        }
+
+        NotificationCenter.default.addObserver(
+            forName: UIApplication.didBecomeActiveNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            // Re-disable idle timer when app returns to foreground with active session
+            if self?.isSessionActive == true {
+                UIApplication.shared.isIdleTimerDisabled = true
+                print("🔓 App foregrounded - idle timer disabled for active session")
+            }
+        }
     }
 
     private func handleSessionUpdate(_ session: LiveCoachSession?) {
@@ -351,18 +580,6 @@ class LiveCoachViewModel: ObservableObject {
                 // Configure coaching engine with child name for LLM personalization
                 mlIntegration.configureCoaching(childName: childName, useLLM: true)
 
-                // Configure arousal classifier with baseline calibration for personalized thresholds
-                if let profile = currentProfile {
-                    ArousalBandClassifier.shared.setBaselineCalibration(profile.baselineCalibration)
-
-                    if profile.baselineCalibration != nil {
-                        print("✅ Arousal detection personalized with baseline calibration")
-                    } else {
-                        print("⚠️ No baseline calibration - using default thresholds")
-                        print("   Tip: Complete baseline calibration in profile settings for more accurate detection")
-                    }
-                }
-
                 if let name = childName {
                     print("✅ Loaded profile for \(name)")
                     print("🎭 Emotion interface: \(isEmotionInterfaceEnabled ? "enabled" : "disabled")")
@@ -403,15 +620,42 @@ class LiveCoachViewModel: ObservableObject {
         bandStabilizer.reset()       // Unit 7: Reset tracker
         currentConfidence = nil
         suggestions = []
+        suggestionsWithResources = []
         suggestionsCount = 0
+
+        // Clear dual suggestions
+        childSuggestion = nil
+        parentSuggestion = nil
+
+        // Reset suggestion tracking to prevent duplicates
+        lastDeliveredChildSuggestion = nil
+        lastDeliveredParentSuggestion = nil
+
+        // Clear ML detection state
+        currentFeatureVisualization = nil
+        detectedBehaviors = []
+        currentMovementEnergy = nil
+        childEmotionalState = nil
+        parentEmotionalState = nil
+        currentEmotionState = nil
+
+        // Reset detection status
+        isPersonDetected = true
+        isCameraStable = true
+        cameraMotionDescription = nil
+
+        // Reset mode tracking
+        activeMode = .standard
+        hasCustomModelLoaded = false
 
         // Unit 8: Reset co-regulation tracking
         latestCoRegulationEvent = nil
         coRegulationEventsCount = 0
         showCoRegulationCelebration = false
 
-        // Unit 9: Reset baseline bypass flag
-        bypassStaleBaselineCheck = false
+        // Reset voice observations
+        voiceObservations = []
+        isRecordingVoice = false
     }
 
     private func handleMemoryWarning() {
@@ -623,45 +867,6 @@ class LiveCoachViewModel: ObservableObject {
         print("📹📹 Started dual camera detection (child + parent)")
     }
 
-    private func startDualCameraRecording() async throws {
-        // Setup dual camera system for preview
-        let success = try await dualCameraManager.setupDualCamera()
-
-        guard success else {
-            // Fallback to single camera if dual camera setup fails
-            print("⚠️ Dual camera setup failed, falling back to single camera")
-            try await startCameraDetection()
-            return
-        }
-
-        // Start camera capture (for preview) WITHOUT frame processing
-        // We pass empty frame handlers because we're recording, not analyzing in real-time
-        dualCameraManager.startCapture(
-            childFrameHandler: { _ in
-                // No-op - we're recording, not analyzing
-            },
-            parentFrameHandler: { _ in
-                // No-op - we're recording, not analyzing
-            }
-        )
-
-        // Get sessions for recording
-        guard let childSession = dualCameraManager.getChildCaptureSession(),
-              let parentSession = dualCameraManager.getParentCaptureSession() else {
-            throw NSError(domain: "LiveCoach", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to get capture sessions"])
-        }
-
-        // Start recording to video files
-        let _ = try await recordingManager.startRecording(
-            childSession: childSession,
-            parentSession: parentSession
-        )
-
-        isDualCameraMode = true
-        isCameraActive = true
-        print("🎬 Started dual camera recording (record-first mode)")
-    }
-
     private func startSimulatedDetection() {
         // Start task for simulated detection (for demo without camera)
         detectionTask?.cancel()
@@ -725,10 +930,14 @@ class LiveCoachViewModel: ObservableObject {
             // Get latest audio buffer (if available)
             let audioBuffer = getLatestAudioBuffer()
 
+            // Show generation indicator
+            isGeneratingSuggestion = true
+
             // Run new integrated ML analysis with both video and audio
             let analysis = try await mlIntegration.analyzeFrame(
                 videoFrame: pixelBuffer,
-                audioBuffer: audioBuffer
+                audioBuffer: audioBuffer,
+                sessionContext: sessionContext
             )
 
             // Record arousal band in session
@@ -747,6 +956,7 @@ class LiveCoachViewModel: ObservableObject {
             currentConfidence = analysis.confidence
             currentMovementEnergy = analysis.movementEnergy
             detectedBehaviors = analysis.detectedBehaviors
+            currentFeatureVisualization = ArousalBandClassifier.shared.currentFeatureVisualization
 
             // Update camera stability status
             let stabilityInfo = mlIntegration.getCameraStabilityInfo()
@@ -754,27 +964,22 @@ class LiveCoachViewModel: ObservableObject {
             cameraMotionDescription = stabilityInfo.motion?.description
 
             // Update arousal band with stabilization and co-regulation detection (Unit 7 + Unit 8)
+            // Extracts dual suggestions from analysis result
             await updateArousalBandWithStabilization(
                 band: analysis.arousalBand,
-                suggestions: analysis.suggestions,
-                suggestionsWithResources: analysis.suggestionsWithResources
+                behaviors: analysis.detectedBehaviors,
+                environmentContext: analysis.environmentContext,
+                parentStress: analysis.parentStressLevel,
+                analysis: analysis
             )
 
-            // Record LLM suggestions in session history
-            for suggestion in analysis.suggestionsWithResources {
-                do {
-                    try await sessionManager.recordDeliveredSuggestion(
-                        contentItemID: UUID(), // Generate UUID for LLM suggestion
-                        suggestionText: suggestion.text,
-                        arousalBand: analysis.arousalBand
-                    )
-                } catch {
-                    print("⚠️ Failed to record suggestion: \(error)")
-                }
-            }
+            // Hide generation indicator
+            isGeneratingSuggestion = false
 
         } catch {
             print("⚠️ ML detection failed: \(error.localizedDescription)")
+            // Hide generation indicator on error too
+            isGeneratingSuggestion = false
         }
     }
 
@@ -833,10 +1038,14 @@ class LiveCoachViewModel: ObservableObject {
             // Run new integrated ML analysis with parent monitoring if in dual camera mode
             mlIntegration.setParentMonitoring(enabled: isDualCameraMode)
 
+            // Show generation indicator
+            isGeneratingSuggestion = true
+
             // Run ML analysis with both video and audio
             let analysis = try await mlIntegration.analyzeFrame(
                 videoFrame: pixelBuffer,
-                audioBuffer: audioBuffer
+                audioBuffer: audioBuffer,
+                sessionContext: sessionContext
             )
 
             // Record arousal band in session
@@ -855,6 +1064,16 @@ class LiveCoachViewModel: ObservableObject {
             currentConfidence = analysis.confidence
             currentMovementEnergy = analysis.movementEnergy
             detectedBehaviors = analysis.detectedBehaviors
+            currentFeatureVisualization = ArousalBandClassifier.shared.currentFeatureVisualization
+
+            // Check if person is detected (any modality available)
+            if let features = currentFeatureVisualization {
+                isPersonDetected = features.poseAvailable || features.facialAvailable || features.vocalAvailable
+
+                if !isPersonDetected {
+                    print("⚠️ No person detected in frame - all modalities unavailable")
+                }
+            }
 
             // Update camera stability status
             let stabilityInfo = mlIntegration.getCameraStabilityInfo()
@@ -862,30 +1081,24 @@ class LiveCoachViewModel: ObservableObject {
             cameraMotionDescription = stabilityInfo.motion?.description
 
             // Update arousal band for both tiers and handle stabilized changes
+            // Extracts dual suggestions from analysis result
             await updateArousalBandWithStabilization(
                 band: analysis.arousalBand,
-                suggestions: analysis.suggestions,
-                suggestionsWithResources: analysis.suggestionsWithResources
+                behaviors: analysis.detectedBehaviors,
+                environmentContext: analysis.environmentContext,
+                parentStress: analysis.parentStressLevel,
+                analysis: analysis
             )
 
-            // Record LLM suggestions in session history
-            for suggestion in analysis.suggestionsWithResources {
-                do {
-                    try await sessionManager.recordDeliveredSuggestion(
-                        contentItemID: UUID(), // Generate UUID for LLM suggestion
-                        suggestionText: suggestion.text,
-                        arousalBand: analysis.arousalBand
-                    )
-                } catch {
-                    print("⚠️ Failed to record suggestion: \(error)")
-                }
-            }
+            // Hide generation indicator
+            isGeneratingSuggestion = false
 
             // Classify emotion if emotion interface is enabled
             if isEmotionInterfaceEnabled {
                 do {
                     let emotionClassification = try await emotionClassifier.classifyEmotion(from: image)
                     currentEmotionState = emotionClassification
+                    childEmotionalState = emotionClassification.primary.displayName
 
                     // Check if validation prompt should be shown
                     if validationManager.shouldShowValidationPrompt(),
@@ -902,6 +1115,8 @@ class LiveCoachViewModel: ObservableObject {
 
         } catch {
             print("⚠️ Child ML detection failed: \(error.localizedDescription)")
+            // Hide generation indicator on error too
+            isGeneratingSuggestion = false
         }
     }
 
@@ -919,26 +1134,29 @@ class LiveCoachViewModel: ObservableObject {
     // MARK: - Unit 7: Multi-Tier Display Helpers
 
     /// Update arousal band for both tiers (real-time and stabilized)
-    /// Triggers co-regulation detection and suggestion updates ONLY on stabilized changes
+    /// Uses suggestions from MLAnalysisResult (already generated with 5-second temporal buffer)
     private func updateArousalBandWithStabilization(
         band: ArousalBand,
-        suggestions: [String],
-        suggestionsWithResources: [CoachingSuggestionWithResource]
+        behaviors: [ChildBehavior],
+        environmentContext: EnvironmentContext,
+        parentStress: StressLevel,
+        analysis: MLAnalysisResult?
     ) async {
         // Tier 1: Immediate update for ambient indicator
         currentArousalBand = band
 
-        // Tier 2: Update stabilizer and get stable band if sustained
+        // Tier 2: Update stabilizer and only trigger suggestions on stabilized band changes
         if let stableBand = bandStabilizer.update(band: band) {
+            // Store previous stabilized band to detect actual changes
+            let previousStabilizedBand = stabilizedArousalBand
             stabilizedArousalBand = stableBand
-            print("✅ Stabilized band updated: \(stableBand.rawValue)")
 
-            // Only update these when stabilized band changes (not on every frame):
+            print("✅ Stabilized band changed: \(previousStabilizedBand?.rawValue ?? "nil") → \(stableBand.rawValue)")
 
-            // 1. Record child state for co-regulation detection
+            // Record child state for co-regulation detection
             coRegulationDetector.recordChildState(stableBand)
 
-            // 2. Check for co-regulation events (Unit 8: Co-Regulation Feedback)
+            // Check for co-regulation events (Unit 8: Co-Regulation Feedback)
             if let session = sessionManager.currentSession,
                let event = coRegulationDetector.detectCoRegulationEvent(sessionID: session.id) {
                 do {
@@ -951,10 +1169,72 @@ class LiveCoachViewModel: ObservableObject {
                 }
             }
 
-            // 3. Update suggestions (synced with stabilized band changes)
-            self.suggestions = suggestions
-            self.suggestionsWithResources = suggestionsWithResources
-            print("💡 Suggestions updated with stabilized band change")
+            // ONLY update suggestions when the stabilized band actually changes
+            // This prevents rapid suggestion updates on every frame
+            if previousStabilizedBand != stableBand {
+                await updateSuggestionsForStabilizedBand(stableBand, analysis: analysis)
+            }
+        }
+    }
+
+    /// Update suggestions for a new stabilized band
+    /// Only called when stabilized band actually changes
+    private func updateSuggestionsForStabilizedBand(_ stableBand: ArousalBand, analysis: MLAnalysisResult?) async {
+        print("💡 Updating suggestions for new stabilized band: \(stableBand.rawValue)")
+
+        // Extract child and parent suggestions from analysis
+        if let analysis = analysis {
+            self.childSuggestion = analysis.childSuggestion
+            self.parentSuggestion = analysis.parentSuggestion
+
+            // Update legacy arrays for backwards compatibility
+            let newSuggestionsWithResources = analysis.suggestionsWithResources
+            self.suggestionsWithResources = newSuggestionsWithResources
+            self.suggestions = newSuggestionsWithResources.map { $0.text }
+
+            // Record suggestions in session history ONLY if they're different from the last ones
+            // This prevents duplicate suggestion recording during rapid band fluctuations
+            if let childSugg = analysis.childSuggestion,
+               childSugg.text != lastDeliveredChildSuggestion {
+                do {
+                    try await sessionManager.recordDeliveredSuggestion(
+                        contentItemID: UUID(),
+                        suggestionText: childSugg.text,
+                        arousalBand: stableBand
+                    )
+                    lastDeliveredChildSuggestion = childSugg.text
+                    print("📝 Recorded new child suggestion")
+                } catch {
+                    print("⚠️ Failed to record child suggestion: \(error)")
+                }
+            } else if let childSugg = analysis.childSuggestion {
+                print("⏭️ Skipping duplicate child suggestion")
+            }
+
+            if let parentSugg = analysis.parentSuggestion,
+               parentSugg.text != lastDeliveredParentSuggestion {
+                do {
+                    try await sessionManager.recordDeliveredSuggestion(
+                        contentItemID: UUID(),
+                        suggestionText: parentSugg.text,
+                        arousalBand: stableBand
+                    )
+                    lastDeliveredParentSuggestion = parentSugg.text
+                    print("📝 Recorded new parent suggestion")
+                } catch {
+                    print("⚠️ Failed to record parent suggestion: \(error)")
+                }
+            } else if let parentSugg = analysis.parentSuggestion {
+                print("⏭️ Skipping duplicate parent suggestion")
+            }
+
+            print("💡 Dual suggestions updated for stabilized band change")
+            if let child = childSuggestion {
+                print("   Child: \(child.text.prefix(50))...")
+            }
+            if let parent = parentSuggestion {
+                print("   Parent: \(parent.text.prefix(50))...")
+            }
         }
     }
 
@@ -1013,33 +1293,6 @@ class LiveCoachViewModel: ObservableObject {
         let successful = total
         let rate = total > 0 ? Double(successful) / Double(total) : 0.0
         return (total, rate)
-    }
-
-    // MARK: - Unit 9: Baseline Staleness Helpers
-
-    /// Calculate how many days old the baseline is
-    private func getDaysOld(_ date: Date?) -> Int {
-        guard let date = date else { return 999 } // Very old if no baseline
-        let days = Calendar.current.dateComponents([.day], from: date, to: Date()).day ?? 999
-        return max(days, 0)
-    }
-
-    /// User chose to continue with stale baseline
-    func continueWithStaleBaseline() {
-        showBaselineStaleAlert = false
-        bypassStaleBaselineCheck = true
-        print("ℹ️ User chose to continue with stale baseline - restarting session")
-        // Restart session with bypass flag set
-        Task {
-            await startSession()
-        }
-    }
-
-    /// User chose to recalibrate - navigate to calibration
-    func requestRecalibration() {
-        showBaselineStaleAlert = false
-        // Navigation will be handled by LiveCoachView
-        print("🎯 User requested baseline recalibration")
     }
 
     // MARK: - Co-Regulation Mapping Helpers

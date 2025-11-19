@@ -75,46 +75,71 @@ enum NeurodivergentDiagnosis: String, Codable, CaseIterable, Identifiable {
 
 /// Container for diagnosis information in child profile
 struct DiagnosisInfo: Codable, Equatable {
-    var primaryDiagnosis: NeurodivergentDiagnosis
-    var additionalDiagnoses: [NeurodivergentDiagnosis]
-    var notes: String?
+    var diagnoses: [NeurodivergentDiagnosis]  // Multi-select diagnoses
+    var notes: String?  // Additional notes for LLM
     var professionallyDiagnosed: Bool
+    var diagnosisReportData: Data?  // Diagnosis report PDF/image
+    var reportAnalysis: String?  // LLM analysis of the report
 
     init(
-        primaryDiagnosis: NeurodivergentDiagnosis,
-        additionalDiagnoses: [NeurodivergentDiagnosis] = [],
+        diagnoses: [NeurodivergentDiagnosis] = [],
         notes: String? = nil,
-        professionallyDiagnosed: Bool = false
+        professionallyDiagnosed: Bool = false,
+        diagnosisReportData: Data? = nil,
+        reportAnalysis: String? = nil
     ) {
-        self.primaryDiagnosis = primaryDiagnosis
-        self.additionalDiagnoses = additionalDiagnoses
+        self.diagnoses = diagnoses
         self.notes = notes
         self.professionallyDiagnosed = professionallyDiagnosed
+        self.diagnosisReportData = diagnosisReportData
+        self.reportAnalysis = reportAnalysis
     }
 
-    /// Get all diagnoses (primary + additional)
+    /// Get all diagnoses
     var allDiagnoses: [NeurodivergentDiagnosis] {
-        var all = [primaryDiagnosis]
-        all.append(contentsOf: additionalDiagnoses)
-        return all
+        return diagnoses
     }
 
     /// Check if a specific diagnosis is present
     func hasDiagnosis(_ diagnosis: NeurodivergentDiagnosis) -> Bool {
-        return allDiagnoses.contains(diagnosis)
+        return diagnoses.contains(diagnosis)
     }
 
     /// Summary text for display
     var summaryText: String {
-        if primaryDiagnosis == .preferNotToSpecify {
+        if diagnoses.isEmpty || (diagnoses.count == 1 && diagnoses.first == .preferNotToSpecify) {
             return "Not specified"
         }
 
-        if additionalDiagnoses.isEmpty {
-            return primaryDiagnosis.displayName
+        if diagnoses.count == 1 {
+            return diagnoses.first!.displayName
         } else {
-            return "\(primaryDiagnosis.displayName) + \(additionalDiagnoses.count) more"
+            let filteredDiagnoses = diagnoses.filter { $0 != .preferNotToSpecify }
+            return filteredDiagnoses.map { $0.displayName }.joined(separator: ", ")
         }
+    }
+
+    /// Get combined information for LLM context
+    var llmContext: String {
+        var context = ""
+
+        // Add diagnoses
+        if !diagnoses.isEmpty && !(diagnoses.count == 1 && diagnoses.first == .preferNotToSpecify) {
+            let diagnosisNames = diagnoses.filter { $0 != .preferNotToSpecify }.map { $0.displayName }
+            context += "Diagnoses: \(diagnosisNames.joined(separator: ", "))\n"
+        }
+
+        // Add additional notes
+        if let notes = notes, !notes.isEmpty {
+            context += "Additional Notes: \(notes)\n"
+        }
+
+        // Add report analysis if available
+        if let analysis = reportAnalysis, !analysis.isEmpty {
+            context += "Report Analysis: \(analysis)\n"
+        }
+
+        return context
     }
 }
 

@@ -17,6 +17,8 @@ struct FeatureCardView: View {
     let feature: FeatureCard
     let action: () -> Void
 
+    @State private var isPressed = false
+
     // MARK: - Body
 
     var body: some View {
@@ -24,55 +26,63 @@ struct FeatureCardView: View {
             AccessibilityHelper.shared.buttonTap()
             action()
         }) {
-            VStack(spacing: 12) {
-                // Icon
-                Image(systemName: feature.iconName)
-                    .font(.system(size: 40))
-                    .foregroundColor(iconColor)
-                    .frame(height: 50)
-                    .accessibilityHidden(true)
+            VStack(spacing: 16) {
+                // Icon with light purple/blue circle background
+                ZStack {
+                    Circle()
+                        .fill(iconBackgroundColor)
+                        .frame(width: 64, height: 64)
+
+                    Image(systemName: feature.iconName)
+                        .font(.system(size: 28, weight: .semibold))
+                        .foregroundColor(iconColor)
+                }
+                .accessibilityHidden(true)
 
                 // Title
                 Text(feature.title)
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.primary)
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundColor(.ngCardTextPrimary)
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
                     .minimumScaleFactor(0.8)
 
                 // Description
                 Text(feature.description)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+                    .font(.system(size: 13, weight: .regular))
+                    .foregroundColor(.ngCardTextSecondary)
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
                     .minimumScaleFactor(0.9)
 
-                // Availability badge
+                // Availability Badge
                 if !feature.isAvailable {
                     Text("Coming Soon")
-                        .font(.system(size: 10, weight: .medium))
+                        .font(.system(size: 10, weight: .semibold))
                         .foregroundColor(.white)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(Color.gray)
-                        .cornerRadius(8)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .background(
+                            Capsule()
+                                .fill(Color.gray.opacity(0.6))
+                        )
                 }
             }
-            .padding(16)
-            .frame(width: 150, height: 150)
+            .padding(20)
+            .frame(maxWidth: .infinity, minHeight: 180)
             .background(
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(backgroundColor)
-                    .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 2)
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(.white)
             )
-            .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(borderColor, lineWidth: 1)
-            )
+            .shadow(color: Color.black.opacity(0.08), radius: 12, x: 0, y: 4)
+            .scaleEffect(isPressed ? 0.95 : 1.0)
         }
         .buttonStyle(PlainButtonStyle())
+        .onLongPressGesture(minimumDuration: 0.01, pressing: { pressing in
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                isPressed = pressing
+            }
+        }, perform: {})
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(feature.title) feature")
         .accessibilityHint(accessibilityHint)
@@ -81,16 +91,22 @@ struct FeatureCardView: View {
 
     // MARK: - Helper Properties
 
+    private var iconBackgroundColor: Color {
+        if feature.isAvailable {
+            // Light purple/blue background for active features
+            return .ngIconBackgroundLight
+        } else {
+            return Color.gray.opacity(0.2)
+        }
+    }
+
     private var iconColor: Color {
-        feature.isAvailable ? Color.blue : Color.gray
-    }
-
-    private var backgroundColor: Color {
-        Color(UIColor.systemBackground)
-    }
-
-    private var borderColor: Color {
-        Color.gray.opacity(0.2)
+        if feature.isAvailable {
+            // Darker purple/blue for icon
+            return .ngIconForeground
+        } else {
+            return Color.gray.opacity(0.6)
+        }
     }
 
     private var accessibilityHint: String {

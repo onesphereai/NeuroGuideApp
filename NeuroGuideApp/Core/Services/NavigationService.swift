@@ -39,6 +39,7 @@ enum Screen: Equatable {
     case askQuestion  // Placeholder for future Bolt
     case profile  // Placeholder for future Bolt
     case sessionHistory  // Session history and reports
+    case trainingLibrary  // Model training and data collection
 }
 
 // MARK: - Modal Enum

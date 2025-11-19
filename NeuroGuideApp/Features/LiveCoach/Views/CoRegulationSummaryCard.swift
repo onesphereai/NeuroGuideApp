@@ -17,35 +17,53 @@ struct CoRegulationSummaryCard: View {
     let latestEvent: CoRegulationEvent?
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            // Header
-            HStack {
-                Image(systemName: "figure.2.and.child.holdinghands")
-                    .font(.title3)
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.blue, .green],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
+        VStack(alignment: .leading, spacing: 18) {
+            // Modern Header with gradient icon
+            HStack(spacing: 12) {
+                ZStack {
+                    Circle()
+                        .fill(
+                            LinearGradient(
+                                colors: [Color.blue.opacity(0.15), Color.green.opacity(0.15)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
                         )
-                    )
+                        .frame(width: 44, height: 44)
+
+                    Image(systemName: "figure.2.and.child.holdinghands")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [.blue, .green],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                }
 
                 Text("Co-Regulation Moments")
-                    .font(.headline)
+                    .font(.system(size: 17, weight: .bold))
 
                 Spacer()
 
-                // Events count badge
+                // Modern count badge
                 if eventsCount > 0 {
                     Text("\(eventsCount)")
-                        .font(.caption)
-                        .fontWeight(.bold)
+                        .font(.system(size: 14, weight: .bold))
                         .foregroundColor(.white)
-                        .frame(minWidth: 24, minHeight: 24)
+                        .frame(minWidth: 28, minHeight: 28)
                         .background(
                             Circle()
-                                .fill(Color.blue)
+                                .fill(
+                                    LinearGradient(
+                                        colors: [.blue, .green],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
                         )
+                        .shadow(color: .blue.opacity(0.3), radius: 6, x: 0, y: 3)
                 }
             }
 
@@ -72,67 +90,119 @@ struct CoRegulationSummaryCard: View {
                     )
                 }
 
-                // Latest event preview
+                // Modern latest event preview
                 if let event = latestEvent {
                     Divider()
+                        .padding(.vertical, 4)
 
-                    VStack(alignment: .leading, spacing: 8) {
+                    VStack(alignment: .leading, spacing: 10) {
                         Text("Most Recent")
-                            .font(.caption)
+                            .font(.system(size: 12, weight: .semibold))
                             .foregroundColor(.secondary)
+                            .textCase(.uppercase)
+                            .tracking(0.5)
 
-                        HStack(spacing: 8) {
-                            Image(systemName: "arrow.right.circle.fill")
-                                .font(.caption)
-                                .foregroundColor(.blue)
+                        HStack(spacing: 10) {
+                            ZStack {
+                                Circle()
+                                    .fill(Color.blue.opacity(0.15))
+                                    .frame(width: 28, height: 28)
+
+                                Image(systemName: "arrow.right.circle.fill")
+                                    .font(.system(size: 14))
+                                    .foregroundColor(.blue)
+                            }
 
                             Text(event.childStateBefore.displayName)
-                                .font(.caption)
+                                .font(.system(size: 13, weight: .medium))
                                 .foregroundColor(.secondary)
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 5)
+                                .background(
+                                    Capsule()
+                                        .fill(Color.secondary.opacity(0.1))
+                                )
 
                             Image(systemName: "arrow.forward")
-                                .font(.caption2)
+                                .font(.system(size: 10, weight: .bold))
                                 .foregroundColor(.secondary)
 
                             Text(event.childStateAfter.displayName)
-                                .font(.caption)
-                                .fontWeight(.medium)
+                                .font(.system(size: 13, weight: .semibold))
                                 .foregroundColor(.green)
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 5)
+                                .background(
+                                    Capsule()
+                                        .fill(Color.green.opacity(0.15))
+                                )
                         }
 
                         if let notes = event.notes, !notes.isEmpty {
                             Text(notes)
-                                .font(.caption2)
+                                .font(.system(size: 12, weight: .medium))
                                 .foregroundColor(.secondary)
                                 .lineLimit(2)
+                                .padding(.top, 2)
                         }
                     }
                 }
             } else {
-                // Empty state
-                VStack(spacing: 8) {
-                    Image(systemName: "figure.2.and.child.holdinghands")
-                        .font(.largeTitle)
-                        .foregroundColor(.secondary.opacity(0.3))
+                // Modern empty state
+                VStack(spacing: 12) {
+                    ZStack {
+                        Circle()
+                            .fill(
+                                LinearGradient(
+                                    colors: [Color.blue.opacity(0.1), Color.green.opacity(0.1)],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .frame(width: 64, height: 64)
+
+                        Image(systemName: "figure.2.and.child.holdinghands")
+                            .font(.system(size: 28))
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [.blue.opacity(0.4), .green.opacity(0.4)],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                    }
 
                     Text("No co-regulation events yet")
-                        .font(.subheadline)
+                        .font(.system(size: 15, weight: .semibold))
                         .foregroundColor(.secondary)
 
                     Text("Keep supporting your child - moments will appear here!")
-                        .font(.caption)
+                        .font(.system(size: 13, weight: .medium))
                         .foregroundColor(.secondary.opacity(0.7))
                         .multilineTextAlignment(.center)
+                        .padding(.horizontal, 8)
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
+                .padding(.vertical, 20)
             }
         }
-        .padding()
+        .padding(20)
         .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color(.secondarySystemBackground))
+            RoundedRectangle(cornerRadius: 20)
+                .fill(.ultraThickMaterial)
         )
+        .overlay(
+            RoundedRectangle(cornerRadius: 20)
+                .strokeBorder(
+                    LinearGradient(
+                        colors: [Color.blue.opacity(0.3), Color.green.opacity(0.3)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    ),
+                    lineWidth: 1
+                )
+        )
+        .shadow(color: Color.black.opacity(0.08), radius: 16, x: 0, y: 8)
     }
 }
 
@@ -145,18 +215,23 @@ struct StatItem: View {
     let color: Color
 
     var body: some View {
-        VStack(spacing: 8) {
-            Image(systemName: icon)
-                .font(.title3)
-                .foregroundColor(color)
+        VStack(spacing: 10) {
+            ZStack {
+                Circle()
+                    .fill(color.opacity(0.15))
+                    .frame(width: 48, height: 48)
+
+                Image(systemName: icon)
+                    .font(.system(size: 22, weight: .semibold))
+                    .foregroundColor(color)
+            }
 
             Text(value)
-                .font(.title2)
-                .fontWeight(.bold)
+                .font(.system(size: 24, weight: .bold))
                 .foregroundColor(.primary)
 
             Text(label)
-                .font(.caption)
+                .font(.system(size: 12, weight: .medium))
                 .foregroundColor(.secondary)
         }
         .frame(maxWidth: .infinity)

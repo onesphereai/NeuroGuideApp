@@ -40,6 +40,18 @@ class SessionRecordingManager: ObservableObject {
     private var childOutputURL: URL?
     private var parentOutputURL: URL?
 
+    // Track outputs we add so we can remove them later
+    private var childVideoOutput: AVCaptureVideoDataOutput?
+    private var parentVideoOutput: AVCaptureVideoDataOutput?
+    private var childAudioOutput: AVCaptureAudioDataOutput?
+    private var childSession: AVCaptureSession?
+    private var parentSession: AVCaptureSession?
+
+    // Retain delegates (important - otherwise they get deallocated!)
+    private var childVideoDelegate: SampleBufferDelegate?
+    private var parentVideoDelegate: SampleBufferDelegate?
+    private var childAudioDelegate: SampleBufferDelegate?
+
     // MARK: - Initialization
 
     private init() {
@@ -97,6 +109,8 @@ class SessionRecordingManager: ObservableObject {
 
         self.childOutputURL = childURL
         self.parentOutputURL = parentURL
+        self.childSession = childSession
+        self.parentSession = parentSession
 
         // Setup writers
         try setupWriter(for: childSession, outputURL: childURL, isChild: true)
@@ -107,8 +121,11 @@ class SessionRecordingManager: ObservableObject {
             throw RecordingError.failedToSetupWriter
         }
 
+        print("✅ Starting AVAssetWriters...")
         childWriter.startWriting()
+        print("   Child writer status: \(childWriter.status.rawValue)")
         parentWriter.startWriting()
+        print("   Parent writer status: \(parentWriter.status.rawValue)")
 
         recordingStartTime = Date()
         isRecording = true
@@ -116,13 +133,16 @@ class SessionRecordingManager: ObservableObject {
         // Start duration timer
         startDurationTimer()
 
-        print("📹 Started dual camera recording")
+        print("📹 Started dual camera recording (isRecording=true)")
         print("   Child: \(childURL.path)")
         print("   Parent: \(parentURL.path)")
+        print("   Max duration: \(maxRecordingDuration)s")
 
         // Auto-stop after max duration
         Task { [weak self] in
+            print("⏰ Auto-stop timer started for \(self?.maxRecordingDuration ?? 0)s")
             try? await Task.sleep(nanoseconds: UInt64(maxRecordingDuration * 1_000_000_000))
+            print("⏰ Auto-stop timer fired")
             await self?.stopRecording()
         }
 
@@ -131,19 +151,35 @@ class SessionRecordingManager: ObservableObject {
 
     /// Stop recording
     func stopRecording() async -> (childURL: URL, parentURL: URL)? {
-        guard isRecording else { return nil }
+        guard isRecording else {
+            print("⚠️ stopRecording called but isRecording=false")
+            return nil
+        }
 
+        print("🛑 Stopping recording (isRecording was true)")
         isRecording = false
         recordingTimer?.invalidate()
         recordingTimer = nil
 
-        // Stop writers
-        guard let childWriter = childWriter,
-              let parentWriter = parentWriter,
-              let childURL = childOutputURL,
-              let parentURL = parentOutputURL else {
+        // Stop writers - check what's missing
+        guard let childWriter = childWriter else {
+            print("❌ childWriter is nil!")
             return nil
         }
+        guard let parentWriter = parentWriter else {
+            print("❌ parentWriter is nil!")
+            return nil
+        }
+        guard let childURL = childOutputURL else {
+            print("❌ childOutputURL is nil!")
+            return nil
+        }
+        guard let parentURL = parentOutputURL else {
+            print("❌ parentOutputURL is nil!")
+            return nil
+        }
+
+        print("✅ All recording components present, stopping writers...")
 
         await withCheckedContinuation { continuation in
             var completed = 0
@@ -167,6 +203,29 @@ class SessionRecordingManager: ObservableObject {
             }
         }
 
+        // Remove recording outputs from sessions
+        if let childSession = childSession, let childVideoOutput = childVideoOutput {
+            childSession.beginConfiguration()
+            if childSession.outputs.contains(childVideoOutput) {
+                childSession.removeOutput(childVideoOutput)
+                print("🔄 Removed child video output")
+            }
+            if let audioOutput = childAudioOutput, childSession.outputs.contains(audioOutput) {
+                childSession.removeOutput(audioOutput)
+                print("🔄 Removed child audio output")
+            }
+            childSession.commitConfiguration()
+        }
+
+        if let parentSession = parentSession, let parentVideoOutput = parentVideoOutput {
+            parentSession.beginConfiguration()
+            if parentSession.outputs.contains(parentVideoOutput) {
+                parentSession.removeOutput(parentVideoOutput)
+                print("🔄 Removed parent video output")
+            }
+            parentSession.commitConfiguration()
+        }
+
         // Clean up
         self.childWriter = nil
         self.parentWriter = nil
@@ -174,6 +233,16 @@ class SessionRecordingManager: ObservableObject {
         self.parentVideoInput = nil
         self.childAudioInput = nil
         self.recordingStartTime = nil
+        self.childVideoOutput = nil
+        self.parentVideoOutput = nil
+        self.childAudioOutput = nil
+        self.childSession = nil
+        self.parentSession = nil
+
+        // Clean up delegates
+        self.childVideoDelegate = nil
+        self.parentVideoDelegate = nil
+        self.childAudioDelegate = nil
 
         let duration = recordingDuration
         recordingDuration = 0
@@ -206,6 +275,8 @@ class SessionRecordingManager: ObservableObject {
         outputURL: URL,
         isChild: Bool
     ) throws {
+        print("🔧 Setting up \(isChild ? "child" : "parent") writer for: \(outputURL.lastPathComponent)")
+
         // Create asset writer
         let writer = try AVAssetWriter(outputURL: outputURL, fileType: .mp4)
 
@@ -249,44 +320,80 @@ class SessionRecordingManager: ObservableObject {
         if isChild {
             self.childWriter = writer
             self.childVideoInput = videoInput
+            print("✅ Child writer stored")
         } else {
             self.parentWriter = writer
             self.parentVideoInput = videoInput
+            print("✅ Parent writer stored")
         }
 
         // Setup capture session output for this writer
-        setupCaptureOutput(for: session, writer: writer, videoInput: videoInput, audioInput: isChild ? childAudioInput : nil)
+        setupCaptureOutput(for: session, writer: writer, videoInput: videoInput, audioInput: isChild ? childAudioInput : nil, isChild: isChild)
+        print("✅ Capture output setup complete for \(isChild ? "child" : "parent")")
     }
 
     private func setupCaptureOutput(
         for session: AVCaptureSession,
         writer: AVAssetWriter,
         videoInput: AVAssetWriterInput,
-        audioInput: AVAssetWriterInput?
+        audioInput: AVAssetWriterInput?,
+        isChild: Bool
     ) {
-        // Add video data output
+        session.beginConfiguration()
+
+        // DON'T remove existing outputs - keep preview outputs active
+        // Just add our recording output alongside them
+
+        // Add video data output for recording
         let videoOutput = AVCaptureVideoDataOutput()
+        videoOutput.videoSettings = [
+            kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
+        ]
+
+        // Create and RETAIN delegate (critical - otherwise it gets deallocated!)
+        let videoDelegate = SampleBufferDelegate(writer: writer, videoInput: videoInput, audioInput: audioInput)
         videoOutput.setSampleBufferDelegate(
-            SampleBufferDelegate(writer: writer, videoInput: videoInput, audioInput: audioInput),
-            queue: DispatchQueue(label: "com.neuroguide.recording")
+            videoDelegate,
+            queue: DispatchQueue(label: "com.neuroguide.recording.\(UUID().uuidString)")
         )
 
         if session.canAddOutput(videoOutput) {
             session.addOutput(videoOutput)
+            // Store references to remove later
+            if isChild {
+                self.childVideoOutput = videoOutput
+                self.childVideoDelegate = videoDelegate
+            } else {
+                self.parentVideoOutput = videoOutput
+                self.parentVideoDelegate = videoDelegate
+            }
+            print("✅ Added video output for recording (keeping preview active)")
+        } else {
+            print("⚠️ Could not add video output for recording")
         }
 
         // Add audio data output (if audio input exists)
-        if let audioInput = audioInput {
+        if let audioInput = audioInput, isChild {
             let audioOutput = AVCaptureAudioDataOutput()
+
+            // Create and RETAIN delegate
+            let audioDelegate = SampleBufferDelegate(writer: writer, videoInput: videoInput, audioInput: audioInput)
             audioOutput.setSampleBufferDelegate(
-                SampleBufferDelegate(writer: writer, videoInput: videoInput, audioInput: audioInput),
-                queue: DispatchQueue(label: "com.neuroguide.audio")
+                audioDelegate,
+                queue: DispatchQueue(label: "com.neuroguide.audio.\(UUID().uuidString)")
             )
 
             if session.canAddOutput(audioOutput) {
                 session.addOutput(audioOutput)
+                self.childAudioOutput = audioOutput
+                self.childAudioDelegate = audioDelegate
+                print("✅ Added audio output for recording")
+            } else {
+                print("⚠️ Could not add audio output for recording")
             }
         }
+
+        session.commitConfiguration()
     }
 
     // MARK: - Duration Timer
@@ -361,10 +468,27 @@ private class SampleBufferDelegate: NSObject, AVCaptureVideoDataOutputSampleBuff
     ) {
         guard CMSampleBufferDataIsReady(sampleBuffer) else { return }
 
+        guard let writer = writer else { return }
+
         // Initialize session start time
         if sessionStartTime == nil {
-            sessionStartTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
-            writer?.startSession(atSourceTime: sessionStartTime!)
+            let timestamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
+
+            // Only start session if writer is ready
+            if writer.status == .writing {
+                writer.startSession(atSourceTime: timestamp)
+                sessionStartTime = timestamp  // Mark as started
+                print("✅ Session started at time: \(timestamp.seconds)")
+            } else {
+                // Writer not ready yet, skip this frame and try again on next one
+                print("⚠️ Writer not ready yet (status: \(writer.status.rawValue)), waiting...")
+                return  // Don't append samples until session starts
+            }
+        }
+
+        // Only write samples if session has been started
+        guard sessionStartTime != nil else {
+            return  // Session not started yet
         }
 
         // Write video samples

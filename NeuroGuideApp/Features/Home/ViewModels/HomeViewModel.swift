@@ -28,6 +28,12 @@ class HomeViewModel: ObservableObject {
     /// Current child profile (if exists)
     @Published var currentProfile: ChildProfile?
 
+    /// All available child profiles
+    @Published var allProfiles: [ChildProfile] = []
+
+    /// Whether to show profile switcher
+    @Published var shouldShowProfileSwitcher: Bool = false
+
     // MARK: - Internal Properties
 
     /// Reference to app coordinator for navigation
@@ -81,21 +87,48 @@ class HomeViewModel: ObservableObject {
         await loadProfile()
     }
 
-    /// Load the current profile
+    /// Load the current profile and all available profiles
     func loadProfile() async {
         do {
+            // Load all profiles
+            allProfiles = try await profileManager.getAllProfiles()
+
+            // Load current active profile
             if let profile = try await profileManager.getProfile() {
                 currentProfile = profile
                 shouldShowProfileSummary = true
+                shouldShowProfileSwitcher = allProfiles.count > 1
             } else {
                 currentProfile = nil
                 shouldShowProfileSummary = false
+                shouldShowProfileSwitcher = false
             }
         } catch {
             print("Error loading profile: \(error)")
             currentProfile = nil
+            allProfiles = []
             shouldShowProfileSummary = false
+            shouldShowProfileSwitcher = false
         }
+    }
+
+    /// Switch to a different profile
+    func selectProfile(_ profile: ChildProfile) async {
+        do {
+            try await profileManager.setActiveProfile(profile)
+            currentProfile = profile
+            shouldShowProfileSummary = true
+
+            // Announce profile switch
+            AccessibilityHelper.announce("Switched to \(profile.name)'s profile")
+        } catch {
+            print("Error switching profile: \(error)")
+        }
+    }
+
+    /// Navigate to create new profile
+    func createNewProfile() {
+        coordinator?.navigateToProfileCreation()
     }
 
     // MARK: - Private Methods

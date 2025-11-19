@@ -43,18 +43,20 @@ class BaselineCalibrationService: ObservableObject {
     private var expressionSamples: [ExpressionSample] = []
     private var observedBehaviors: Set<String> = []
 
-    private let recordingDuration: TimeInterval = 45.0  // 45 seconds
+    private let recordingDuration: TimeInterval
     private var recordingStartTime: Date?
 
     // MARK: - Initialization
 
     nonisolated init(
+        recordingDuration: TimeInterval = 10.0,
         poseService: PoseDetectionService = .shared,
         facialService: FacialExpressionService = .shared,
         vocalService: VocalAffectService = .shared,
         cameraService: CameraCaptureService = .shared,
         audioService: AudioCaptureService = .shared
     ) {
+        self.recordingDuration = recordingDuration
         self.poseService = poseService
         self.facialService = facialService
         self.vocalService = vocalService

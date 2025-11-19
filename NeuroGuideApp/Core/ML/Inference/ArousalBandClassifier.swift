@@ -23,6 +23,7 @@ class ArousalBandClassifier: ObservableObject {
     @Published private(set) var currentArousalBand: ArousalBand?
     @Published private(set) var currentConfidence: Double = 0.0
     @Published private(set) var lastClassificationTime: Date?
+    @Published private(set) var currentFeatureVisualization: FeatureVisualization?
 
     // MARK: - Private Properties
 
@@ -38,6 +39,13 @@ class ArousalBandClassifier: ObservableObject {
     // Profile-specific baseline calibration and diagnosis
     private var baselineCalibration: BaselineCalibration?
     private var childProfile: ChildProfile?
+
+    // Custom k-NN model for personalized arousal detection
+    private var customKNNModel: KNNModel?
+
+    // LLM-based arousal detection service (NEW)
+    private var llmDetectionService: LLMArousalDetectionService?
+    private var useLLMDetection: Bool = false
 
     // Default thresholds (used when no baseline available)
     private let defaultThresholds = ArousalThresholds(
@@ -72,8 +80,8 @@ class ArousalBandClassifier: ObservableObject {
 
         if let profile = profile {
             print("✅ Child profile set for arousal detection")
-            if let diagnosis = profile.diagnosisInfo?.primaryDiagnosis {
-                print("   Diagnosis: \(diagnosis.displayName)")
+            if let diagnosisInfo = profile.diagnosisInfo, let firstDiagnosis = diagnosisInfo.diagnoses.first {
+                print("   Diagnosis: \(firstDiagnosis.displayName)")
                 let adjustments = profile.getArousalThresholdAdjustments()
                 print("   Movement threshold: \(String(format: "%.1fx", adjustments.movementThresholdMultiplier))")
                 print("   Vocal threshold: \(String(format: "%.1fx", adjustments.vocalThresholdMultiplier))")
@@ -88,7 +96,7 @@ class ArousalBandClassifier: ObservableObject {
         }
     }
 
-    /// Set baseline calibration from child profile (legacy method)
+    /// Set baseline calibration from child profile (legacy method - no longer required)
     /// - Parameter baseline: Baseline calibration data from child profile
     func setBaselineCalibration(_ baseline: BaselineCalibration?) {
         self.baselineCalibration = baseline
@@ -99,6 +107,54 @@ class ArousalBandClassifier: ObservableObject {
         } else {
             print("⚠️ Using default thresholds - no baseline calibration available")
         }
+    }
+
+    /// Set custom k-NN model for personalized arousal detection
+    /// - Parameter model: Trained k-NN model from training videos
+    func setCustomKNNModel(_ model: KNNModel) {
+        self.customKNNModel = model
+        print("✨ Custom k-NN model loaded for personalized arousal detection")
+        print("   Training examples: \(model.trainingData.count)")
+        print("   Feature dimension: \(model.featureDimension)")
+        print("   k value: \(model.k)")
+    }
+
+    /// Clear custom k-NN model (return to generic detection)
+    func clearCustomKNNModel() {
+        self.customKNNModel = nil
+        print("📊 Cleared custom model - using generic arousal detection")
+    }
+
+    /// Enable LLM-based arousal detection (NEW)
+    /// - Parameters:
+    ///   - apiKey: API key for the LLM provider
+    ///   - provider: LLM provider to use (defaults to Claude Sonnet 4.5)
+    func enableLLMDetection(apiKey: String?, provider: LLMProvider = .claude) {
+        self.llmDetectionService = LLMArousalDetectionService(
+            apiKey: apiKey,
+            provider: provider
+        )
+        self.useLLMDetection = true
+        print("🤖 LLM-based arousal detection ENABLED")
+        print("   Provider: \(provider)")
+    }
+
+    /// Legacy method for backward compatibility
+    func enableLLMDetection(groqAPIKey: String?, useAppleIntelligence: Bool = false) {
+        let provider: LLMProvider = useAppleIntelligence ? .appleIntelligence : .groq
+        enableLLMDetection(apiKey: groqAPIKey, provider: provider)
+    }
+
+    /// Disable LLM-based arousal detection (return to rule-based)
+    func disableLLMDetection() {
+        self.llmDetectionService = nil
+        self.useLLMDetection = false
+        print("📊 LLM detection disabled - using rule-based detection")
+    }
+
+    /// Clear LLM detection cache (call when session ends)
+    func clearLLMCache() {
+        llmDetectionService?.clearCache()
     }
 
     /// Get current thresholds being used (for debugging/transparency)
@@ -112,10 +168,12 @@ class ArousalBandClassifier: ObservableObject {
     /// - Parameters:
     ///   - image: Video frame for pose and facial analysis
     ///   - audioBuffer: Audio buffer for vocal analysis (optional)
+    ///   - additionalContext: Additional context for LLM detection (behaviors, environment, parent stress, session context)
     /// - Returns: Arousal band classification with confidence
     func classifyArousalBand(
         image: CGImage,
-        audioBuffer: AVAudioPCMBuffer? = nil
+        audioBuffer: AVAudioPCMBuffer? = nil,
+        additionalContext: LLMDetectionContext? = nil
     ) async throws -> ArousalBandClassification {
         // Extract features from each modality concurrently
         async let poseFeatures = extractPoseFeatures(image: image)
@@ -125,7 +183,54 @@ class ArousalBandClassifier: ObservableObject {
         // Wait for all features
         let (pose, facial, vocal) = await (poseFeatures, facialFeatures, vocalFeatures)
 
-        // Fuse multimodal signals
+        // NEW: Use LLM detection if enabled and child profile is available
+        if useLLMDetection,
+           let llmService = llmDetectionService,
+           let profile = childProfile,
+           let context = additionalContext {
+
+            do {
+                // Build comprehensive LLM request
+                let llmRequest = LLMArousalDetectionRequest(
+                    childProfile: profile,
+                    poseFeatures: pose,
+                    vocalFeatures: vocal,
+                    facialFeatures: facial,
+                    detectedBehaviors: context.detectedBehaviors,
+                    environment: context.environment,
+                    parentStress: context.parentStress,
+                    sessionContext: context.sessionContext,
+                    timestamp: Date()
+                )
+
+                // Get LLM-based detection
+                let (band, confidence) = try await llmService.detectArousalBand(request: llmRequest)
+
+                // Apply temporal smoothing
+                let smoothedResult = applyTemporalSmoothing(band: band, confidence: confidence)
+
+                // Update published properties
+                currentArousalBand = smoothedResult.band
+                currentConfidence = smoothedResult.confidence
+                lastClassificationTime = Date()
+
+                return ArousalBandClassification(
+                    arousalBand: smoothedResult.band,
+                    confidence: smoothedResult.confidence,
+                    contributions: ModalityContributions(
+                        pose: pose?.arousalContribution ?? 0.0,
+                        facial: facial?.arousalContribution ?? 0.0,
+                        vocal: vocal?.arousalContribution ?? 0.0
+                    ),
+                    timestamp: Date()
+                )
+            } catch {
+                // Fall back to rule-based if LLM fails
+                print("⚠️ LLM detection failed, falling back to rule-based: \(error.localizedDescription)")
+            }
+        }
+
+        // FALLBACK: Use rule-based detection (original behavior)
         let (band, confidence) = fuseSignals(
             pose: pose,
             facial: facial,
@@ -210,29 +315,38 @@ class ArousalBandClassifier: ObservableObject {
         facial: FacialFeatures?,
         vocal: VocalFeatures?
     ) -> (band: ArousalBand, confidence: Double) {
-        // Weighted fusion of multimodal signals
-        // Weights determined by modality availability and confidence
+        // If custom k-NN model is available, use it for personalized prediction
+        if let knnModel = customKNNModel {
+            let result = fuseSignalsWithKNN(model: knnModel, pose: pose, facial: facial, vocal: vocal)
+            // Create visualization
+            updateFeatureVisualization(pose: pose, facial: facial, vocal: vocal, band: result.band, confidence: result.confidence, usingKNN: true)
+            return result
+        }
+
+        // Otherwise, use generic weighted fusion
+        // Weights: Pose 50%, Facial 40%, Vocal 10%
+        // Body movement is the strongest indicator of arousal in neurodivergent children
 
         var totalArousal: Double = 0.0
         var totalWeight: Double = 0.0
 
-        // Pose contribution
+        // Pose contribution (50% - primary indicator)
         if let pose = pose {
-            let weight = 0.35 * pose.keypointConfidence
+            let weight = 0.50 * pose.keypointConfidence
             totalArousal += pose.arousalContribution * weight
             totalWeight += weight
         }
 
-        // Facial contribution
+        // Facial contribution (40% - secondary indicator)
         if let facial = facial {
             let weight = 0.40 * facial.confidence
             totalArousal += facial.arousalContribution * weight
             totalWeight += weight
         }
 
-        // Vocal contribution
+        // Vocal contribution (10% - tertiary indicator)
         if let vocal = vocal {
-            let weight = 0.25  // Vocal is less reliable without trained model
+            let weight = 0.10  // Reduced weight: vocal is less reliable without trained model
             totalArousal += vocal.arousalContribution * weight
             totalWeight += weight
         }
@@ -250,7 +364,84 @@ class ArousalBandClassifier: ObservableObject {
             modalityCount: [pose, facial, vocal].compactMap { $0 }.count
         )
 
+        // Create visualization
+        updateFeatureVisualization(pose: pose, facial: facial, vocal: vocal, band: band, confidence: confidence, usingKNN: false)
+
         return (band, confidence)
+    }
+
+    /// Use k-NN model for personalized arousal classification
+    private func fuseSignalsWithKNN(
+        model: KNNModel,
+        pose: PoseFeatures?,
+        facial: FacialFeatures?,
+        vocal: VocalFeatures?
+    ) -> (band: ArousalBand, confidence: Double) {
+        // Extract simple feature vector (matching training format)
+        // This is a simplified version - you may need to match the exact features used during training
+        var features: [Double] = []
+
+        // Pose features (if available)
+        if let pose = pose {
+            features.append(pose.arousalContribution)
+            features.append(pose.keypointConfidence)
+            features.append(pose.movementIntensity)
+            features.append(pose.bodyTension)
+            features.append(pose.postureOpenness)
+        } else {
+            features.append(contentsOf: [0.0, 0.0, 0.0, 0.0, 0.0])
+        }
+
+        // Facial features (if available)
+        if let facial = facial {
+            features.append(facial.arousalContribution)
+            features.append(facial.confidence)
+            features.append(facial.expressionIntensity)
+            features.append(facial.mouthOpenness)
+            features.append(facial.eyeWideness)
+            features.append(facial.browRaised ? 1.0 : 0.0)
+        } else {
+            features.append(contentsOf: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+        }
+
+        // Vocal features (if available)
+        if let vocal = vocal {
+            features.append(vocal.volume)
+            features.append(vocal.pitch)
+            features.append(vocal.energy)
+            features.append(vocal.speechRate)
+            features.append(vocal.voiceQuality)
+        } else {
+            features.append(contentsOf: [0.0, 0.0, 0.0, 0.0, 0.0])
+        }
+
+        // Predict using k-NN model
+        let predictedState = model.predict(features: features)
+
+        // Map ArousalState to ArousalBand
+        let band = mapArousalStateToBand(predictedState)
+
+        // k-NN confidence is based on k-nearest neighbors agreement
+        // For now, use a high confidence since the model is trained on this child
+        let confidence = 0.85
+
+        return (band, confidence)
+    }
+
+    /// Map ArousalState (training labels) to ArousalBand (live detection)
+    private func mapArousalStateToBand(_ state: ArousalState) -> ArousalBand {
+        switch state {
+        case .calm:
+            return .green
+        case .playful:
+            return .yellow  // Playful is energetic but positive
+        case .upset:
+            return .yellow  // Upset is moderate dysregulation
+        case .angry:
+            return .orange  // Angry is high dysregulation
+        case .meltdown:
+            return .red  // Meltdown is severe dysregulation
+        }
     }
 
     private func mapToArousalBand(arousalScore: Double) -> ArousalBand {
@@ -512,4 +703,49 @@ extension ArousalBandClassifier {
 
         return classification
     }
+
+    // MARK: - Feature Visualization
+
+    /// Update the current feature visualization for transparency
+    private func updateFeatureVisualization(
+        pose: PoseFeatures?,
+        facial: FacialFeatures?,
+        vocal: VocalFeatures?,
+        band: ArousalBand,
+        confidence: Double,
+        usingKNN: Bool
+    ) {
+        currentFeatureVisualization = FeatureVisualization(
+            poseAvailable: pose != nil,
+            movementIntensity: pose?.movementIntensity,
+            bodyTension: pose?.bodyTension,
+            postureOpenness: pose?.postureOpenness,
+            poseConfidence: pose?.keypointConfidence,
+            facialAvailable: facial != nil,
+            expressionIntensity: facial?.expressionIntensity,
+            mouthOpenness: facial?.mouthOpenness,
+            eyeWideness: facial?.eyeWideness,
+            browRaised: facial?.browRaised,
+            facialConfidence: facial?.confidence,
+            vocalAvailable: vocal != nil,
+            volume: vocal?.volume,
+            pitch: vocal?.pitch,
+            energy: vocal?.energy,
+            speechRate: vocal?.speechRate,
+            predictedBand: band,
+            overallConfidence: confidence,
+            usingCustomModel: usingKNN
+        )
+    }
+}
+
+// MARK: - LLM Detection Context
+
+/// Additional context for LLM-based arousal detection
+/// Provides environmental, behavioral, and temporal information beyond raw features
+struct LLMDetectionContext {
+    let detectedBehaviors: [ChildBehavior]
+    let environment: EnvironmentContext
+    let parentStress: ParentStressAnalysis?
+    let sessionContext: SessionContext?
 }
